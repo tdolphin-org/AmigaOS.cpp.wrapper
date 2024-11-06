@@ -16,6 +16,7 @@ namespace AOS::Picasso96
         std::string name;
         std::string memorySize;
         std::string memoryClock;
+        std::vector<std::string> rgbFormats;
     };
 
     struct Library

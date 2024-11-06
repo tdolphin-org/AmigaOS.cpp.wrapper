@@ -98,6 +98,10 @@ namespace AOS::Identify
                     additionalInfo += " RAM";
                 if (classId == IDCID_GFX)
                     additionalInfo += " VRAM";
+
+                struct ::Library *pDriver = (struct ::Library *)pConfigDev->cd_Driver;
+                if (pDriver != nullptr)
+                    additionalInfo += "[" + std::string(pDriver->lib_Node.ln_Name) + "]";
             }
 
             std::stringstream manufacturerIdStream, productIdStream;

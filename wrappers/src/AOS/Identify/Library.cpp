@@ -87,15 +87,17 @@ namespace AOS::Identify
                 manufacturerId = pConfigDev->cd_Rom.er_Manufacturer;
                 productId = pConfigDev->cd_Rom.er_Product;
 
+                if (pConfigDev->cd_BoardSize % (1024 * 1024) == 0)
+                    additionalInfo = std::to_string(pConfigDev->cd_BoardSize / (1024 * 1024)) + " MiB";
+                else if (pConfigDev->cd_BoardSize % 1024 == 0)
+                    additionalInfo = std::to_string(pConfigDev->cd_BoardSize / 1024) + " KiB";
+                else
+                    additionalInfo = std::to_string(pConfigDev->cd_BoardSize) + " Bytes";
+
                 if (ramClassIds.find(classId) != ramClassIds.end())
-                {
-                    if (pConfigDev->cd_BoardSize % (1024 * 1024) == 0)
-                        additionalInfo = std::to_string(pConfigDev->cd_BoardSize / (1024 * 1024)) + " MiB RAM";
-                    else if (pConfigDev->cd_BoardSize % 1024 == 0)
-                        additionalInfo = std::to_string(pConfigDev->cd_BoardSize / 1024) + " KiB RAM";
-                    else
-                        additionalInfo = std::to_string(pConfigDev->cd_BoardSize) + " Bytes RAM";
-                }
+                    additionalInfo += " RAM";
+                if (classId == IDCID_GFX)
+                    additionalInfo += " VRAM";
             }
 
             std::stringstream manufacturerIdStream, productIdStream;

@@ -47,7 +47,7 @@ namespace AOS::Identify
         std::string productId;
         std::string product;
         std::string productClass;
-        std::string additionalInfo;
+        std::vector<std::string> additionalInfo;
     };
 
     struct Library

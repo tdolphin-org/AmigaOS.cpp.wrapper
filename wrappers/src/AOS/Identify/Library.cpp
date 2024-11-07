@@ -78,7 +78,7 @@ namespace AOS::Identify
                                 (unsigned long)productClass, IDTAG_ClassID, (unsigned long)&classId, IDTAG_Expansion,
                                 (unsigned long)&pConfigDev, TAG_DONE))
         {
-            std::string additionalInfo;
+            std::vector<std::string> additionalInfo;
             if (pConfigDev != nullptr)
             {
                 if (filterByClassId != ClassID::NONE && classId != (int)filterByClassId)
@@ -86,29 +86,32 @@ namespace AOS::Identify
 
                 manufacturerId = pConfigDev->cd_Rom.er_Manufacturer;
                 productId = pConfigDev->cd_Rom.er_Product;
+                std::string memoryValue;
 
                 if (pConfigDev->cd_BoardSize % (1024 * 1024) == 0)
-                    additionalInfo = std::to_string(pConfigDev->cd_BoardSize / (1024 * 1024)) + " MiB";
+                    memoryValue = std::to_string(pConfigDev->cd_BoardSize / (1024 * 1024)) + " MiB";
                 else if (pConfigDev->cd_BoardSize % 1024 == 0)
-                    additionalInfo = std::to_string(pConfigDev->cd_BoardSize / 1024) + " KiB";
+                    memoryValue = std::to_string(pConfigDev->cd_BoardSize / 1024) + " KiB";
                 else
-                    additionalInfo = std::to_string(pConfigDev->cd_BoardSize) + " Bytes";
+                    memoryValue = std::to_string(pConfigDev->cd_BoardSize) + " Bytes";
 
                 if (ramClassIds.find(classId) != ramClassIds.end())
-                    additionalInfo += " RAM";
+                    memoryValue += " RAM";
                 if (classId == IDCID_GFX)
-                    additionalInfo += " VRAM";
+                    memoryValue += " VRAM";
+
+                additionalInfo.push_back(memoryValue);
 
                 struct ::Library *pDriver = (struct ::Library *)pConfigDev->cd_Driver;
                 if (pDriver != nullptr)
-                    additionalInfo += "[" + std::string(pDriver->lib_Node.ln_Name) + "]";
+                    additionalInfo.push_back(pDriver->lib_Node.ln_Name);
             }
 
             std::stringstream manufacturerIdStream, productIdStream;
             if (manufacturerId != 0)
-                manufacturerIdStream << "[0x" << std::setfill('0') << std::setw(4) << std::hex << manufacturerId << "] ";
+                manufacturerIdStream << "0x" << std::setfill('0') << std::setw(4) << std::hex << manufacturerId;
             if (productId != 0)
-                productIdStream << "[0x" << std::setfill('0') << std::setw(2) << std::hex << (int)productId << "] ";
+                productIdStream << "0x" << std::setfill('0') << std::setw(2) << std::hex << (int)productId;
 
             expansions.push_back({
                 pConfigDev,

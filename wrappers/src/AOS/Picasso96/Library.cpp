@@ -40,13 +40,14 @@ namespace AOS::Picasso96
         {
             for (auto i = 0; i < boardsNumber; i++)
             {
-                char *boardName;
-                ULONG memorySize, memoryClock, rgbFormats;
+                char *boardName, *chipName;
+                ULONG memorySize, freeMemory, memoryClock, rgbFormats;
 
-                p96GetBoardDataTags(i, P96BD_BoardName, (unsigned long)&boardName, P96BD_TotalMemory, (unsigned long)&memorySize,
+                p96GetBoardDataTags(i, P96BD_BoardName, (unsigned long)&boardName, P96BD_ChipName, (unsigned long)&chipName,
+                                    P96BD_TotalMemory, (unsigned long)&memorySize, P96BD_FreeMemory, (unsigned long)&freeMemory,
                                     P96BD_MemoryClock, (unsigned long)&memoryClock, P96BD_RGBFormats, (unsigned long)&rgbFormats, TAG_END);
 
-                boards.push_back({ boardName,
+                boards.push_back({ boardName, chipName,
                                    [=]() {
                                        if (memorySize % (1024 * 1024) == 0)
                                            return std::to_string(memorySize / (1024 * 1024)) + " MiB VRAM";
@@ -55,6 +56,7 @@ namespace AOS::Picasso96
                                        else
                                            return std::to_string(memorySize) + " Bytes VRAM";
                                    }(),
+                                   (long)((100 * freeMemory) / memorySize),
                                    [=]() {
                                        int clock = (memoryClock + 50000) / 100000;
                                        return std::to_string(clock / 10) + "." + std::to_string(clock % 10) + " MHz";

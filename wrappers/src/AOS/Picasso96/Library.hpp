@@ -14,7 +14,9 @@ namespace AOS::Picasso96
     struct Board
     {
         std::string name;
+        std::string chip;
         std::string memorySize;
+        long freeMemoryPercent;
         std::string memoryClock;
         std::vector<std::string> rgbFormats;
     };

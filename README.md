@@ -1,2 +1,3 @@
 # AmigaOS.cpp.wrapper
-AmigaOS/MorphOS OS related (libraries, Devices, etc) C++ wrapper classes
+
+AmigaOS/MorphOS/AROS OS Related (Libraries, Devices, etc.) C++ Wrapper Classes is a C++17-based set of wrappers designed to simplify interaction with various core and external components of AmigaOS, MorphOS, and AROS. This collection of classes provides object-oriented interfaces for OS elements such as devices, system libraries, and other essential resources. By encapsulating these components in modern C++ abstractions, the wrappers improve code clarity, maintainability, and type safety, allowing developers to work more seamlessly with OS-level functionalities while leveraging the expressive power of C++.

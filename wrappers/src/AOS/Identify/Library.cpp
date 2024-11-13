@@ -97,7 +97,7 @@ namespace AOS::Identify
 
                 if (ramClassIds.find(classId) != ramClassIds.end())
                     memoryValue += " RAM";
-                if (classId == IDCID_GFX)
+                else if (classId == IDCID_GFX)
                     memoryValue += " VRAM";
 
                 additionalInfo.push_back(memoryValue);

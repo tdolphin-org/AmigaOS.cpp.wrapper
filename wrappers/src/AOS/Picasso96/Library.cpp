@@ -36,7 +36,7 @@ namespace AOS::Picasso96
                                        else
                                            return std::to_string(memorySize) + " Bytes VRAM";
                                    }(),
-                                   (long)((100 * freeMemory) / memorySize),
+                                   (long) { (100.0f * (float)freeMemory) / (float)memorySize },
                                    [=]() {
                                        int clock = (memoryClock + 50000) / 100000;
                                        return std::to_string(clock / 10) + "." + std::to_string(clock % 10) + " MHz";

@@ -17,9 +17,9 @@ namespace AOS::Picasso96
 
         auto videoMemoryValue = [=](unsigned long value, bool round = false) {
             if ((round && value > 1024 * 1024) || value % (1024 * 1024) == 0)
-                return std::to_string(value / (1024 * 1024)) + " MiB VRAM";
+                return std::to_string(value / (1024 * 1024)) + " MB VRAM";
             else if ((round && value > 1024) || value % 1024 == 0)
-                return std::to_string(value / 1024) + " KiB VRAM";
+                return std::to_string(value / 1024) + " KB VRAM";
             else
                 return std::to_string(value) + " Bytes VRAM";
         };

@@ -86,14 +86,14 @@ namespace AOS::Identify
 
                 manufacturerId = pConfigDev->cd_Rom.er_Manufacturer;
                 productId = pConfigDev->cd_Rom.er_Product;
-                std::string memoryValue;
+                std::string memoryValue = "board size: ";
 
                 if (pConfigDev->cd_BoardSize % (1024 * 1024) == 0)
-                    memoryValue = std::to_string(pConfigDev->cd_BoardSize / (1024 * 1024)) + " MiB";
+                    memoryValue += std::to_string(pConfigDev->cd_BoardSize / (1024 * 1024)) + " MB";
                 else if (pConfigDev->cd_BoardSize % 1024 == 0)
-                    memoryValue = std::to_string(pConfigDev->cd_BoardSize / 1024) + " KiB";
+                    memoryValue += std::to_string(pConfigDev->cd_BoardSize / 1024) + " KB";
                 else
-                    memoryValue = std::to_string(pConfigDev->cd_BoardSize) + " Bytes";
+                    memoryValue += std::to_string(pConfigDev->cd_BoardSize) + " Bytes";
 
                 if (ramClassIds.find(classId) != ramClassIds.end())
                     memoryValue += " RAM";

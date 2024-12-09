@@ -35,9 +35,9 @@ std::string ToString::Concatenate(const std::vector<std::string> &array, const s
 std::string ToString::FromBytesValue(const unsigned long value)
 {
     if (value % (1024 * 1024) == 0)
-        return std::to_string(value / (1024 * 1024)) + " MiB";
+        return std::to_string(value / (1024 * 1024)) + " MB";
     else if (value % 1024 == 0)
-        return std::to_string(value / 1024) + " KiB";
+        return std::to_string(value / 1024) + " KB";
 
     return std::to_string(value) + " Bytes";
 }

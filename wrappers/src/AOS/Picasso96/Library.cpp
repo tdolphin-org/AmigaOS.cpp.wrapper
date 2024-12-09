@@ -18,10 +18,8 @@ namespace AOS::Picasso96
         auto videoMemoryValue = [=](unsigned long value, bool round = false) {
             if ((round && value > 1024 * 1024) || value % (1024 * 1024) == 0)
                 return std::to_string(value / (1024 * 1024)) + " MB VRAM";
-            else if ((round && value > 1024) || value % 1024 == 0)
-                return std::to_string(value / 1024) + " KB VRAM";
             else
-                return std::to_string(value) + " Bytes VRAM";
+                return std::to_string(value / 1024) + " KB VRAM";
         };
 
         ULONG boardsNumber;
@@ -36,7 +34,7 @@ namespace AOS::Picasso96
                                     P96BD_TotalMemory, (unsigned long)&memorySize, P96BD_FreeMemory, (unsigned long)&freeMemory,
                                     P96BD_MemoryClock, (unsigned long)&memoryClock, P96BD_RGBFormats, (unsigned long)&rgbFormats, TAG_END);
 
-                boards.push_back({ boardName, chipName, videoMemoryValue(memorySize), videoMemoryValue(memorySize - freeMemory, true),
+                boards.push_back({ boardName, chipName, videoMemoryValue(memorySize), videoMemoryValue(memorySize - freeMemory),
                                    (long) { (100.0f * (float)freeMemory) / (float)memorySize },
                                    [=]() {
                                        int clock = (memoryClock + 50000) / 100000;

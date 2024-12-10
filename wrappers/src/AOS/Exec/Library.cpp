@@ -18,6 +18,24 @@ namespace AOS::Exec
         return ToString::FromDataPointer(task);
     }
 
+    std::vector<LibInfo> Library::GetAllLibraryNames() noexcept
+    {
+        struct ::Library *lib;
+        struct List *list = &SysBase->LibList;
+
+        std::vector<LibInfo> result;
+
+        Forbid();
+        for (struct Node *node = list->lh_Head; node->ln_Succ; node = node->ln_Succ)
+        {
+            lib = (struct ::Library *)node;
+            result.push_back({ lib->lib_Node.ln_Name, std::to_string(lib->lib_Version) + "." + std::to_string(lib->lib_Revision) });
+        }
+        Permit();
+
+        return result;
+    }
+
     Task *Library::libFindTask() noexcept
     {
         return FindTask((char *)nullptr);

@@ -45,4 +45,9 @@ namespace AOS::Exec
     {
         return FindTask(name.c_str());
     }
+
+    unsigned long Library::libAvailMem(const MEMF_Type type, const MEMF_Avail avail) noexcept
+    {
+        return AvailMem((unsigned long)type | (unsigned long)avail);
+    }
 }

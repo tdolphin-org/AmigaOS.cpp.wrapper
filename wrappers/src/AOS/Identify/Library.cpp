@@ -86,7 +86,7 @@ namespace AOS::Identify
 
                 manufacturerId = pConfigDev->cd_Rom.er_Manufacturer;
                 productId = pConfigDev->cd_Rom.er_Product;
-                std::string memoryValue = "board size: ";
+                std::string memoryValue = "slot size: ";
 
                 if (pConfigDev->cd_BoardSize % (1024 * 1024) == 0)
                     memoryValue += std::to_string(pConfigDev->cd_BoardSize / (1024 * 1024)) + " MB";
@@ -94,11 +94,6 @@ namespace AOS::Identify
                     memoryValue += std::to_string(pConfigDev->cd_BoardSize / 1024) + " KB";
                 else
                     memoryValue += std::to_string(pConfigDev->cd_BoardSize) + " Bytes";
-
-                if (ramClassIds.find(classId) != ramClassIds.end())
-                    memoryValue += " RAM";
-                else if (classId == IDCID_GFX)
-                    memoryValue += " VRAM";
 
                 additionalInfo.push_back(memoryValue);
 

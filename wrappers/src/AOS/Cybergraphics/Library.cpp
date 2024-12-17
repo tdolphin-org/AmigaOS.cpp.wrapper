@@ -44,12 +44,12 @@ namespace AOS::Cybergraphics
     std::vector<Board> Library::GetBoards() noexcept
     {
         std::vector<Board> boards;
-        for (const auto &[boardID, board] : id2board)
-            if (libBestCModeID(boardID) != 0)
-                boards.push_back(board);
+        for (const auto item : id2board)
+            if (libBestCModeID(item.first) != 0)
+                boards.push_back(item.second);
     }
 
-    unsigned long AOS::Cybergraphics::Library::libBestCModeID(const enum BoardID boardID) noexcept
+    unsigned long Library::libBestCModeID(const enum BoardID boardID) noexcept
     {
         TagsScope tagsScope({ { CYBRBIDTG_MonitorID, (unsigned long)boardID } });
         return BestCModeIDTagList(tagsScope.tagItems());

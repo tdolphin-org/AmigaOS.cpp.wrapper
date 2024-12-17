@@ -6,6 +6,9 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
+
 namespace AOS::Cybergraphics
 {
     enum class BoardID : unsigned long

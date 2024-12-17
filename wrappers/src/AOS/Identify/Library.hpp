@@ -12,6 +12,7 @@
 #include "ValueType/IDHW.hpp"
 #include "ValueType/IDMMU.hpp"
 #include "ValueType/IDPPC.hpp"
+#include "ValueType/IDGOS.hpp"
 
 #include <libraries/configvars.h>
 #include <string>
@@ -58,6 +59,7 @@ namespace AOS::Identify
         static enum IDFPU GetFPU() noexcept;
         static enum IDMMU GetMMU() noexcept;
         static enum IDPPC GetPowerPC() noexcept;
+        static enum IDGOS GetGraphicOS() noexcept;
 
         static std::vector<Expansion> GetExpansions(const enum ClassID filterByClassId = ClassID::NONE) noexcept;
 

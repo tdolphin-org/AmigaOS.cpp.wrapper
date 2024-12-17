@@ -59,6 +59,11 @@ namespace AOS::Identify
         return static_cast<IDPPC>(IdHardwareNum(IDHW_POWERPC, nullptr));
     }
 
+    IDGOS Library::GetGraphicOS() noexcept
+    {
+        return static_cast<IDGOS>(IdHardwareNum(IDHW_GFXSYS, nullptr));
+    }
+
     std::vector<Expansion> Library::GetExpansions(const enum ClassID filterByClassId /*= ClassID::NONE*/) noexcept
     {
         std::vector<Expansion> expansions;

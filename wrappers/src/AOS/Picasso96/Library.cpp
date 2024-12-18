@@ -35,7 +35,7 @@ namespace AOS::Picasso96
                                     P96BD_MemoryClock, (unsigned long)&memoryClock, P96BD_RGBFormats, (unsigned long)&rgbFormats, TAG_END);
 
                 boards.push_back({ boardName, chipName, videoMemoryValue(memorySize), videoMemoryValue(memorySize - freeMemory),
-                                   (long) { (100.0f * (float)freeMemory) / (float)memorySize },
+                                   (long) { (long)((100.0f * (float)freeMemory) / (float)memorySize) },
                                    [=]() {
                                        int clock = (memoryClock + 50000) / 100000;
                                        return std::to_string(clock / 10) + "." + std::to_string(clock % 10) + " MHz";

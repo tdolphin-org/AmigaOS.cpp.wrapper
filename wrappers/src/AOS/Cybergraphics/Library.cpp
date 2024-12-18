@@ -45,7 +45,7 @@ namespace AOS::Cybergraphics
     {
         std::vector<Board> boards;
         for (const auto item : id2board)
-            if (libBestCModeID(item.first) != 0)
+            if (libBestCModeID(item.first) != (unsigned long)INVALID_ID)
                 boards.push_back(item.second);
 
         return boards;

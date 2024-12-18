@@ -86,7 +86,7 @@ namespace AOS::Identify
             std::vector<std::string> additionalInfo;
             if (pConfigDev != nullptr)
             {
-                if (filterByClassId != ClassID::NONE && classId != (int)filterByClassId)
+                if (filterByClassId != ClassID::NONE && classId != (unsigned long)filterByClassId)
                     continue;
 
                 manufacturerId = pConfigDev->cd_Rom.er_Manufacturer;

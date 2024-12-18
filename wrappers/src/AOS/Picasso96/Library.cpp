@@ -25,7 +25,7 @@ namespace AOS::Picasso96
         ULONG boardsNumber;
         if (p96GetRTGDataTags(P96RD_NumberOfBoards, (unsigned long)&boardsNumber, TAG_END) == 1)
         {
-            for (auto i = 0; i < boardsNumber; i++)
+            for (auto i = 0UL; i < boardsNumber; i++)
             {
                 char *boardName, *chipName;
                 ULONG memorySize, freeMemory, memoryClock, rgbFormats;

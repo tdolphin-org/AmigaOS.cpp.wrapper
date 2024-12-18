@@ -47,6 +47,8 @@ namespace AOS::Cybergraphics
         for (const auto item : id2board)
             if (libBestCModeID(item.first) != 0)
                 boards.push_back(item.second);
+
+        return boards;
     }
 
     unsigned long Library::libBestCModeID(const enum BoardID boardID) noexcept

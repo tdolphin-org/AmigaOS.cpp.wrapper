@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include "ValueType/ClassID.hpp"
-#include "ValueType/IDCPU.hpp"
-#include "ValueType/IDFPU.hpp"
-#include "ValueType/IDHW.hpp"
-#include "ValueType/IDMMU.hpp"
-#include "ValueType/IDPPC.hpp"
-#include "ValueType/IDGOS.hpp"
+#include "ValueTypes/ClassID.hpp"
+#include "ValueTypes/IDCPU.hpp"
+#include "ValueTypes/IDFPU.hpp"
+#include "ValueTypes/IDGOS.hpp"
+#include "ValueTypes/IDHW.hpp"
+#include "ValueTypes/IDMMU.hpp"
+#include "ValueTypes/IDPPC.hpp"
 
 #include <libraries/configvars.h>
 #include <string>

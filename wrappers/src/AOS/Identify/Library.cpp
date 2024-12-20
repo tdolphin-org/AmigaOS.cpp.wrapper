@@ -100,6 +100,10 @@ namespace AOS::Identify
 
                 additionalInfo.push_back(memoryValue);
 
+                unsigned long serialNumber = pConfigDev->cd_Rom.er_SerialNumber;
+                if (serialNumber != 0)
+                    additionalInfo.push_back(std::string("SN: " + std::to_string(serialNumber)));
+
                 struct ::Library *pDriver = (struct ::Library *)pConfigDev->cd_Driver;
                 if (pDriver != nullptr)
                     additionalInfo.push_back(pDriver->lib_Node.ln_Name);

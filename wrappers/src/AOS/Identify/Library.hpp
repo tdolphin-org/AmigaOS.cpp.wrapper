@@ -43,9 +43,9 @@ namespace AOS::Identify
     struct Expansion
     {
         ConfigDev *configDev;
-        unsigned long manufacturerId;
+        unsigned short manufacturerId;
         std::string manufacturer;
-        unsigned long productId;
+        unsigned char productId;
         std::string product;
         std::string productClass;
         std::vector<std::string> additionalInfo;

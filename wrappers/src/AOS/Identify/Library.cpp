@@ -6,11 +6,9 @@
 
 #include "Library.hpp"
 
-#include <iomanip>
 #include <libraries/identify.h>
 #include <proto/identify.h>
 #include <set>
-#include <sstream>
 
 namespace AOS::Identify
 {
@@ -107,17 +105,11 @@ namespace AOS::Identify
                     additionalInfo.push_back(pDriver->lib_Node.ln_Name);
             }
 
-            std::stringstream manufacturerIdStream, productIdStream;
-            if (manufacturerId != 0)
-                manufacturerIdStream << "0x" << std::setfill('0') << std::setw(4) << std::hex << manufacturerId;
-            if (productId != 0)
-                productIdStream << "0x" << std::setfill('0') << std::setw(2) << std::hex << (int)productId;
-
             expansions.push_back({
                 pConfigDev,
-                manufacturerIdStream.str(),
+                manufacturerId,
                 manufacturerName,
-                productIdStream.str(),
+                productId,
                 productName,
                 productClass,
                 additionalInfo,

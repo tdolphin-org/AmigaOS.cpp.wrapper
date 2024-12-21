@@ -374,6 +374,7 @@ namespace AOS::Expansion
 
     std::string Utils::GetManufacturerName(const ManufacturerID manufacturerID)
     {
-        return manufacturer2Name.at(manufacturerID);
+        auto iter = manufacturer2Name.find(manufacturerID);
+        return iter != manufacturer2Name.end() ? iter->second : "Unknown";
     }
 }

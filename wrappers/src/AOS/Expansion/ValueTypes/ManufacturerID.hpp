@@ -1,13 +1,14 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  _c 2024 TDolphin
+//  (c) 2024 TDolphin
 //
 
 #pragma once
 
 namespace AOS::Expansion
 {
+    // values taken from https://wiki.amigaos.net/wiki/Amiga_Hardware_Manufacturer_ID_Registry
     enum class ManufacturerID : unsigned short
     {
         Micronik_0 = 1, // 0x1
@@ -98,7 +99,7 @@ namespace AOS::Expansion
         Xetec = 2022, // 0x07E6
         MicronTechnology = 2023, // 0x07E7
         CHElectronics = 2024, // 0x07E8
-        AmericanLiquidLight = 2025, // 0x07E9
+        AmericanLiquidLight_0 = 2025, // 0x07E9
         ProgressivePeripherals_Software_1 = 2026, // 0x07EA
         WicatSystems = 2027, // 0x07EB
         AppliedSystems_Peripherals = 2028, // 0x07EC
@@ -165,7 +166,21 @@ namespace AOS::Expansion
         Solid_StateDesign_Development = 2089, // 0x829
         VisonQuest = 2090, // 0x082A
         SeaviewSoftware = 2091, // 0x082B
-        BSC_2 = 2092, // 0x082Cwrappers/src/AOS/ValueTypes
+        BSC_2 = 2092, // 0x082C
+        BerndCulenfeld = 2093, // 0x082D
+        AmericanLiquidLight_1 = 2094, // 0x082E
+        CEGITES = 2095, // 0x082F
+        QuadliteComputersLtd = 2096, // 0x830
+        SiliconPeace = 2097, // 0x831
+        BlackBeltSystems = 2098, // 0x832
+        VillageTronic_0 = 2099, // 0x833
+        ReadySoft_0 = 2100, // 0x834
+        PhoenixMicroTechnologies = 2101, // 0x835
+        AdvancedSystems_Software = 2102, // 0x836
+        RomboProductions = 2103, // 0x837
+        ImpulseInc = 2104, // 0x838
+        BetaUnlimited = 2105, // 0x839
+        MemoryExpansionSystemLtd = 2106, // 0x083A
         VortexComputerSystemsGmbH = 2107, // 0x083B
         PlatypusSystems = 2108, // 0x083C
         GigatronOHG = 2109, // 0x083D
@@ -226,7 +241,7 @@ namespace AOS::Expansion
         SuperformanceComputerEngineeringGmbH = 2164, // 0x874
         OverlandEngineering = 2165, // 0x875
         ThomasHamren = 2166, // 0x876
-        VillageTronic = 2167, // 0x877
+        VillageTronic_1 = 2167, // 0x877
         ToolboxDesign = 2168, // 0x878
         DigitalProcessingSystem_1 = 2169, // 0x879
         Superformance = 2170, // 0x087A
@@ -324,7 +339,7 @@ namespace AOS::Expansion
         Vortex = 8215, // 0x2017
         SpiritTechnology_3 = 8244, // 0x2034
         ExpansionSystems = 8290, // 0x2062
-        ReadySoft = 8448, // 0x2100
+        ReadySoft_1 = 8448, // 0x2100
         Phase5DigitalProducts = 8512, // 0x2140
         DigitalProcessingSystemsInc = 8553, // 0x2169
         ACTElektronik_0 = 8704, // 0x2200

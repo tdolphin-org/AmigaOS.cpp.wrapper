@@ -23,7 +23,8 @@ namespace AOS::Identify
         MC68LC060 = IDCPU_68LC060,
         FPGA = IDCPU_FPGA,
         EMU68 = IDCPU_EMU68,
+        AC68080 = IDCPU_68080,
 
-        OTHER = IDCPU_EMU68 + 1, // additional value for unexpected new value
+        OTHER, // additional value for unexpected new value
     };
 }

@@ -19,5 +19,6 @@ namespace AOS::Identify
         MC68060 = IDFPU_68060,
         FPGA = IDFPU_FPGA,
         EMU68 = IDFPU_EMU68,
+        AC68080 = IDFPU_68080,
     };
 }

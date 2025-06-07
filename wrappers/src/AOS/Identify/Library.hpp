@@ -40,15 +40,25 @@ namespace AOS::Identify
         std::vector<std::string> additionalUnits;
     };
 
+    struct ExpansionData
+    {
+        unsigned short manufacturerId;
+        std::string manufacturerName;
+        unsigned char productId;
+        std::string productName;
+        std::string productClass;
+        std::vector<std::string> additionalInfo;
+    };
+
     struct Expansion
     {
         ConfigDev *configDev;
-        unsigned short manufacturerId;
-        std::string manufacturer;
-        unsigned char productId;
-        std::string product;
-        std::string productClass;
-        std::vector<std::string> additionalInfo;
+        ExpansionData data;
+    };
+
+    struct PciExpansion
+    {
+        ExpansionData data;
     };
 
     struct Library
@@ -62,6 +72,7 @@ namespace AOS::Identify
         static enum IDGOS GetGraphicOS() noexcept;
 
         static std::vector<Expansion> GetExpansions(const enum ClassID filterByClassId = ClassID::NONE) noexcept;
+        static std::vector<PciExpansion> GetPciExpansions() noexcept;
 
         /// @brief identify:IdHardware()
         static std::string libIdHardware(const enum IDHW idhw) noexcept;

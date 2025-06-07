@@ -10,6 +10,8 @@
 #include <proto/identify.h>
 #include <set>
 
+extern struct Library *IdentifyBase;
+
 namespace AOS::Identify
 {
     std::vector<CpuInfo> Library::GetAllCPUs()
@@ -109,18 +111,48 @@ namespace AOS::Identify
                     additionalInfo.push_back(pDriver->lib_Node.ln_Name);
             }
 
-            expansions.push_back({
-                pConfigDev,
+            expansions.push_back({ pConfigDev,
+                                   {
+                                       manufacturerId,
+                                       manufacturerName,
+                                       productId,
+                                       productName,
+                                       productClass,
+                                       additionalInfo,
+                                   } });
+        }
+
+        return expansions;
+    }
+
+    std::vector<PciExpansion> Library::GetPciExpansions() noexcept
+    {
+        if (IdentifyBase->lib_Version < 45U) // Check if identify.library version is at least 45
+            return {};
+
+        std::vector<PciExpansion> pciExpansions;
+
+        char manufacturerName[IDENTIFYBUFLEN], productName[IDENTIFYBUFLEN], productClass[IDENTIFYBUFLEN];
+        UWORD manufacturerId = 0;
+        UBYTE productId = 0;
+        ULONG classId = 0;
+
+        while (!IdPciExpansionTags(IDTAG_ManufID, (unsigned long)&manufacturerId, IDTAG_ManufStr, (unsigned long)manufacturerName,
+                                   IDTAG_ProdID, (unsigned long)&productId, IDTAG_ProdStr, (unsigned long)productName, IDTAG_ClassStr,
+                                   (unsigned long)productClass, IDTAG_ClassID, (unsigned long)&classId, TAG_DONE))
+        {
+            std::vector<std::string> additionalInfo;
+            pciExpansions.push_back({ {
                 manufacturerId,
                 manufacturerName,
                 productId,
                 productName,
                 productClass,
                 additionalInfo,
-            });
+            } });
         }
 
-        return expansions;
+        return pciExpansions;
     }
 
     std::string Library::libIdHardware(const enum IDHW idhw) noexcept

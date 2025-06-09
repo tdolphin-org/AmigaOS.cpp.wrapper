@@ -61,8 +61,22 @@ namespace AOS::Identify
         ExpansionData data;
     };
 
+    enum class PciExpansionsResultCode
+    {
+        Okay = IDERR_OKAY,
+        NoPciLib = IDERR_NOPCILIB, // No openpci.library or PCI bridge found
+        NoPciDb = IDERR_NOPCIDB, // No PCI database file found
+        BadPciDb = IDERR_BADPCIDB, // Bad PCI database file
+        Missing45 = -127, // identify.library version < 45
+        UnknownError = -128, // Any other error
+    };
+
     struct Library
     {
+        /// @brief get opened identify.library version
+        /// @return version as a string, e.g. "45.0"
+        static std::string GetVersion() noexcept;
+
         static std::vector<CpuInfo> GetAllCPUs();
 
         static enum IDCPU GetCPU() noexcept;
@@ -72,12 +86,12 @@ namespace AOS::Identify
         static enum IDGOS GetGraphicOS() noexcept;
 
         static std::vector<Expansion> GetExpansions(const enum ClassID filterByClassId = ClassID::NONE) noexcept;
-        static std::vector<PciExpansion> GetPciExpansions() noexcept;
+        static std::pair<PciExpansionsResultCode, std::vector<PciExpansion>> GetPciExpansions() noexcept;
 
         /// @brief identify:IdHardware()
         static std::string libIdHardware(const enum IDHW idhw) noexcept;
 
         /// @brief identify:IdHardwareNum()
-        static unsigned long libIdHardwareNum(const enum IDHW idhw) noexcept;
+        static uint32_t libIdHardwareNum(const enum IDHW idhw) noexcept;
     };
 }

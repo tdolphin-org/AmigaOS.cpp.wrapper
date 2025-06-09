@@ -10,10 +10,19 @@
 #include <proto/identify.h>
 #include <set>
 
+#include <sstream>
+
 extern struct Library *IdentifyBase;
 
 namespace AOS::Identify
 {
+    std::string Library::GetVersion() noexcept
+    {
+        std::stringstream versionStream;
+        versionStream << IdentifyBase->lib_Version << "." << IdentifyBase->lib_Revision;
+        return versionStream.str();
+    }
+
     std::vector<CpuInfo> Library::GetAllCPUs()
     {
         return { CpuInfo { CpuType::MC68k,
@@ -74,19 +83,19 @@ namespace AOS::Identify
         ConfigDev *pConfigDev = nullptr;
 
         char manufacturerName[IDENTIFYBUFLEN], productName[IDENTIFYBUFLEN], productClass[IDENTIFYBUFLEN];
-        UWORD manufacturerId = 0;
-        UBYTE productId = 0;
-        ULONG classId = 0;
+        uint16_t manufacturerId = 0;
+        uint8_t productId = 0;
+        uint32_t classId = 0;
 
-        while (!IdExpansionTags(IDTAG_ManufID, (unsigned long)&manufacturerId, IDTAG_ManufStr, (unsigned long)manufacturerName,
-                                IDTAG_ProdID, (unsigned long)&productId, IDTAG_ProdStr, (unsigned long)productName, IDTAG_ClassStr,
-                                (unsigned long)productClass, IDTAG_ClassID, (unsigned long)&classId, IDTAG_Expansion,
-                                (unsigned long)&pConfigDev, TAG_DONE))
+        while (IdExpansionTags(IDTAG_ManufID, (uint32_t)&manufacturerId, IDTAG_ManufStr, (uint32_t)manufacturerName, IDTAG_ProdID,
+                               (uint32_t)&productId, IDTAG_ProdStr, (uint32_t)productName, IDTAG_ClassStr, (uint32_t)productClass,
+                               IDTAG_ClassID, (uint32_t)&classId, IDTAG_Expansion, (uint32_t)&pConfigDev, TAG_DONE)
+               == IDERR_OKAY)
         {
             std::vector<std::string> additionalInfo;
             if (pConfigDev != nullptr)
             {
-                if (filterByClassId != ClassID::NONE && classId != (unsigned long)filterByClassId)
+                if (filterByClassId != ClassID::NONE && classId != (uint32_t)filterByClassId)
                     continue;
 
                 manufacturerId = pConfigDev->cd_Rom.er_Manufacturer;
@@ -102,7 +111,7 @@ namespace AOS::Identify
 
                 additionalInfo.push_back(memoryValue);
 
-                unsigned long serialNumber = pConfigDev->cd_Rom.er_SerialNumber;
+                uint32_t serialNumber = pConfigDev->cd_Rom.er_SerialNumber;
                 if (serialNumber != 0)
                     additionalInfo.push_back(std::string("SN: " + std::to_string(serialNumber)));
 
@@ -125,34 +134,61 @@ namespace AOS::Identify
         return expansions;
     }
 
-    std::vector<PciExpansion> Library::GetPciExpansions() noexcept
+    std::pair<PciExpansionsResultCode, std::vector<PciExpansion>> Library::GetPciExpansions() noexcept
     {
         if (IdentifyBase->lib_Version < 45U) // Check if identify.library version is at least 45
-            return {};
+            return { PciExpansionsResultCode::Missing45, {} };
 
         std::vector<PciExpansion> pciExpansions;
+        PciExpansionsResultCode resultCode = PciExpansionsResultCode::Okay;
 
-        char manufacturerName[IDENTIFYBUFLEN], productName[IDENTIFYBUFLEN], productClass[IDENTIFYBUFLEN];
-        UWORD manufacturerId = 0;
-        UBYTE productId = 0;
-        ULONG classId = 0;
+        struct pci_dev *pPciDev = nullptr;
+        char manufacturerName[IDENTIFYBUFLEN];
+        char productName[IDENTIFYBUFLEN];
+        char productClass[IDENTIFYBUFLEN];
+        uint16_t manufacturerId = 0;
+        uint8_t productId = 0;
+        uint32_t classId = 0;
 
-        while (!IdPciExpansionTags(IDTAG_ManufID, (unsigned long)&manufacturerId, IDTAG_ManufStr, (unsigned long)manufacturerName,
-                                   IDTAG_ProdID, (unsigned long)&productId, IDTAG_ProdStr, (unsigned long)productName, IDTAG_ClassStr,
-                                   (unsigned long)productClass, IDTAG_ClassID, (unsigned long)&classId, TAG_DONE))
+        while (true)
         {
-            std::vector<std::string> additionalInfo;
+            auto result
+                = IdPciExpansionTags(IDTAG_ManufID, (uint32_t)&manufacturerId, IDTAG_ManufStr, (uint32_t)manufacturerName, IDTAG_ProdID,
+                                     (uint32_t)&productId, IDTAG_ProdStr, (uint32_t)productName, IDTAG_ClassStr, (uint32_t)productClass,
+                                     IDTAG_ClassID, (uint32_t)&classId, IDTAG_Expansion, (uint32_t)&pPciDev, TAG_DONE);
+
+            if (result != IDERR_OKAY)
+            {
+                switch (result)
+                {
+                    case IDERR_NOPCIDB:
+                        resultCode = PciExpansionsResultCode::NoPciDb;
+                        break;
+                    case IDERR_BADPCIDB:
+                        resultCode = PciExpansionsResultCode::BadPciDb;
+                        break;
+                    case IDERR_NOPCILIB:
+                        resultCode = PciExpansionsResultCode::NoPciLib;
+                        break;
+                    case IDERR_DONE:
+                        break;
+                    default:
+                        resultCode = PciExpansionsResultCode::UnknownError;
+                }
+                break;
+            }
+
             pciExpansions.push_back({ {
                 manufacturerId,
                 manufacturerName,
                 productId,
                 productName,
                 productClass,
-                additionalInfo,
+                {},
             } });
         }
 
-        return pciExpansions;
+        return { resultCode, pciExpansions };
     }
 
     std::string Library::libIdHardware(const enum IDHW idhw) noexcept
@@ -160,7 +196,7 @@ namespace AOS::Identify
         return IdHardware((ULONG)idhw, nullptr);
     }
 
-    unsigned long Library::libIdHardwareNum(const enum IDHW idhw) noexcept
+    uint32_t Library::libIdHardwareNum(const enum IDHW idhw) noexcept
     {
         return IdHardwareNum((ULONG)idhw, nullptr);
     }

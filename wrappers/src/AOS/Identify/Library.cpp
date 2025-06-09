@@ -140,7 +140,7 @@ namespace AOS::Identify
             return { PciExpansionsResultCode::Missing45, {} };
 
         std::vector<PciExpansion> pciExpansions;
-        PciExpansionsResultCode resultCode = PciExpansionsResultCode::Okay;
+        PciExpansionsResultCode resultCode = PciExpansionsResultCode::Success;
 
         struct pci_dev *pPciDev = nullptr;
         char manufacturerName[IDENTIFYBUFLEN];

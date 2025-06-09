@@ -63,7 +63,7 @@ namespace AOS::Identify
 
     enum class PciExpansionsResultCode
     {
-        Okay = IDERR_OKAY,
+        Success = IDERR_OKAY,
         NoPciLib = IDERR_NOPCILIB, // No openpci.library or PCI bridge found
         NoPciDb = IDERR_NOPCIDB, // No PCI database file found
         BadPciDb = IDERR_BADPCIDB, // Bad PCI database file

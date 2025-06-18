@@ -40,25 +40,25 @@ namespace AOS::Identify
         std::vector<std::string> additionalUnits;
     };
 
-    struct ExpansionData
+    struct Expansion
     {
-        unsigned short manufacturerId;
+        ConfigDev *configDev;
+        uint16_t manufacturerId;
         std::string manufacturerName;
-        unsigned char productId;
+        uint8_t productId;
         std::string productName;
         std::string productClass;
         std::vector<std::string> additionalInfo;
     };
 
-    struct Expansion
-    {
-        ConfigDev *configDev;
-        ExpansionData data;
-    };
-
     struct PciExpansion
     {
-        ExpansionData data;
+        uint16_t manufacturerId;
+        std::string manufacturerName;
+        uint16_t productId;
+        std::string productName;
+        std::string productClass;
+        std::vector<std::string> additionalInfo;
     };
 
     enum class PciExpansionsResultCode

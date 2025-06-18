@@ -7,9 +7,11 @@
 #include "Library.hpp"
 
 #include <libraries/identify.h>
+#include <libraries/openpci.h>
 #include <proto/identify.h>
 #include <set>
 
+#include <iostream>
 #include <sstream>
 
 extern struct Library *IdentifyBase;
@@ -82,14 +84,13 @@ namespace AOS::Identify
 
         ConfigDev *pConfigDev = nullptr;
 
-        char manufacturerName[IDENTIFYBUFLEN], productName[IDENTIFYBUFLEN], productClass[IDENTIFYBUFLEN];
+        char manufacturerName[IDENTIFYBUFLEN] = {}, productName[IDENTIFYBUFLEN] = {}, productClass[IDENTIFYBUFLEN] = {};
         uint16_t manufacturerId = 0;
         uint8_t productId = 0;
         uint32_t classId = 0;
 
-        while (IdExpansionTags(IDTAG_ManufID, (uint32_t)&manufacturerId, IDTAG_ManufStr, (uint32_t)manufacturerName, IDTAG_ProdID,
-                               (uint32_t)&productId, IDTAG_ProdStr, (uint32_t)productName, IDTAG_ClassStr, (uint32_t)productClass,
-                               IDTAG_ClassID, (uint32_t)&classId, IDTAG_Expansion, (uint32_t)&pConfigDev, TAG_DONE)
+        while (IdExpansionTags(IDTAG_ManufStr, (uint32_t)manufacturerName, IDTAG_ProdStr, (uint32_t)productName, IDTAG_ClassStr,
+                               (uint32_t)productClass, IDTAG_ClassID, (uint32_t)&classId, IDTAG_Expansion, (uint32_t)&pConfigDev, TAG_DONE)
                == IDERR_OKAY)
         {
             std::vector<std::string> additionalInfo;
@@ -119,16 +120,21 @@ namespace AOS::Identify
                 if (pDriver != nullptr)
                     additionalInfo.push_back(pDriver->lib_Node.ln_Name);
             }
+            else
+            {
+                manufacturerId = 0;
+                productId = 0;
+            }
 
-            expansions.push_back({ pConfigDev,
-                                   {
-                                       manufacturerId,
-                                       manufacturerName,
-                                       productId,
-                                       productName,
-                                       productClass,
-                                       additionalInfo,
-                                   } });
+            expansions.push_back({
+                pConfigDev,
+                manufacturerId,
+                manufacturerName,
+                productId,
+                productName,
+                productClass,
+                additionalInfo,
+            });
         }
 
         return expansions;
@@ -143,19 +149,12 @@ namespace AOS::Identify
         PciExpansionsResultCode resultCode = PciExpansionsResultCode::Success;
 
         struct pci_dev *pPciDev = nullptr;
-        char manufacturerName[IDENTIFYBUFLEN];
-        char productName[IDENTIFYBUFLEN];
-        char productClass[IDENTIFYBUFLEN];
-        uint16_t manufacturerId = 0;
-        uint8_t productId = 0;
-        uint32_t classId = 0;
+        char manufacturerName[IDENTIFYBUFLEN] = {}, productName[IDENTIFYBUFLEN] = {}, productClass[IDENTIFYBUFLEN] = {};
 
         while (true)
         {
-            auto result
-                = IdPciExpansionTags(IDTAG_ManufID, (uint32_t)&manufacturerId, IDTAG_ManufStr, (uint32_t)manufacturerName, IDTAG_ProdID,
-                                     (uint32_t)&productId, IDTAG_ProdStr, (uint32_t)productName, IDTAG_ClassStr, (uint32_t)productClass,
-                                     IDTAG_ClassID, (uint32_t)&classId, IDTAG_Expansion, (uint32_t)&pPciDev, TAG_DONE);
+            auto result = IdPciExpansionTags(IDTAG_ManufStr, (uint32_t)&manufacturerName, IDTAG_ProdStr, (uint32_t)&productName,
+                                             IDTAG_ClassStr, (uint32_t)&productClass, IDTAG_Expansion, (uint32_t)&pPciDev, TAG_DONE);
 
             if (result != IDERR_OKAY)
             {
@@ -173,19 +172,20 @@ namespace AOS::Identify
                     case IDERR_DONE:
                         break;
                     default:
+                        std::cerr << "GetPciExpansions: Error retrieving PCI expansion: " << result << std::endl;
                         resultCode = PciExpansionsResultCode::UnknownError;
                 }
                 break;
             }
 
-            pciExpansions.push_back({ {
-                manufacturerId,
+            pciExpansions.push_back({
+                pPciDev->vendor,
                 manufacturerName,
-                productId,
+                pPciDev->device,
                 productName,
                 productClass,
                 {},
-            } });
+            });
         }
 
         return { resultCode, pciExpansions };

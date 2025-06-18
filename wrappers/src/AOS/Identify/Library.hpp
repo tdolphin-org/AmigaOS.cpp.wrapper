@@ -58,7 +58,6 @@ namespace AOS::Identify
         uint16_t productId;
         std::string productName;
         std::string productClass;
-        std::vector<std::string> additionalInfo;
     };
 
     enum class PciExpansionsResultCode

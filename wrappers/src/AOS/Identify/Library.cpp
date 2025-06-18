@@ -184,7 +184,6 @@ namespace AOS::Identify
                 pPciDev->device,
                 productName,
                 productClass,
-                {},
             });
         }
 

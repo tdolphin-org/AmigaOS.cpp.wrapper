@@ -153,8 +153,8 @@ namespace AOS::Identify
 
         while (true)
         {
-            auto result = IdPciExpansionTags(IDTAG_ManufStr, (uint32_t)&manufacturerName, IDTAG_ProdStr, (uint32_t)&productName,
-                                             IDTAG_ClassStr, (uint32_t)&productClass, IDTAG_Expansion, (uint32_t)&pPciDev, TAG_DONE);
+            auto result = IdPciExpansionTags(IDTAG_ManufStr, (uint32_t)manufacturerName, IDTAG_ProdStr, (uint32_t)productName,
+                                             IDTAG_ClassStr, (uint32_t)productClass, IDTAG_Expansion, (uint32_t)&pPciDev, TAG_DONE);
 
             if (result != IDERR_OKAY)
             {

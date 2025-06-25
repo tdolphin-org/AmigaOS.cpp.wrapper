@@ -18,6 +18,7 @@ namespace AOS
 {
     std::map<Tag, TagUtil::TagSpec> TagUtil::mNames = {
 
+#ifdef DEBUG_TAG_SYMBOLS
         // Application
         MAP_PAIR(MUIA_Application_Active, ValueType::Bool),
         MAP_PAIR(MUIA_Application_Author, ValueType::String),
@@ -491,6 +492,7 @@ namespace AOS
         MAP_PAIR(ASLFR_AcceptPattern, ValueType::String),
         MAP_PAIR(ASLFR_FilterDrawers, ValueType::Bool),
         MAP_PAIR(ASLFR_HookFunc, ValueType::Pointer)
+#endif
     };
 
     std::string TagUtil::toString(const Tag tagName)

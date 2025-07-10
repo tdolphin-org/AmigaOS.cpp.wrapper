@@ -1,15 +1,21 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "ToString.hpp"
 
-#include <iostream>
+#include "amiga_std_light/iostream.hpp"
 #include <numeric>
 #include <sstream>
 #include <type_traits>
+
+#ifdef STD_LIGHT
+#ifdef Format
+#undef Format
+#endif
+#endif // STD_LIGHT
 
 std::string ToString::FromDataPointer(const void *value)
 {

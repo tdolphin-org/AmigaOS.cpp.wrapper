@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "Library.hpp"
@@ -14,8 +14,8 @@
 #include "LockDosListScope.hpp"
 #include "LockScope.hpp"
 
+#include "amiga_std_light/iostream.hpp"
 #include <dos/dostags.h>
-#include <iostream>
 #include <proto/dos.h>
 #include <sstream>
 

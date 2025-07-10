@@ -6,6 +6,8 @@
 
 #pragma once
 
+#ifdef STD_LIGHT
+
 #include <cstddef>
 #include <cstdint>
 #include <string>
@@ -67,3 +69,6 @@ namespace std
     using amiga_std_light::endl;
     using amiga_std_light::flush;
 }
+#else
+#include <iostream>
+#endif

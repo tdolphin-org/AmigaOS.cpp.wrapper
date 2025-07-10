@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "Library.hpp"
@@ -11,7 +11,7 @@
 #include <proto/datatypes.h>
 
 #ifdef TRACE_AMIGAOS
-#include <iostream>
+#include "amiga_std_light/iostream.hpp"
 #endif
 
 namespace AOS::DataTypes

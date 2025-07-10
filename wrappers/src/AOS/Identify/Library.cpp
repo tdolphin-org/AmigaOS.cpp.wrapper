@@ -1,17 +1,16 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "Library.hpp"
 
+#include "amiga_std_light/iostream.hpp"
 #include <libraries/identify.h>
 #include <libraries/openpci.h>
 #include <proto/identify.h>
 #include <set>
-
-#include <iostream>
 #include <sstream>
 
 extern struct Library *IdentifyBase;

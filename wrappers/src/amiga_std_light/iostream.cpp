@@ -6,7 +6,6 @@
 
 #include "iostream.hpp"
 
-#include <cstdio>
 #include <cstring>
 
 #include <proto/dos.h>
@@ -14,6 +13,170 @@
 
 namespace amiga_std_light
 {
+    // RawDoFmt character copy callback in machine code
+    // 0x16c0 = move.b d0,(a3)+  ; copy byte from d0 to (a3), increment a3
+    // 0x4e75 = rts             ; return from subroutine
+    static const uint32_t PutChar = 0x16c04e75;
+
+    // Helper functions using RawDoFmt() instead of sprintf
+    static void format_int8(char *buffer, int8_t value)
+    {
+        int32_t args[1] = { (int32_t)value };
+        char *buf_ptr = buffer;
+        RawDoFmt("%ld", args, (void (*)())PutChar, &buf_ptr);
+        *buf_ptr = '\0';
+    }
+
+    static void format_uint8(char *buffer, uint8_t value)
+    {
+        int32_t args[1] = { (int32_t)value };
+        char *buf_ptr = buffer;
+        RawDoFmt("%lu", args, (void (*)())PutChar, &buf_ptr);
+        *buf_ptr = '\0';
+    }
+
+    static void format_int16(char *buffer, int16_t value)
+    {
+        int32_t args[1] = { (int32_t)value };
+        char *buf_ptr = buffer;
+        RawDoFmt("%ld", args, (void (*)())PutChar, &buf_ptr);
+        *buf_ptr = '\0';
+    }
+
+    static void format_uint16(char *buffer, uint16_t value)
+    {
+        int32_t args[1] = { (int32_t)value };
+        char *buf_ptr = buffer;
+        RawDoFmt("%lu", args, (void (*)())PutChar, &buf_ptr);
+        *buf_ptr = '\0';
+    }
+
+    static void format_int32(char *buffer, int32_t value)
+    {
+        int32_t args[1] = { (int32_t)value };
+        char *buf_ptr = buffer;
+        RawDoFmt("%ld", args, (void (*)())PutChar, &buf_ptr);
+        *buf_ptr = '\0';
+    }
+
+    static void format_uint32(char *buffer, uint32_t value)
+    {
+        int32_t args[1] = { (int32_t)value };
+        char *buf_ptr = buffer;
+        RawDoFmt("%lu", args, (void (*)())PutChar, &buf_ptr);
+        *buf_ptr = '\0';
+    }
+
+    static void format_int64(char *buffer, int64_t value)
+    {
+        // For 64-bit values, we need to split into high and low parts on AmigaOS
+        if (value == 0)
+        {
+            buffer[0] = '0';
+            buffer[1] = '\0';
+            return;
+        }
+
+        int is_negative = 0;
+        if (value < 0)
+        {
+            is_negative = 1;
+            value = -value;
+        }
+
+        // Simple conversion for 64-bit
+        char digits[21];
+        int digit_count = 0;
+        while (value > 0)
+        {
+            digits[digit_count++] = '0' + (value % 10);
+            value /= 10;
+        }
+
+        int pos = 0;
+        if (is_negative)
+        {
+            buffer[pos++] = '-';
+        }
+
+        for (int i = digit_count - 1; i >= 0; i--)
+        {
+            buffer[pos++] = digits[i];
+        }
+        buffer[pos] = '\0';
+    }
+
+    static void format_uint64(char *buffer, uint64_t value)
+    {
+        if (value == 0)
+        {
+            buffer[0] = '0';
+            buffer[1] = '\0';
+            return;
+        }
+
+        char digits[21];
+        int digit_count = 0;
+        while (value > 0)
+        {
+            digits[digit_count++] = '0' + (value % 10);
+            value /= 10;
+        }
+
+        int pos = 0;
+        for (int i = digit_count - 1; i >= 0; i--)
+        {
+            buffer[pos++] = digits[i];
+        }
+        buffer[pos] = '\0';
+    }
+
+    static void format_ptr(char *buffer, const void *ptr)
+    {
+        int32_t args[1] = { (int32_t)ptr };
+        char *buf_ptr = buffer;
+        RawDoFmt("0x%lx", args, (void (*)())PutChar, &buf_ptr);
+        *buf_ptr = '\0';
+    }
+
+    // For floating point, we'll use a simple approach since AmigaOS RawDoFmt doesn't support %g
+    static void format_float(char *buffer, float value)
+    {
+        // Simple float to string conversion
+        if (value == 0.0f)
+        {
+            buffer[0] = '0';
+            buffer[1] = '\0';
+            return;
+        }
+
+        // This is a simplified version - for full IEEE float support you'd need more complex code
+        int int_part = (int)value;
+        float frac_part = value - int_part;
+
+        if (frac_part == 0.0f)
+        {
+            int32_t args[1] = { (int32_t)int_part };
+            char *buf_ptr = buffer;
+            RawDoFmt("%ld", args, (void (*)())PutChar, &buf_ptr);
+            *buf_ptr = '\0';
+        }
+        else
+        {
+            // Simple approach: just show integer part for now
+            int32_t args[1] = { (int32_t)int_part };
+            char *buf_ptr = buffer;
+            RawDoFmt("%ld", args, (void (*)())PutChar, &buf_ptr);
+            *buf_ptr = '\0';
+        }
+    }
+
+    static void format_double(char *buffer, double value)
+    {
+        // Simple double to string conversion (same approach as float)
+        format_float(buffer, (float)value);
+    }
+
     basic_ostream::basic_ostream()
       : buffer_pos(0)
     {
@@ -30,7 +193,7 @@ namespace amiga_std_light
         if (buffer_pos > 0)
         {
             buffer[buffer_pos] = '\0';
-            VPrintf("%s", (LONG *)&buffer);
+            VPrintf("%s", (int32_t *)&buffer);
             buffer_pos = 0;
         }
     }
@@ -83,70 +246,70 @@ namespace amiga_std_light
     basic_ostream &basic_ostream::operator<<(int8_t value)
     {
         char temp[5]; // "-128\0"
-        sprintf(temp, "%d", static_cast<int>(value));
+        format_int8(temp, value);
         return *this << temp;
     }
 
     basic_ostream &basic_ostream::operator<<(uint8_t value)
     {
         char temp[4]; // "255\0"
-        sprintf(temp, "%u", static_cast<unsigned int>(value));
+        format_uint8(temp, value);
         return *this << temp;
     }
 
     basic_ostream &basic_ostream::operator<<(int16_t value)
     {
         char temp[7]; // "-32768\0"
-        sprintf(temp, "%d", static_cast<int>(value));
+        format_int16(temp, value);
         return *this << temp;
     }
 
     basic_ostream &basic_ostream::operator<<(uint16_t value)
     {
         char temp[6]; // "65535\0"
-        sprintf(temp, "%u", static_cast<unsigned int>(value));
+        format_uint16(temp, value);
         return *this << temp;
     }
 
     basic_ostream &basic_ostream::operator<<(int32_t value)
     {
         char temp[12]; // "-2147483648\0"
-        sprintf(temp, "%d", value);
+        format_int32(temp, value);
         return *this << temp;
     }
 
     basic_ostream &basic_ostream::operator<<(uint32_t value)
     {
         char temp[11]; // "4294967295\0"
-        sprintf(temp, "%u", value);
+        format_uint32(temp, value);
         return *this << temp;
     }
 
     basic_ostream &basic_ostream::operator<<(int64_t value)
     {
         char temp[21]; // "-9223372036854775808\0"
-        sprintf(temp, "%lld", value);
+        format_int64(temp, value);
         return *this << temp;
     }
 
     basic_ostream &basic_ostream::operator<<(uint64_t value)
     {
         char temp[21]; // "18446744073709551615\0"
-        sprintf(temp, "%llu", value);
+        format_uint64(temp, value);
         return *this << temp;
     }
 
     basic_ostream &basic_ostream::operator<<(float value)
     {
         char temp[64];
-        sprintf(temp, "%g", value);
+        format_float(temp, value);
         return *this << temp;
     }
 
     basic_ostream &basic_ostream::operator<<(double value)
     {
         char temp[64];
-        sprintf(temp, "%g", value);
+        format_double(temp, value);
         return *this << temp;
     }
 
@@ -158,7 +321,7 @@ namespace amiga_std_light
     basic_ostream &basic_ostream::operator<<(const void *ptr)
     {
         char temp[32];
-        sprintf(temp, "%p", ptr);
+        format_ptr(temp, ptr);
         return *this << temp;
     }
 

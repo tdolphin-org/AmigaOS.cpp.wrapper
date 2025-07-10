@@ -15,7 +15,6 @@
 
 namespace amiga_std_light
 {
-
     class basic_ostream
     {
       private:

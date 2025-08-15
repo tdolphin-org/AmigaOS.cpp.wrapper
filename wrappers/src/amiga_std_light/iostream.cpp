@@ -6,6 +6,8 @@
 
 #include "iostream.hpp"
 
+#ifdef STD_LIGHT
+
 #include <cstring>
 
 #include <proto/dos.h>
@@ -24,6 +26,50 @@ namespace amiga_std_light
         int32_t args[1] = { (int32_t)value };
         char *buf_ptr = buffer;
         RawDoFmt("%ld", args, (void (*)())PutChar, &buf_ptr);
+        *buf_ptr = '\0';
+    }
+
+    static void format_int32_base(char *buffer, int32_t value, int base)
+    {
+        const char *format_str;
+        switch (base)
+        {
+            case 16:
+                format_str = "%lx";
+                break;
+            case 8:
+                format_str = "%lo";
+                break;
+            default:
+                format_str = "%ld";
+                break;
+        }
+
+        int32_t args[1] = { value };
+        char *buf_ptr = buffer;
+        RawDoFmt(format_str, args, (void (*)())PutChar, &buf_ptr);
+        *buf_ptr = '\0';
+    }
+
+    static void format_uint32_base(char *buffer, uint32_t value, int base)
+    {
+        const char *format_str;
+        switch (base)
+        {
+            case 16:
+                format_str = "%lx";
+                break;
+            case 8:
+                format_str = "%lo";
+                break;
+            default:
+                format_str = "%lu";
+                break;
+        }
+
+        int32_t args[1] = { (int32_t)value };
+        char *buf_ptr = buffer;
+        RawDoFmt(format_str, args, (void (*)())PutChar, &buf_ptr);
         *buf_ptr = '\0';
     }
 
@@ -142,7 +188,7 @@ namespace amiga_std_light
     // For floating point, we'll use a simple approach since AmigaOS RawDoFmt doesn't support %g
     static void format_float(char *buffer, float value)
     {
-        // Simple float to string conversion
+        // Handle special cases
         if (value == 0.0f)
         {
             buffer[0] = '0';
@@ -150,25 +196,57 @@ namespace amiga_std_light
             return;
         }
 
-        // This is a simplified version - for full IEEE float support you'd need more complex code
+        // Handle negative values
+        int pos = 0;
+        if (value < 0.0f)
+        {
+            buffer[pos++] = '-';
+            value = -value;
+        }
+
+        // Split integer and fractional parts
         int int_part = (int)value;
         float frac_part = value - int_part;
 
-        if (frac_part == 0.0f)
+        // Format integer part
+        if (int_part == 0)
         {
-            int32_t args[1] = { (int32_t)int_part };
-            char *buf_ptr = buffer;
-            RawDoFmt("%ld", args, (void (*)())PutChar, &buf_ptr);
-            *buf_ptr = '\0';
+            buffer[pos++] = '0';
         }
         else
         {
-            // Simple approach: just show integer part for now
-            int32_t args[1] = { (int32_t)int_part };
-            char *buf_ptr = buffer;
-            RawDoFmt("%ld", args, (void (*)())PutChar, &buf_ptr);
-            *buf_ptr = '\0';
+            // Convert integer part to string
+            char int_digits[32];
+            int digit_count = 0;
+            int temp = int_part;
+            while (temp > 0)
+            {
+                int_digits[digit_count++] = '0' + (temp % 10);
+                temp /= 10;
+            }
+            // Reverse digits
+            for (int i = digit_count - 1; i >= 0; i--)
+            {
+                buffer[pos++] = int_digits[i];
+            }
         }
+
+        // Add decimal point and fractional part if needed
+        if (frac_part > 0.0001f) // Only show decimals if significant
+        {
+            buffer[pos++] = '.';
+
+            // Show up to 6 decimal places
+            for (int i = 0; i < 6 && frac_part > 0.0001f; i++)
+            {
+                frac_part *= 10.0f;
+                int digit = (int)frac_part;
+                buffer[pos++] = '0' + digit;
+                frac_part -= digit;
+            }
+        }
+
+        buffer[pos] = '\0';
     }
 
     static void format_double(char *buffer, double value)
@@ -233,7 +311,7 @@ namespace amiga_std_light
 
     basic_ostream &basic_ostream::operator<<(const std::string &str)
     {
-        return *this << str.c_str();
+        return operator<<(str.c_str());
     }
 
     basic_ostream &basic_ostream::operator<<(char c)
@@ -273,15 +351,15 @@ namespace amiga_std_light
 
     basic_ostream &basic_ostream::operator<<(int32_t value)
     {
-        char temp[12]; // "-2147483648\0"
-        format_int32(temp, value);
+        char temp[12]; // "-2147483648\0" or hex equivalent
+        format_int32_base(temp, value, static_cast<int>(number_base_));
         return *this << temp;
     }
 
     basic_ostream &basic_ostream::operator<<(uint32_t value)
     {
-        char temp[11]; // "4294967295\0"
-        format_uint32(temp, value);
+        char temp[11]; // "4294967295\0" or hex equivalent
+        format_uint32_base(temp, value, static_cast<int>(number_base_));
         return *this << temp;
     }
 
@@ -371,7 +449,27 @@ namespace amiga_std_light
         return os.flush();
     }
 
+    basic_ostream &hex(basic_ostream &os)
+    {
+        os.set_base(basic_ostream::NumberBase::Hex);
+        return os;
+    }
+
+    basic_ostream &dec(basic_ostream &os)
+    {
+        os.set_base(basic_ostream::NumberBase::Dec);
+        return os;
+    }
+
+    basic_ostream &oct(basic_ostream &os)
+    {
+        os.set_base(basic_ostream::NumberBase::Oct);
+        return os;
+    }
+
     basic_ostream cout;
     basic_ostream cerr;
     basic_ostream clog;
 }
+
+#endif

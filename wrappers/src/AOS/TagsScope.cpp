@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "TagsScope.hpp"
@@ -20,7 +20,7 @@ namespace AOS
       : mSize(tags.size() + 1)
     {
         mpTagItems = new TagItem[tags.size() + 1];
-        for (int i = 0; i < tags.size(); i++)
+        for (size_t i = 0; i < tags.size(); i++)
             mpTagItems[i] = tags[i].object();
         mpTagItems[tags.size()].ti_Tag = TAG_END;
     }
@@ -35,7 +35,7 @@ namespace AOS
         std::stringstream result;
 
         result << "(";
-        for (int i = 0; mpTagItems[i].ti_Tag != TAG_END; i++)
+        for (size_t i = 0; mpTagItems[i].ti_Tag != TAG_END; i++)
         {
             auto tagName = mpTagItems[i].ti_Tag;
             auto tagValue = mpTagItems[i].ti_Data;

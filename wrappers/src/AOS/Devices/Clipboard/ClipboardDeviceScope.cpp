@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "ClipboardDeviceScope.hpp"
@@ -9,7 +9,7 @@
 #include <clib/exec_protos.h>
 #include <stdexcept>
 
-namespace AOS::Exec
+namespace AOS
 {
     ClipboardDeviceScope::ClipboardDeviceScope(bool exceptionOnError)
       : mIOClipReqScope(mPortScope.msgPort())

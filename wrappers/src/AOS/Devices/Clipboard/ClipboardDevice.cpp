@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "ClipboardDevice.hpp"
@@ -9,7 +9,7 @@
 #include <clib/exec_protos.h>
 #include <exec/io.h>
 
-namespace AOS::Exec::Devices
+namespace AOS::Devices
 {
     ClipboardDeviceCore::ClipboardDeviceCore() { }
 

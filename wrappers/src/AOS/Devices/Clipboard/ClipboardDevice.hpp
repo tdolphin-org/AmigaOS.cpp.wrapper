@@ -1,18 +1,18 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #pragma once
 
 #include "Core/Singleton.hpp"
 
-#include "../ClipboardDeviceScope.hpp"
+#include "ClipboardDeviceScope.hpp"
 
 #include <string>
 
-namespace AOS::Exec::Devices
+namespace AOS::Devices
 {
     class ClipboardDeviceCore
     {

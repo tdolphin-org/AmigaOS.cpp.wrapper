@@ -6,25 +6,40 @@
 
 #include "TimerDeviceScope.hpp"
 
+#include "TimerGlobals.hpp"
+
 #include <clib/exec_protos.h>
 #include <stdexcept>
 
 namespace AOS
 {
     TimerDeviceScope::TimerDeviceScope(bool exceptionOnError)
-      : mTimerIOReqScope(mPortScope.msgPort())
     {
-        mOpenResult = OpenDevice(TIMERNAME, 0L, (IORequest *)mTimerIOReqScope.timerReq(), 0);
+        mpTimerIO = (struct timerequest *)AllocMem(sizeof(struct timerequest), MEMF_CLEAR | MEMF_PUBLIC);
+        if (!mpTimerIO && exceptionOnError)
+        {
+            auto error = std::string { __PRETTY_FUNCTION__ } + " AllocMem() failed!";
+            throw std::runtime_error(error);
+        }
+
+        mOpenResult = OpenDevice(TIMERNAME, UNIT_MICROHZ, (IORequest *)mpTimerIO, 0);
         if (mOpenResult != 0 && exceptionOnError)
         {
             auto error = std::string { __PRETTY_FUNCTION__ } + " OpenDevice(\"" TIMERNAME "\", ...) failed!";
             throw std::runtime_error(error);
         }
+
+        TimerBase = (struct Device *)mpTimerIO->tr_node.io_Device;
     }
 
     TimerDeviceScope::~TimerDeviceScope()
     {
         if (mOpenResult == 0)
-            CloseDevice((IORequest *)mTimerIOReqScope.timerReq());
+            CloseDevice((IORequest *)mpTimerIO);
+
+        if (mpTimerIO)
+            FreeMem(mpTimerIO, sizeof(struct timerequest));
+
+        TimerBase = nullptr;
     }
 }

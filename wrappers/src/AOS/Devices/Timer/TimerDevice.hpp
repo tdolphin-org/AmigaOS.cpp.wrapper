@@ -24,6 +24,12 @@ namespace AOS::Devices
         TimerDeviceCore();
 
       public:
+        /// @brief Calculate difference in microseconds between two time values.
+        /// @param tv1 The first time value.
+        /// @param tv2 The second time value.
+        /// @return difference in microseconds (tv1 - tv2)
+        long TimeDiffMicroseconds(const struct timeval &tv1, const struct timeval &tv2) const;
+
         /// @brief Ask the system what time it is.  The system time starts off at
         ///        zero at power on, but may be initialized via the TR_SETSYSTIME
         ///        timer.device command.

@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "LockScope.hpp"
@@ -12,10 +12,12 @@
 namespace AOS::Dos
 {
     LockScope::LockScope(const std::string &name, bool exceptionOnError)
-      : mFileInfoBlockScope(DOS_FIB)
-      , mIsEmpty(false)
+      : mpLock(0L)
+      , mExamineResult(false)
+      , mFileInfoBlockScope(DOS_FIB)
       , mIsFile(false)
       , mIsDrawer(false)
+      , mIsEmpty(false)
       , mName(name)
     {
         mpLock = Lock(mName.c_str(), SHARED_LOCK);
@@ -52,11 +54,12 @@ namespace AOS::Dos
     }
 
     LockScope::LockScope(const BPTR pLock, bool exceptionOnError)
-      : mFileInfoBlockScope(DOS_FIB)
-      , mIsEmpty(false)
+      : mpLock(pLock)
+      , mExamineResult(false)
+      , mFileInfoBlockScope(DOS_FIB)
       , mIsFile(false)
       , mIsDrawer(false)
-      , mpLock(pLock)
+      , mIsEmpty(false)
     {
         if (mpLock == 0)
         {

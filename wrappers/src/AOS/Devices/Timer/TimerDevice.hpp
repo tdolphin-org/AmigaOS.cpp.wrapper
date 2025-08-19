@@ -25,10 +25,16 @@ namespace AOS::Devices
 
       public:
         /// @brief Calculate difference in microseconds between two time values.
-        /// @param tv1 The first time value.
-        /// @param tv2 The second time value.
-        /// @return difference in microseconds (tv1 - tv2)
-        long TimeDiffMicroseconds(const timeval &tv1, const timeval &tv2) const;
+        /// @param tvStart The first time value.
+        /// @param tvStop The second time value.
+        /// @return difference in microseconds (tvStop - tvStart)
+        long TimeDiffMicroseconds(const timeval &tvStart, const timeval &tvStop) const;
+
+        /// @brief Calculate difference between two EClock values.
+        /// @param ecStart The first EClock value.
+        /// @param ecStop The second EClock value.
+        /// @return difference in nanoseconds (ecStop - ecStart)
+        long long EClockDiff(const EClockVal &ecStart, const EClockVal &ecStop) const;
 
         /// @brief timer.device/CmpTime(..) -- Compare two timeval structures.
         /// @param tv1 The first time value.

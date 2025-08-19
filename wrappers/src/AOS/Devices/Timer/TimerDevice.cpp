@@ -10,21 +10,24 @@
 
 namespace AOS::Devices
 {
-    TimerDeviceCore::TimerDeviceCore()
-    {
-    }
+    TimerDeviceCore::TimerDeviceCore() { }
 
-    void TimerDeviceCore::devGetSysTime(struct timeval &tv) const
-    {
-        GetSysTime(&tv);
-    }
-
-    long TimerDeviceCore::devCmpTime(const struct timeval &tv1, const struct timeval &tv2) const
+    long TimerDeviceCore::devCmpTime(const timeval &tv1, const timeval &tv2) const
     {
         return CmpTime(&tv1, &tv2);
     }
 
-    long TimerDeviceCore::TimeDiffMicroseconds(const struct timeval &tv1, const struct timeval &tv2) const
+    void TimerDeviceCore::devGetSysTime(timeval &tv) const
+    {
+        GetSysTime(&tv);
+    }
+
+    void TimerDeviceCore::devReadEClock(EClockVal &ec) const
+    {
+        ReadEClock(&ec);
+    }
+
+    long TimerDeviceCore::TimeDiffMicroseconds(const timeval &tv1, const timeval &tv2) const
     {
         // Calculate difference: tv1 - tv2
         long secDiff = tv1.tv_secs - tv2.tv_secs;

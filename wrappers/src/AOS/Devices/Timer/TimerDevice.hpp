@@ -63,8 +63,9 @@ namespace AOS::Devices
         /// @attention This is a low overhead function designed so that very short
         ///        intervals may be timed.
         /// @param ec The EClock value to fill.
+        /// @return the count rate of the E-Clock (tics/sec).
         /// @note This function may be called from interrupts.
-        void devReadEClock(EClockVal &ec) const;
+        unsigned long devReadEClock(EClockVal &ec) const;
     };
 
     /// @brief main TimerDevice (singleton) object

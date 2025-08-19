@@ -41,8 +41,8 @@ namespace AOS::Devices
         GetSysTime(&tv);
     }
 
-    void TimerDeviceCore::devReadEClock(EClockVal &ec) const
+    unsigned long TimerDeviceCore::devReadEClock(EClockVal &ec) const
     {
-        ReadEClock(&ec);
+        return ReadEClock(&ec);
     }
 }

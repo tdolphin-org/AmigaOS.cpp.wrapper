@@ -21,18 +21,18 @@ namespace AOS::Exec
 
     struct Library
     {
-        /// @brief exec:FindTask(NULL) and return ptr
+        /// @brief calls exec:FindTask(NULL) and return ptr
         static std::string CurrentTaskPid();
 
-        /// @brief retirn list of all loaded libraries, datatypes, etc
+        /// @brief return list of all loaded libraries, datatypes, etc
         static std::vector<LibInfo> GetAllLibraryNames() noexcept;
 
-        /// @brief exec:FindTask(NULL) and return ptr to struct Task
+        /// @brief exec/FindTask(NULL) and return ptr to struct Task
         static struct Task *libFindTask() noexcept;
-        /// @brief exec:FindTask(name) and return ptr to struct Task
+        /// @brief exec/FindTask(name) and return ptr to struct Task
         static struct Task *libFindTask(const std::string &name) noexcept;
 
-        /// @brief exec:AvailMem(name) and returns the amount of free memory given certain attributes
+        /// @brief exec/AvailMem(name) and returns the amount of free memory given certain attributes
         static unsigned long libAvailMem(const enum MEMF_Type type, const enum MEMF_Avail avail) noexcept;
     };
 }

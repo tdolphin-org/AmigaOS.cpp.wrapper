@@ -6,7 +6,7 @@
 
 #pragma once
 
-namespace AOS::Cybergraphics
+namespace AOS::Common
 {
     enum class BoardID
     {
@@ -17,14 +17,18 @@ namespace AOS::Cybergraphics
         Domino,
         RetinaZ3,
         DraCoAltais,
-        PiccoSD64,
+        PiccoloSD64,
         A2410,
         CyberVision3D,
         Inferno,
         PicassoIV,
         Pixel64,
         RainbowIII,
-        CyberVisonPPC,
+        CyberVisionPPC,
         BlizzardVisionPPC,
+        oMniBus,
+        Graffiti,
+        Merlin,
+        UaeGfx,
     };
 }

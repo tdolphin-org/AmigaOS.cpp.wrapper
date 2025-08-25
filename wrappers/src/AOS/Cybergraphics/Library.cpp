@@ -18,45 +18,45 @@ extern struct Library *CyberGfxBase;
 
 namespace AOS::Cybergraphics
 {
-    std::string BoardName::CyberVision64 = "CVision64";
-    std::string BoardName::Piccolo = "Piccolo";
-    std::string BoardName::PicassoII = "PicassoII";
-    std::string BoardName::Spectrum = "Spectrum";
-    std::string BoardName::Domino = "Domino";
-    std::string BoardName::RetinaZ3 = "RetinaZ3";
-    std::string BoardName::DraCoAltais = "DraCoAltais";
-    std::string BoardName::PiccoSD64 = "PiccoSD64";
-    std::string BoardName::A2410 = "A2410";
-    std::string BoardName::CyberVision3D = "CVision3D";
-    std::string BoardName::Inferno = "Inferno";
-    std::string BoardName::PicassoIV = "PicassoIV";
-    std::string BoardName::Pixel64 = "Pixel64";
-    std::string BoardName::RainbowIII = "RainbowIII";
-    std::string BoardName::CyberVisonPPC = "CVisionPPC";
-    std::string BoardName::BlizzardVisionPPC = "BVisionPPC";
+    static std::string CyberVision64 = "CVision64";
+    static std::string Piccolo = "Piccolo";
+    static std::string PicassoII = "PicassoII";
+    static std::string Spectrum = "Spectrum";
+    static std::string Domino = "Domino";
+    static std::string RetinaZ3 = "RetinaZ3";
+    static std::string DraCoAltais = "DraCoAltais";
+    static std::string PiccoSD64 = "PiccoSD64";
+    static std::string A2410 = "A2410";
+    static std::string CyberVision3D = "CVision3D";
+    static std::string Inferno = "Inferno";
+    static std::string PicassoIV = "PicassoIV";
+    static std::string Pixel64 = "Pixel64";
+    static std::string RainbowIII = "RainbowIII";
+    static std::string CyberVisonPPC = "CVisionPPC";
+    static std::string BlizzardVisionPPC = "BVisionPPC";
 
-    const std::map<BoardID, std::string &> allBoards {
-        { BoardID::CyberVision64, BoardName::CyberVision64 },
-        { BoardID::Piccolo, BoardName::Piccolo },
-        { BoardID::PicassoII, BoardName::PicassoII },
-        { BoardID::Spectrum, BoardName::Spectrum },
-        { BoardID::Domino, BoardName::Domino },
-        { BoardID::RetinaZ3, BoardName::RetinaZ3 },
-        { BoardID::DraCoAltais, BoardName::DraCoAltais },
-        { BoardID::PiccoSD64, BoardName::PiccoSD64 },
-        { BoardID::A2410, BoardName::A2410 },
-        { BoardID::CyberVision3D, BoardName::CyberVision3D },
-        { BoardID::Inferno, BoardName::Inferno },
-        { BoardID::PicassoIV, BoardName::PicassoIV },
-        { BoardID::Pixel64, BoardName::Pixel64 },
-        { BoardID::RainbowIII, BoardName::RainbowIII },
-        { BoardID::CyberVisonPPC, BoardName::CyberVisonPPC },
-        { BoardID::BlizzardVisionPPC, BoardName::BlizzardVisionPPC },
+    static const std::map<Common::BoardID, std::string &> allBoards {
+        { Common::BoardID::CyberVision64, CyberVision64 },
+        { Common::BoardID::Piccolo, Piccolo },
+        { Common::BoardID::PicassoII, PicassoII },
+        { Common::BoardID::Spectrum, Spectrum },
+        { Common::BoardID::Domino, Domino },
+        { Common::BoardID::RetinaZ3, RetinaZ3 },
+        { Common::BoardID::DraCoAltais, DraCoAltais },
+        { Common::BoardID::PiccoloSD64, PiccoSD64 },
+        { Common::BoardID::A2410, A2410 },
+        { Common::BoardID::CyberVision3D, CyberVision3D },
+        { Common::BoardID::Inferno, Inferno },
+        { Common::BoardID::PicassoIV, PicassoIV },
+        { Common::BoardID::Pixel64, Pixel64 },
+        { Common::BoardID::RainbowIII, RainbowIII },
+        { Common::BoardID::CyberVisionPPC, CyberVisonPPC },
+        { Common::BoardID::BlizzardVisionPPC, BlizzardVisionPPC },
     };
 
-    std::vector<BoardID> Library::GetBoards() noexcept
+    std::vector<Common::BoardID> Library::GetBoards() noexcept
     {
-        std::vector<BoardID> boards;
+        std::vector<Common::BoardID> boards;
         for (const auto &board : allBoards)
             if (libBestCModeID(board.second) != (unsigned long)INVALID_ID)
                 boards.push_back(board.first);

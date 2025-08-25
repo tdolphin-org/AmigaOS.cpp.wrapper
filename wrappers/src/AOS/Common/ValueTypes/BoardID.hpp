@@ -10,6 +10,7 @@ namespace AOS::Common
 {
     enum class BoardID
     {
+        Unknown,
         CyberVision64,
         Piccolo,
         PicassoII,

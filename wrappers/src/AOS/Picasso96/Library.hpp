@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "AOS/Common/ValueTypes/BoardID.hpp"
+
 #include <string>
 #include <vector>
 
@@ -13,6 +15,7 @@ namespace AOS::Picasso96
 {
     struct Board
     {
+        Common::BoardID id;
         std::string name;
         std::string chip;
         std::string memorySize;

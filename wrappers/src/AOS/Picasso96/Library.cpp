@@ -9,8 +9,30 @@
 #include <libraries/Picasso96.h>
 #include <proto/Picasso96.h>
 
+#include <map>
+
 namespace AOS::Picasso96
 {
+    // https://github.com/henrikstengaard/picasso96-package/tree/master/package/Picasso96Install/Libs/Picasso96
+
+    static const std::map<std::string, Common::BoardID> p96cardName2boardId {
+        { "Altais.card", Common::BoardID::DraCoAltais },
+        { "CVision3D.card", Common::BoardID::CyberVision3D },
+        { "CyberVision.card", Common::BoardID::CyberVision64 },
+        { "Domino.card", Common::BoardID::Domino },
+        { "Graffity.card", Common::BoardID::Graffiti },
+        { "Merlin.card", Common::BoardID::Merlin },
+        { "PicassoII.card", Common::BoardID::PicassoII },
+        { "PicassoIV.card", Common::BoardID::PicassoIV },
+        { "Piccolo.card", Common::BoardID::Piccolo },
+        { "PiccoloSD64.card", Common::BoardID::PiccoloSD64 },
+        { "Pixel64.card", Common::BoardID::Pixel64 },
+        { "RetinaBLT.card", Common::BoardID::RetinaZ3 },
+        { "Spectrum.card", Common::BoardID::Spectrum },
+        { "oMniBus.card", Common::BoardID::oMniBus },
+        { "uaegfx.card", Common::BoardID::UaeGfx },
+    };
+
     std::vector<Board> Library::GetBoards() noexcept
     {
         std::vector<Board> boards;
@@ -34,7 +56,10 @@ namespace AOS::Picasso96
                                     P96BD_TotalMemory, (unsigned long)&memorySize, P96BD_FreeMemory, (unsigned long)&freeMemory,
                                     P96BD_MemoryClock, (unsigned long)&memoryClock, P96BD_RGBFormats, (unsigned long)&rgbFormats, TAG_END);
 
-                boards.push_back({ boardName, chipName, videoMemoryValue(memorySize), videoMemoryValue(memorySize - freeMemory),
+                auto boardIter = p96cardName2boardId.find(boardName);
+                auto boardId = (boardIter != p96cardName2boardId.end()) ? boardIter->second : Common::BoardID::Unknown;
+
+                boards.push_back({ boardId, boardName, chipName, videoMemoryValue(memorySize), videoMemoryValue(memorySize - freeMemory),
                                    (long) { (long)((100.0f * (float)freeMemory) / (float)memorySize) },
                                    [=]() {
                                        int clock = (memoryClock + 50000) / 100000;

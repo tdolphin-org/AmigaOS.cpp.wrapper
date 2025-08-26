@@ -1,12 +1,12 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "CybergraphicsBaseScope.hpp"
 
-#include <cybergraphics/cybergraphics.h>
+#include <cybergraphx/cybergraphics.h>
 #include <proto/exec.h>
 #include <stdexcept>
 

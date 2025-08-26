@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #pragma once
@@ -16,7 +16,7 @@ namespace AOS::Common
         PicassoII,
         Spectrum,
         Domino,
-        RetinaZ3,
+        RetinaZ3, // Retina BLT Z3
         DraCoAltais,
         PiccoloSD64,
         A2410,

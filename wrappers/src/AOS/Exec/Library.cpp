@@ -1,13 +1,16 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "Library.hpp"
 
 #include "Core/ToString.hpp"
 
+#ifdef __MORPHOS__
+#include <exec/execbase.h>
+#endif
 #include <proto/exec.h>
 
 namespace AOS::Exec

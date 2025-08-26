@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #pragma once
@@ -24,7 +24,7 @@ namespace AOS::Exec
     {
         CLEAR = MEMF_CLEAR,
         REVERSE = MEMF_REVERSE,
-        NO_EXPUNGE = MEMF_NO_EXPUNGE,
+        NO_EXPUNGE = (unsigned long)MEMF_NO_EXPUNGE,
     };
 
     enum class MEMF_Avail : unsigned long

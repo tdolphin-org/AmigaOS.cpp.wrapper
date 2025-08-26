@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  _c 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #pragma once

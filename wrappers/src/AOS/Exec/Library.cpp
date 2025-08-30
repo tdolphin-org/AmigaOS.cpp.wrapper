@@ -39,6 +39,16 @@ namespace AOS::Exec
         return result;
     }
 
+    void Library::libForbid() noexcept
+    {
+        Forbid();
+    }
+
+    void Library::libPermit() noexcept
+    {
+        Permit();
+    }
+
     Task *Library::libFindTask() noexcept
     {
         return FindTask((char *)nullptr);
@@ -49,8 +59,20 @@ namespace AOS::Exec
         return FindTask(name.c_str());
     }
 
-    unsigned long Library::libAvailMem(const MEMF_Type type, const MEMF_Avail avail) noexcept
+    unsigned long Library::libAvailMem(const enum MEMF_Type type, const enum MEMF_Avail avail) noexcept
     {
         return AvailMem((unsigned long)type | (unsigned long)avail);
     }
+
+#ifdef __MORPHOS__
+    std::string Library::libNewGetSystemAttrs(const enum SYSTEMINFOTYPE type, std::optional<unsigned long> cpuIdx)
+    {
+        char buffer[256];
+        struct TagItem MyTags[] = { { SYSTEMINFOTAG_CPUINDEX, cpuIdx.value_or(0) }, { TAG_END, 0 } }; // check CPU 0 for now
+
+        NewGetSystemAttrsA(buffer, sizeof(buffer), SYSTEMINFOTYPE_SYSTEM, MyTags);
+
+        return std::string(buffer);
+    }
+#endif
 }

@@ -11,6 +11,7 @@
 
 #ifdef __MORPHOS__
 #include <optional>
+#include <variant>
 #endif
 #include <string>
 #include <vector>
@@ -22,6 +23,18 @@ namespace AOS::Exec
         std::string libName;
         std::string version;
     };
+
+#ifdef __MORPHOS__
+    struct CpuInfo
+    {
+        std::string family;
+        std::string machine;
+        std::string version;
+        std::string revision;
+        std::string clock;
+        std::string busClock;
+    };
+#endif
 
     struct Library
     {
@@ -45,7 +58,8 @@ namespace AOS::Exec
         static unsigned long libAvailMem(const enum MEMF_Type type, const enum MEMF_Avail avail) noexcept;
 
 #ifdef __MORPHOS__
-        std::string libNewGetSystemAttrs(const enum SYSTEMINFOTYPE type, std::optional<unsigned long> cpuIdx = std::nullopt);
+        static std::variant<std::string, unsigned long, unsigned long long, bool>
+        libNewGetSystemAttrs(const enum SYSTEMINFOTYPE type, std::optional<unsigned long> cpuIdx = std::nullopt);
 #endif
     };
 }

@@ -65,12 +65,21 @@ namespace AOS::Exec
     }
 
 #ifdef __MORPHOS__
-    std::string Library::libNewGetSystemAttrs(const enum SYSTEMINFOTYPE type, std::optional<unsigned long> cpuIdx)
+    std::variant<std::string, unsigned long, unsigned long long, bool> Library::libNewGetSystemAttrs(const enum SYSTEMINFOTYPE type,
+                                                                                                     std::optional<unsigned long> cpuIdx)
     {
         char buffer[256];
-        struct TagItem MyTags[] = { { SYSTEMINFOTAG_CPUINDEX, cpuIdx.value_or(0) }, { TAG_END, 0 } }; // check CPU 0 for now
 
-        NewGetSystemAttrsA(buffer, sizeof(buffer), SYSTEMINFOTYPE_SYSTEM, MyTags);
+        if (cpuIdx.has_value())
+        {
+            struct TagItem MyTags[] = { { SYSTEMINFOTAG_CPUINDEX, cpuIdx.value() }, { TAG_END, 0 } };
+            NewGetSystemAttrsA(buffer, sizeof(buffer), (unsigned long)type, MyTags);
+        }
+        else
+        {
+            struct TagItem MyTags[] = { { TAG_END, 0 } };
+            NewGetSystemAttrsA(buffer, sizeof(buffer), (unsigned long)type, MyTags);
+        }
 
         return std::string(buffer);
     }

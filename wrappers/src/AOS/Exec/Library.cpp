@@ -65,8 +65,55 @@ namespace AOS::Exec
     }
 
 #ifdef __MORPHOS__
+
+    std::vector<CPUInfo> Library::GetAllCPUs() noexcept
+    {
+        std::vector<CPUInfo> result;
+
+        for (unsigned long i = 0; i < libNewGetSystemAttrsAsUnsignedLong(SYSTEMINFOTYPE::CPUCOUNT); i++)
+        {
+            result.push_back({
+                libNewGetSystemAttrsAsString(SYSTEMINFOTYPE::CPUFAMILYNAME, i),
+                libNewGetSystemAttrsAsString(SYSTEMINFOTYPE::CPUNAME, i),
+                libNewGetSystemAttrsAsString(SYSTEMINFOTYPE::PPC_CPUVERSION, i),
+                libNewGetSystemAttrsAsString(SYSTEMINFOTYPE::PPC_CPUREVISION, i),
+                libNewGetSystemAttrsAsUnsignedLongLong(SYSTEMINFOTYPE::PPC_CPUCLOCK, i),
+                libNewGetSystemAttrsAsUnsignedLongLong(SYSTEMINFOTYPE::PPC_BUSCLOCK, i),
+            });
+        }
+
+        return result;
+    }
+
     std::variant<std::string, unsigned long, unsigned long long, bool> Library::libNewGetSystemAttrs(const enum SYSTEMINFOTYPE type,
                                                                                                      std::optional<unsigned long> cpuIdx)
+    {
+        switch (type)
+        {
+            case SYSTEMINFOTYPE::SYSTEM:
+            case SYSTEMINFOTYPE::VENDOR:
+            case SYSTEMINFOTYPE::CPUFAMILYNAME:
+            case SYSTEMINFOTYPE::CPUNAME:
+            case SYSTEMINFOTYPE::PPC_CPUTEMP:
+                return libNewGetSystemAttrsAsString(type, cpuIdx);
+            case SYSTEMINFOTYPE::MACHINE:
+            case SYSTEMINFOTYPE::CPUCOUNT:
+            case SYSTEMINFOTYPE::PPC_CPUVERSION:
+            case SYSTEMINFOTYPE::PPC_CPUREVISION:
+            case SYSTEMINFOTYPE::PPC_FPU:
+            case SYSTEMINFOTYPE::PPC_ALTIVEC:
+            case SYSTEMINFOTYPE::PPC_PERFMONITOR:
+            case SYSTEMINFOTYPE::PPC_DATASTREAM:
+                return libNewGetSystemAttrsAsUnsignedLong(type, cpuIdx);
+            case SYSTEMINFOTYPE::PPC_BUSCLOCK:
+            case SYSTEMINFOTYPE::PPC_CPUCLOCK:
+                return libNewGetSystemAttrsAsUnsignedLongLong(type, cpuIdx);
+            default:
+                return libNewGetSystemAttrsAsUnsignedLong(type, cpuIdx);
+        }
+    }
+
+    std::string Library::libNewGetSystemAttrsAsString(const enum SYSTEMINFOTYPE type, std::optional<unsigned long> cpuIdx)
     {
         char buffer[256];
 
@@ -83,5 +130,45 @@ namespace AOS::Exec
 
         return std::string(buffer);
     }
+
+    bool Library::libNewGetSystemAttrsAsBool(const enum SYSTEMINFOTYPE type, std::optional<unsigned long> cpuIdx)
+    {
+        return libNewGetSystemAttrsAsUnsignedLong(type, cpuIdx) != 0;
+    }
+
+    unsigned long Library::libNewGetSystemAttrsAsUnsignedLong(const enum SYSTEMINFOTYPE type, std::optional<unsigned long> cpuIdx)
+    {
+        unsigned long result = 0;
+        if (cpuIdx.has_value())
+        {
+            struct TagItem MyTags[] = { { SYSTEMINFOTAG_CPUINDEX, cpuIdx.value() }, { TAG_END, 0 } };
+            NewGetSystemAttrsA(&result, sizeof(result), (unsigned long)type, MyTags);
+        }
+        else
+        {
+            struct TagItem MyTags[] = { { TAG_END, 0 } };
+            NewGetSystemAttrsA(&result, sizeof(result), (unsigned long)type, MyTags);
+        }
+
+        return result;
+    }
+
+    unsigned long long Library::libNewGetSystemAttrsAsUnsignedLongLong(const enum SYSTEMINFOTYPE type, std::optional<unsigned long> cpuIdx)
+    {
+        unsigned long long result = 0;
+        if (cpuIdx.has_value())
+        {
+            struct TagItem MyTags[] = { { SYSTEMINFOTAG_CPUINDEX, cpuIdx.value() }, { TAG_END, 0 } };
+            NewGetSystemAttrsA(&result, sizeof(result), (unsigned long)type, MyTags);
+        }
+        else
+        {
+            struct TagItem MyTags[] = { { TAG_END, 0 } };
+            NewGetSystemAttrsA(&result, sizeof(result), (unsigned long)type, MyTags);
+        }
+
+        return result;
+    }
+
 #endif
 }

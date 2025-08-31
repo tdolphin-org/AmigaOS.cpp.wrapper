@@ -25,14 +25,14 @@ namespace AOS::Exec
     };
 
 #ifdef __MORPHOS__
-    struct CpuInfo
+    struct CPUInfo
     {
         std::string family;
-        std::string machine;
+        std::string name;
         std::string version;
         std::string revision;
-        std::string clock;
-        std::string busClock;
+        unsigned long long clock;
+        unsigned long long busClock;
     };
 #endif
 
@@ -58,8 +58,17 @@ namespace AOS::Exec
         static unsigned long libAvailMem(const enum MEMF_Type type, const enum MEMF_Avail avail) noexcept;
 
 #ifdef __MORPHOS__
+        static std::vector<CPUInfo> GetAllCPUs() noexcept;
+
         static std::variant<std::string, unsigned long, unsigned long long, bool>
         libNewGetSystemAttrs(const enum SYSTEMINFOTYPE type, std::optional<unsigned long> cpuIdx = std::nullopt);
+
+        static std::string libNewGetSystemAttrsAsString(const enum SYSTEMINFOTYPE type, std::optional<unsigned long> cpuIdx = std::nullopt);
+        static bool libNewGetSystemAttrsAsBool(const enum SYSTEMINFOTYPE type, std::optional<unsigned long> cpuIdx = std::nullopt);
+        static unsigned long libNewGetSystemAttrsAsUnsignedLong(const enum SYSTEMINFOTYPE type,
+                                                                std::optional<unsigned long> cpuIdx = std::nullopt);
+        static unsigned long long libNewGetSystemAttrsAsUnsignedLongLong(const enum SYSTEMINFOTYPE type,
+                                                                         std::optional<unsigned long> cpuIdx = std::nullopt);
 #endif
     };
 }

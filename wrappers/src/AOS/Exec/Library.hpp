@@ -29,10 +29,18 @@ namespace AOS::Exec
     {
         std::string family;
         std::string name;
-        std::string version;
-        std::string revision;
+        unsigned long version;
+        unsigned long revision;
         unsigned long long clock;
         unsigned long long busClock;
+        unsigned long l1InstructionCache; // level 1 instruction cache
+        unsigned long l1DataCache; // level 1 data cache
+        unsigned long l2InstructionCache; // level 2 instruction cache
+        unsigned long l2DataCache; // level 2 data cache
+        unsigned long l3InstructionCache; // level 3 instruction cache
+        unsigned long l3DataCache; // level 3 data cache
+        bool hasFPU;
+        bool hasAltivec;
     };
 #endif
 

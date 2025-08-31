@@ -75,10 +75,18 @@ namespace AOS::Exec
             result.push_back({
                 libNewGetSystemAttrsAsString(SYSTEMINFOTYPE::CPUFAMILYNAME, i),
                 libNewGetSystemAttrsAsString(SYSTEMINFOTYPE::CPUNAME, i),
-                libNewGetSystemAttrsAsString(SYSTEMINFOTYPE::PPC_CPUVERSION, i),
-                libNewGetSystemAttrsAsString(SYSTEMINFOTYPE::PPC_CPUREVISION, i),
+                libNewGetSystemAttrsAsUnsignedLong(SYSTEMINFOTYPE::PPC_CPUVERSION, i),
+                libNewGetSystemAttrsAsUnsignedLong(SYSTEMINFOTYPE::PPC_CPUREVISION, i),
                 libNewGetSystemAttrsAsUnsignedLongLong(SYSTEMINFOTYPE::PPC_CPUCLOCK, i),
                 libNewGetSystemAttrsAsUnsignedLongLong(SYSTEMINFOTYPE::PPC_BUSCLOCK, i),
+                libNewGetSystemAttrsAsUnsignedLong(SYSTEMINFOTYPE::PPC_ICACHEL1SIZE, i),
+                libNewGetSystemAttrsAsUnsignedLong(SYSTEMINFOTYPE::PPC_DCACHEL1SIZE, i),
+                libNewGetSystemAttrsAsUnsignedLong(SYSTEMINFOTYPE::PPC_ICACHEL2SIZE, i),
+                libNewGetSystemAttrsAsUnsignedLong(SYSTEMINFOTYPE::PPC_DCACHEL2SIZE, i),
+                libNewGetSystemAttrsAsUnsignedLong(SYSTEMINFOTYPE::PPC_ICACHEL3SIZE, i),
+                libNewGetSystemAttrsAsUnsignedLong(SYSTEMINFOTYPE::PPC_DCACHEL3SIZE, i),
+                libNewGetSystemAttrsAsBool(SYSTEMINFOTYPE::PPC_FPU, i),
+                libNewGetSystemAttrsAsBool(SYSTEMINFOTYPE::PPC_ALTIVEC, i),
             });
         }
 
@@ -92,6 +100,7 @@ namespace AOS::Exec
         {
             case SYSTEMINFOTYPE::SYSTEM:
             case SYSTEMINFOTYPE::VENDOR:
+            case SYSTEMINFOTYPE::REVISION:
             case SYSTEMINFOTYPE::CPUFAMILYNAME:
             case SYSTEMINFOTYPE::CPUNAME:
             case SYSTEMINFOTYPE::PPC_CPUTEMP:
@@ -104,6 +113,12 @@ namespace AOS::Exec
             case SYSTEMINFOTYPE::PPC_ALTIVEC:
             case SYSTEMINFOTYPE::PPC_PERFMONITOR:
             case SYSTEMINFOTYPE::PPC_DATASTREAM:
+            case SYSTEMINFOTYPE::PPC_ICACHEL1SIZE:
+            case SYSTEMINFOTYPE::PPC_DCACHEL1SIZE:
+            case SYSTEMINFOTYPE::PPC_ICACHEL2SIZE:
+            case SYSTEMINFOTYPE::PPC_DCACHEL2SIZE:
+            case SYSTEMINFOTYPE::PPC_ICACHEL3SIZE:
+            case SYSTEMINFOTYPE::PPC_DCACHEL3SIZE:
                 return libNewGetSystemAttrsAsUnsignedLong(type, cpuIdx);
             case SYSTEMINFOTYPE::PPC_BUSCLOCK:
             case SYSTEMINFOTYPE::PPC_CPUCLOCK:

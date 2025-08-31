@@ -24,9 +24,9 @@ namespace AOS::Identify
         return versionStream.str();
     }
 
-    std::vector<CpuInfo> Library::GetAllCPUs()
+    std::vector<CPUInfo> Library::GetAllCPUs()
     {
-        return { CpuInfo { CpuType::MC68k,
+        return { CPUInfo { CpuType::MC68k,
                            { .m68k = GetCPU() },
                            IdHardware(IDHW_CPU, nullptr),
                            IdHardware(IDHW_CPUREV, nullptr),
@@ -39,7 +39,7 @@ namespace AOS::Identify
                                    }(),
                                std::string("MMU:") + IdHardware(IDHW_MMU, nullptr),
                            } },
-                 CpuInfo {
+                 CPUInfo {
                      CpuType::PowerPC,
                      { .ppc = GetPowerPC() },
                      IdHardware(IDHW_POWERPC, nullptr),
@@ -139,48 +139,48 @@ namespace AOS::Identify
         return expansions;
     }
 
-    std::pair<PciExpansionsResultCode, std::vector<PciExpansion>> Library::GetPciExpansions() noexcept
+    std::pair<PCIExpansionsResultCode, std::vector<PCIExpansion>> Library::GetPCIExpansions() noexcept
     {
         if (IdentifyBase->lib_Version < 45U) // Check if identify.library version is at least 45
-            return { PciExpansionsResultCode::Missing45, {} };
+            return { PCIExpansionsResultCode::Missing45, {} };
 
-        std::vector<PciExpansion> pciExpansions;
-        PciExpansionsResultCode resultCode = PciExpansionsResultCode::Success;
+        std::vector<PCIExpansion> pciExpansions;
+        PCIExpansionsResultCode resultCode = PCIExpansionsResultCode::Success;
 
-        struct pci_dev *pPciDev = nullptr;
+        struct pci_dev *pPCIDev = nullptr;
         char manufacturerName[IDENTIFYBUFLEN] = {}, productName[IDENTIFYBUFLEN] = {}, productClass[IDENTIFYBUFLEN] = {};
 
         while (true)
         {
             int32_t result = IdPciExpansionTags(IDTAG_ManufStr, (uint32_t)manufacturerName, IDTAG_ProdStr, (uint32_t)productName,
-                                             IDTAG_ClassStr, (uint32_t)productClass, IDTAG_Expansion, (uint32_t)&pPciDev, TAG_DONE);
+                                                IDTAG_ClassStr, (uint32_t)productClass, IDTAG_Expansion, (uint32_t)&pPCIDev, TAG_DONE);
 
             if (result != IDERR_OKAY)
             {
                 switch (result)
                 {
                     case IDERR_NOPCIDB:
-                        resultCode = PciExpansionsResultCode::NoPciDb;
+                        resultCode = PCIExpansionsResultCode::NoPCIDb;
                         break;
                     case IDERR_BADPCIDB:
-                        resultCode = PciExpansionsResultCode::BadPciDb;
+                        resultCode = PCIExpansionsResultCode::BadPCIDb;
                         break;
                     case IDERR_NOPCILIB:
-                        resultCode = PciExpansionsResultCode::NoPciLib;
+                        resultCode = PCIExpansionsResultCode::NoPCILib;
                         break;
                     case IDERR_DONE:
                         break;
                     default:
                         std::cerr << "GetPciExpansions: Error retrieving PCI expansion: " << result << std::endl;
-                        resultCode = PciExpansionsResultCode::UnknownError;
+                        resultCode = PCIExpansionsResultCode::UnknownError;
                 }
                 break;
             }
 
             pciExpansions.push_back({
-                pPciDev->vendor,
+                pPCIDev->vendor,
                 manufacturerName,
-                pPciDev->device,
+                pPCIDev->device,
                 productName,
                 productClass,
             });

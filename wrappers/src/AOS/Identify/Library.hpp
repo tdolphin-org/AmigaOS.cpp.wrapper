@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #pragma once
@@ -26,7 +26,7 @@ namespace AOS::Identify
         PowerPC,
     };
 
-    struct CpuInfo
+    struct CPUInfo
     {
         CpuType type;
         union
@@ -51,7 +51,7 @@ namespace AOS::Identify
         std::vector<std::string> additionalInfo;
     };
 
-    struct PciExpansion
+    struct PCIExpansion
     {
         uint16_t manufacturerId;
         std::string manufacturerName;
@@ -60,12 +60,12 @@ namespace AOS::Identify
         std::string productClass;
     };
 
-    enum class PciExpansionsResultCode
+    enum class PCIExpansionsResultCode
     {
         Success = IDERR_OKAY,
-        NoPciLib = IDERR_NOPCILIB, // No openpci.library or PCI bridge found
-        NoPciDb = IDERR_NOPCIDB, // No PCI database file found
-        BadPciDb = IDERR_BADPCIDB, // Bad PCI database file
+        NoPCILib = IDERR_NOPCILIB, // No openpci.library or PCI bridge found
+        NoPCIDb = IDERR_NOPCIDB, // No PCI database file found
+        BadPCIDb = IDERR_BADPCIDB, // Bad PCI database file
         Missing45 = -127, // identify.library version < 45
         UnknownError = -128, // Any other error
     };
@@ -76,7 +76,7 @@ namespace AOS::Identify
         /// @return version as a string, e.g. "45.0"
         static std::string GetVersion() noexcept;
 
-        static std::vector<CpuInfo> GetAllCPUs();
+        static std::vector<CPUInfo> GetAllCPUs();
 
         static enum IDCPU GetCPU() noexcept;
         static enum IDFPU GetFPU() noexcept;
@@ -85,7 +85,7 @@ namespace AOS::Identify
         static enum IDGOS GetGraphicOS() noexcept;
 
         static std::vector<Expansion> GetExpansions(const enum ClassID filterByClassId = ClassID::NONE) noexcept;
-        static std::pair<PciExpansionsResultCode, std::vector<PciExpansion>> GetPciExpansions() noexcept;
+        static std::pair<PCIExpansionsResultCode, std::vector<PCIExpansion>> GetPCIExpansions() noexcept;
 
         /// @brief identify:IdHardware()
         static std::string libIdHardware(const enum IDHW idhw) noexcept;

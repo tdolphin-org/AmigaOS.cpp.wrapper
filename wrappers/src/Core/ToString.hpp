@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
 class ToString
 {
@@ -36,4 +36,7 @@ class ToString
                               const std::string &arg3);
     static std::string Format(std::string format, const std::string &arg0, const std::string &arg1, const std::string &arg2,
                               const std::string &arg3, const std::string &arg4);
+
+  private:
+    static std::string FormatFraction(const unsigned long long fraction, const int width);
 };

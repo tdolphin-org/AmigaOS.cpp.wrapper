@@ -7,6 +7,7 @@
 #include "ToString.hpp"
 
 #include "amiga_std_light/iostream.hpp"
+#include <iomanip>
 #include <numeric>
 #include <sstream>
 #include <type_traits>
@@ -50,17 +51,20 @@ std::string ToString::FromBytesValue(const unsigned long value)
 
 std::string ToString::FromClockHertzValue(const unsigned long long value, const bool useSI)
 {
-    if (useSI)
-    {
-        if (value >= 1'000'000'000)
-            return std::to_string(value / 1'000'000'000) + " GHz";
-        else if (value >= 1'000'000)
-            return std::to_string(value / 1'000'000) + " MHz";
-        else if (value >= 1'000)
-            return std::to_string(value / 1'000) + " kHz";
-    }
+    if (!useSI)
+        return std::to_string(value) + " Hz";
 
-    return std::to_string(value) + " Hz";
+    std::stringstream stream;
+    if (value >= 1'000'000'000)
+        stream << std::to_string(value / 1'000'000'000) << FormatFraction((value % 1'000'000'000) / 1'000'000, 3) << " GHz";
+    else if (value >= 1'000'000)
+        stream << std::to_string(value / 1'000'000) << FormatFraction((value % 1'000'000) / 1'000, 3) << " MHz";
+    else if (value >= 1'000)
+        stream << std::to_string(value / 1'000) << FormatFraction((value % 1'000) / 1, 3) << " kHz";
+    else
+        stream << std::to_string(value) << " Hz";
+
+    return stream.str();
 }
 
 std::string ToString::Replace(std::string input, const std::string &source, const std::string &replacement)
@@ -200,4 +204,19 @@ std::string ToString::Format(std::string format, const std::string &arg0, const 
         std::cerr << "exception on std::format(arg0,arg1,arg2,arg3,arg4)=" << format << std::endl;
         return format;
     }
+}
+
+std::string ToString::FormatFraction(const unsigned long long fraction, const int width)
+{
+    if (fraction == 0)
+        return "";
+
+    std::string frac = std::to_string(fraction);
+    while (frac.size() < width)
+        frac = "0" + frac;
+
+    while (!frac.empty() && frac.back() == '0')
+        frac.pop_back();
+
+    return frac.empty() ? "" : "." + frac;
 }

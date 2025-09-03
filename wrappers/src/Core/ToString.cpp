@@ -48,6 +48,21 @@ std::string ToString::FromBytesValue(const unsigned long value)
     return std::to_string(value) + " Bytes";
 }
 
+std::string ToString::FromClockHertzValue(const unsigned long long value, const bool useSI)
+{
+    if (useSI)
+    {
+        if (value >= 1'000'000'000)
+            return std::to_string(value / 1'000'000'000) + " GHz";
+        else if (value >= 1'000'000)
+            return std::to_string(value / 1'000'000) + " MHz";
+        else if (value >= 1'000)
+            return std::to_string(value / 1'000) + " kHz";
+    }
+
+    return std::to_string(value) + " Hz";
+}
+
 std::string ToString::Replace(std::string input, const std::string &source, const std::string &replacement)
 {
     std::size_t pos = 0;

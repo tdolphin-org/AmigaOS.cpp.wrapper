@@ -1,13 +1,13 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #pragma once
 
-#include <string>
 #include <vector>
+#include <string>
 
 class ToString
 {
@@ -16,6 +16,12 @@ class ToString
     static std::string FromHexValue(const unsigned long value);
     static std::string Concatenate(const std::vector<std::string> &array, const std::string &separator);
     static std::string FromBytesValue(const unsigned long value);
+
+    /// @brief Converts a clock frequency value to a string representation.
+    /// @param value The clock frequency value in Hertz.
+    /// @param useSI Whether to use SI units (e.g., kHz, MHz) or not.
+    /// @return The string representation of the clock frequency value.
+    static std::string FromClockHertzValue(const unsigned long long value, const bool useSI = false);
 
     static std::string Replace(std::string input, const std::string &source, const std::string &replacement);
 

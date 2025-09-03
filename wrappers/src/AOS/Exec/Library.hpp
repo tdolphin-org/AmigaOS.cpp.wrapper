@@ -27,6 +27,7 @@ namespace AOS::Exec
 #ifdef __MORPHOS__
     struct CPUInfo
     {
+        unsigned long index;
         std::string family;
         std::string name;
         unsigned long version;

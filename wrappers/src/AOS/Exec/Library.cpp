@@ -73,6 +73,7 @@ namespace AOS::Exec
         for (unsigned long i = 0; i < libNewGetSystemAttrsAsUnsignedLong(SYSTEMINFOTYPE::CPUCOUNT); i++)
         {
             result.push_back({
+                i,
                 libNewGetSystemAttrsAsString(SYSTEMINFOTYPE::CPUFAMILYNAME, i),
                 libNewGetSystemAttrsAsString(SYSTEMINFOTYPE::CPUNAME, i),
                 libNewGetSystemAttrsAsUnsignedLong(SYSTEMINFOTYPE::PPC_CPUVERSION, i),

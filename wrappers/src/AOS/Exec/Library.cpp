@@ -87,6 +87,8 @@ namespace AOS::Exec
                 libNewGetSystemAttrsAsUnsignedLong(SYSTEMINFOTYPE::PPC_DCACHEL3SIZE, i),
                 libNewGetSystemAttrsAsBool(SYSTEMINFOTYPE::PPC_FPU, i),
                 libNewGetSystemAttrsAsBool(SYSTEMINFOTYPE::PPC_ALTIVEC, i),
+                libNewGetSystemAttrsAsBool(SYSTEMINFOTYPE::PPC_PERFMONITOR, i),
+                libNewGetSystemAttrsAsBool(SYSTEMINFOTYPE::PPC_DATASTREAM, i),
             });
         }
 

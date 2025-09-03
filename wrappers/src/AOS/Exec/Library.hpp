@@ -41,6 +41,8 @@ namespace AOS::Exec
         unsigned long l3DataCache; // level 3 data cache
         bool hasFPU;
         bool hasAltivec;
+        bool hasPerformanceMeasurement;
+        bool hasDataStream;
     };
 #endif
 

@@ -49,6 +49,8 @@ namespace AOS::Exec
 
     struct Library
     {
+        static std::string GetVersion() noexcept;
+
         /// @brief calls exec:FindTask(NULL) and return ptr
         static std::string CurrentTaskPid();
 

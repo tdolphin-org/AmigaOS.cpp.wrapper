@@ -15,6 +15,14 @@
 
 namespace AOS::Exec
 {
+    std::string Library::GetVersion() noexcept
+    {
+        if (SysBase)
+            return std::to_string(SysBase->LibNode.lib_Version) + "." + std::to_string(SysBase->LibNode.lib_Revision);
+        else
+            return std::string();
+    }
+
     std::string Library::CurrentTaskPid()
     {
         auto task = FindTask((char *)nullptr);

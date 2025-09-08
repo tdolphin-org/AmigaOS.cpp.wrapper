@@ -6,8 +6,11 @@
 
 #pragma once
 
+#include "ValueTypes/GVF.hpp"
+
 #include <dos/dos.h>
 #include <dos/dosextens.h>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -45,5 +48,10 @@ namespace AOS::Dos
 
         /// @brief dos.library/AssignAdd(name, lock) .. lock from path
         static bool libAssignAdd(const std::string &name, const std::string &path) noexcept;
+
+        /// @brief dos.library/GetVar (Get a system or local variable)
+        /// The default is to try to get a local variable first, then
+        /// to try to get a global environment variable.
+        static std::optional<std::string> libGetVar(const std::string &name, const enum AOS::Dos::GVF type = AOS::Dos::GVF::Var) noexcept;
     };
 }

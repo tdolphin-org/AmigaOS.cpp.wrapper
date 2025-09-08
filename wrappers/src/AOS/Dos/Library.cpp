@@ -172,4 +172,17 @@ namespace AOS::Dos
 
         return true;
     }
+
+    std::optional<std::string> Library::libGetVar(const std::string &name, const enum AOS::Dos::GVF type) noexcept
+    {
+        char buffer[256];
+
+        auto result = GetVar(name.c_str(), buffer, sizeof(buffer), (unsigned long)type);
+        if (result >= 0)
+            return std::optional<std::string>(buffer);
+
+        /// -1 indicates that the variable was not defined
+
+        return std::nullopt;
+    }
 }

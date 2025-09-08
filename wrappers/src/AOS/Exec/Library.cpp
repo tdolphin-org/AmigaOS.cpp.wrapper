@@ -72,6 +72,11 @@ namespace AOS::Exec
         return AvailMem((unsigned long)type | (unsigned long)avail);
     }
 
+    Resident *Library::libFindResident(const std::string &name) noexcept
+    {
+        return FindResident(name.c_str());
+    }
+
 #ifdef __MORPHOS__
 
     std::vector<CPUInfo> Library::GetAllCPUs() noexcept

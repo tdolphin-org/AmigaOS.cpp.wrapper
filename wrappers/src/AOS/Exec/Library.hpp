@@ -13,6 +13,7 @@
 #include <optional>
 #include <variant>
 #endif
+#include <exec/resident.h>
 #include <string>
 #include <vector>
 
@@ -69,6 +70,9 @@ namespace AOS::Exec
 
         /// @brief exec/AvailMem(name) and returns the amount of free memory given certain attributes
         static unsigned long libAvailMem(const enum MEMF_Type type, const enum MEMF_Avail avail) noexcept;
+
+        /// @brief exec/FindResident(name) and return ptr to struct Resident
+        static struct Resident *libFindResident(const std::string &name) noexcept;
 
 #ifdef __MORPHOS__
         static std::vector<CPUInfo> GetAllCPUs() noexcept;

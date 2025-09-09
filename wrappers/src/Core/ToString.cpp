@@ -212,7 +212,7 @@ std::string ToString::FormatFraction(const unsigned long long fraction, const in
         return "";
 
     std::string frac = std::to_string(fraction);
-    while (frac.size() < width)
+    while (frac.size() < (std::size_t)width)
         frac = "0" + frac;
 
     while (!frac.empty() && frac.back() == '0')

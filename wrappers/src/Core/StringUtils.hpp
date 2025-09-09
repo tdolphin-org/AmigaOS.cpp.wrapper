@@ -20,6 +20,10 @@ class StringUtils
     /// @brief trim from end (in place)
     static void RTrim(std::string &str);
     /// @brief trim from both ends (in place)
+    ///        characters to trim are: space (0x20, ' '), form feed (0x0c, '\f'), line feed (0x0a, '\n'), carriage return (0x0d, '\r'),
+    ///        horizontal tab (0x09, '\t'), vertical tab (0x0b, '\v')
+    /// @note https://en.cppreference.com/w/cpp/string/byte/isspace.html
+    /// @return reference to the same string (trimmed)
     static std::string &Trim(std::string &str);
     /// @brief trim from both ends and check if is empty
     static bool isEmpty(const std::string &str);

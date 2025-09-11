@@ -116,11 +116,11 @@ namespace AOS::Exec
         {
             case SYSTEMINFOTYPE::SYSTEM:
             case SYSTEMINFOTYPE::VENDOR:
-            case SYSTEMINFOTYPE::REVISION:
             case SYSTEMINFOTYPE::CPUFAMILYNAME:
             case SYSTEMINFOTYPE::CPUNAME:
             case SYSTEMINFOTYPE::PPC_CPUTEMP:
                 return libNewGetSystemAttrsAsString(type, cpuIdx);
+            case SYSTEMINFOTYPE::REVISION:
             case SYSTEMINFOTYPE::MACHINE:
             case SYSTEMINFOTYPE::CPUCOUNT:
             case SYSTEMINFOTYPE::PPC_CPUVERSION:

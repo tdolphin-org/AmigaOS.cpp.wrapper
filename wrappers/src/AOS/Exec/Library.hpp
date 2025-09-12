@@ -71,6 +71,31 @@ namespace AOS::Exec
         /// @brief exec/AvailMem(name) and returns the amount of free memory given certain attributes
         static unsigned long libAvailMem(const enum MEMF_Type type, const enum MEMF_Avail avail) noexcept;
 
+        /// @brief exec/CopyMem(source, dest, size) --
+        ///        CopyMem is a general purpose, fast memory copy function. It can
+        ///        deal with arbitrary lengths, with its pointers on arbitrary
+        ///        alignments. It attempts to optimize larger copies with more
+        ///        efficient copies, it uses byte copies for small moves, parts of
+        ///        larger copies, or the entire copy if the source and destination are
+        ///        misaligned with respect to each other.
+        ///        Arbitrary overlapping copies are not supported.
+        /// @param source a pointer to the source data region
+        /// @param dest a pointer to the destination data region
+        /// @param size the size (in bytes) of the memory area. Zero copies zero bytes
+        static void libCopyMem(void *const source, void *dest, uint32_t size) noexcept;
+
+        /// @brief exec/CopyMemQuick - optimized memory copy function --
+        ///        CopyMemQuick is a highly optimized memory copy function, with
+        ///        restrictions on the size and alignment of its arguments. Both the
+        ///        source and destination pointers must be longword aligned.  In
+        ///        addition, the size must be an integral number of longwords (e.g.
+        ///        the size must be evenly divisible by four).
+        ///        Arbitrary overlapping copies are not supported.
+        /// @param source a pointer to the source data region, long aligned
+        /// @param dest a pointer to the destination data region, long aligned
+        /// @param size the size (in bytes) of the memory area. Zero copies zero bytes
+        static void libCopyMemQuick(uint32_t *source, uint32_t *dest, uint32_t size) noexcept;
+
         /// @brief exec/FindResident(name) and return ptr to struct Resident
         static struct Resident *libFindResident(const std::string &name) noexcept;
 

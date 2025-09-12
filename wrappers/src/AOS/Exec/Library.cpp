@@ -72,6 +72,16 @@ namespace AOS::Exec
         return AvailMem((unsigned long)type | (unsigned long)avail);
     }
 
+    void Library::libCopyMem(void *const source, void *dest, uint32_t size) noexcept
+    {
+        CopyMem(source, dest, size);
+    }
+
+    void Library::libCopyMemQuick(uint32_t *source, uint32_t *dest, uint32_t size) noexcept
+    {
+        CopyMemQuick(source, dest, size);
+    }
+
     Resident *Library::libFindResident(const std::string &name) noexcept
     {
         return FindResident(name.c_str());

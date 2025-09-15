@@ -1,0 +1,27 @@
+// template <typename T0> inline std::string ToString::Format(std::string format, const T0 &arg0)
+// {
+//     try
+//     {
+//         if (std::is_same<T0, std::string>::value)
+//         {
+//             return format.replace(format.find("{}"), 2, arg0);
+//         }
+//         else if (std::is_same<T0, std::vector<std::string>>::value)
+//         {
+//             return format.replace(format.find("{}"), 2, Concatenate(arg0));
+//         }
+//         else
+//         {
+//             auto error = std::string { __PRETTY_FUNCTION__ } + ", unsupported arg0 type!";
+//             throw std::runtime_error(error);
+//         }
+//     }
+//     catch (...)
+//     {
+//         std::cerr << "exception on std::format(arg0)=" << format << std::endl;
+//         return format;
+//     }
+// }
+
+// template <typename T0>
+// static std::string Format(std::string format, const T0 &arg0);

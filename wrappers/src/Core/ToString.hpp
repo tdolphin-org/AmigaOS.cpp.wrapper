@@ -9,6 +9,12 @@
 #include <string>
 #include <vector>
 
+#ifdef STD_LIGHT
+#ifdef Format
+#undef Format
+#endif
+#endif // STD_LIGHT
+
 class ToString
 {
   public:

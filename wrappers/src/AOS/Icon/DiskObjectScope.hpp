@@ -17,13 +17,13 @@ namespace AOS::Icon
         struct DiskObject *mpDiskObject;
 
       public:
-        DiskObjectScope(const std::string &diskObjectName);
+        DiskObjectScope(const std::string &diskObjectName, bool exceptionOnError = true);
         ~DiskObjectScope();
 
         std::string FindToolTypeAsString(const std::string &toolTypeName);
         bool FindToolTypeAsBool(const std::string &toolTypeName);
 
-      protected:
+        // may be nullptr if exceptionOnError = false and GetDiskObject() failed
         struct DiskObject *diskObject() const
         {
             return mpDiskObject;

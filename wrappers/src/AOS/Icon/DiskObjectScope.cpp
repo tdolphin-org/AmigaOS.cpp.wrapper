@@ -12,10 +12,10 @@
 
 namespace AOS::Icon
 {
-    DiskObjectScope::DiskObjectScope(const std::string &diskObjectName)
+    DiskObjectScope::DiskObjectScope(const std::string &diskObjectName, bool exceptionOnError)
     {
         mpDiskObject = (struct DiskObject *)GetDiskObject((STRPTR)diskObjectName.c_str());
-        if (!mpDiskObject)
+        if (!mpDiskObject && exceptionOnError)
         {
             auto error = std::string { __PRETTY_FUNCTION__ } + " GetDiskObject(" + diskObjectName + ") failed!";
             throw std::runtime_error(error);

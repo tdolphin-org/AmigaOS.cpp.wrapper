@@ -56,6 +56,8 @@ namespace AOS::Cybergraphics
 
     std::vector<Common::BoardID> Library::GetBoards() noexcept
     {
+        // return { BoardID::Pixel64, BoardID::BlizzardVisionPPC, BoardID::RainbowIII };
+
         std::vector<Common::BoardID> boards;
         for (const auto &board : allBoards)
             if (libBestCModeID(board.second) != (unsigned long)INVALID_ID)

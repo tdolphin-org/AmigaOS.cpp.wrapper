@@ -8,9 +8,9 @@
 
 #include "ValueTypes/GVF.hpp"
 
+#include "std/optional.hpp"
 #include <dos/dos.h>
 #include <dos/dosextens.h>
-#include <optional>
 #include <string>
 #include <vector>
 

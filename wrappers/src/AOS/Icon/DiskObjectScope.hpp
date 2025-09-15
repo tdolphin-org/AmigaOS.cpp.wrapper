@@ -23,7 +23,6 @@ namespace AOS::Icon
         std::string FindToolTypeAsString(const std::string &toolTypeName);
         bool FindToolTypeAsBool(const std::string &toolTypeName);
 
-      protected:
         struct DiskObject *diskObject() const
         {
             return mpDiskObject;

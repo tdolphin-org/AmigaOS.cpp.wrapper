@@ -21,7 +21,7 @@ class ToString
     /// @param value The clock frequency value in Hertz.
     /// @param useSI Whether to use SI units (e.g., kHz, MHz) or not.
     /// @return The string representation of the clock frequency value.
-    static std::string FromClockHertzValue(const unsigned long long value, const bool useSI = false);
+    static std::string FromClockHertzValue(const unsigned long long value, const bool useSI = false, const bool asInteger = false);
 
     static std::string Replace(std::string input, const std::string &source, const std::string &replacement);
 

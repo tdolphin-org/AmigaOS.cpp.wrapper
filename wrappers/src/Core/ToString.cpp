@@ -49,18 +49,18 @@ std::string ToString::FromBytesValue(const unsigned long value)
     return std::to_string(value) + " Bytes";
 }
 
-std::string ToString::FromClockHertzValue(const unsigned long long value, const bool useSI)
+std::string ToString::FromClockHertzValue(const unsigned long long value, const bool useSI, const bool asInteger)
 {
     if (!useSI)
         return std::to_string(value) + " Hz";
 
     std::stringstream stream;
     if (value >= 1'000'000'000)
-        stream << std::to_string(value / 1'000'000'000) << FormatFraction((value % 1'000'000'000) / 1'000'000, 3) << " GHz";
+        stream << std::to_string(value / 1'000'000'000) << FormatFraction((value % 1'000'000'000) / 1'000'000, asInteger ? 0 : 3) << " GHz";
     else if (value >= 1'000'000)
-        stream << std::to_string(value / 1'000'000) << FormatFraction((value % 1'000'000) / 1'000, 3) << " MHz";
+        stream << std::to_string(value / 1'000'000) << FormatFraction((value % 1'000'000) / 1'000, asInteger ? 0 : 3) << " MHz";
     else if (value >= 1'000)
-        stream << std::to_string(value / 1'000) << FormatFraction((value % 1'000) / 1, 3) << " kHz";
+        stream << std::to_string(value / 1'000) << FormatFraction((value % 1'000) / 1, asInteger ? 0 : 3) << " kHz";
     else
         stream << std::to_string(value) << " Hz";
 

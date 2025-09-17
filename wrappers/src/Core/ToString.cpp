@@ -34,17 +34,27 @@ std::string ToString::FromHexValue(const unsigned long value)
 
 std::string ToString::Concatenate(const std::vector<std::string> &array, const std::string &separator)
 {
-    return array.size() == 1 ? array[0]
-                             : std::accumulate(array.begin(), array.end(), std::string(""),
-                                               [&separator](const std::string &a, const std::string &b) { return a + separator + b; });
+    return array.size() == 1
+        ? array[0]
+        : std::accumulate(array.begin(), array.end(), std::string(""),
+                          [&separator](const std::string &a, const std::string &b) { return a.empty() ? b : a + separator + b; });
 }
 
-std::string ToString::FromBytesValue(const unsigned long value)
+std::string ToString::FromBytesValue(const unsigned long value, const MemorySizeUnit unit)
 {
-    if (value % (1024 * 1024) == 0)
-        return std::to_string(value / (1024 * 1024)) + " MB";
-    else if (value % 1024 == 0)
-        return std::to_string(value / 1024) + " KB";
+    if (unit == MemorySizeUnit::AutoRound)
+    {
+        if (value % (1024 * 1024) == 0)
+            return std::to_string(value / (1024 * 1024)) + " MB";
+        else if (value % 1024 == 0)
+            return std::to_string(value / 1024) + " KB";
+    }
+    else if (unit == MemorySizeUnit::GigaBytes)
+        return (value % (1024 * 1024 * 1024) == 0 ? "" : "~") + std::to_string(value / (1024 * 1024 * 1024)) + " GB";
+    else if (unit == MemorySizeUnit::MegaBytes)
+        return (value % (1024 * 1024) == 0 ? "" : "~") + std::to_string(value / (1024 * 1024)) + " MB";
+    else if (unit == MemorySizeUnit::KiloBytes)
+        return (value % 1024 == 0 ? "" : "~") + std::to_string(value / 1024) + " KB";
 
     return std::to_string(value) + " Bytes";
 }

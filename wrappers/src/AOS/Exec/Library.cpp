@@ -20,7 +20,7 @@ namespace AOS::Exec
         if (SysBase)
             return std::to_string(SysBase->LibNode.lib_Version) + "." + std::to_string(SysBase->LibNode.lib_Revision);
         else
-            return std::string();
+            return {};
     }
 
     std::string Library::CurrentTaskPid()
@@ -57,12 +57,12 @@ namespace AOS::Exec
         Permit();
     }
 
-    Task *Library::libFindTask() noexcept
+    struct Task *Library::libFindTask() noexcept
     {
         return FindTask((char *)nullptr);
     }
 
-    Task *Library::libFindTask(const std::string &name) noexcept
+    struct Task *Library::libFindTask(const std::string &name) noexcept
     {
         return FindTask(name.c_str());
     }
@@ -82,9 +82,31 @@ namespace AOS::Exec
         CopyMemQuick(source, dest, size);
     }
 
-    Resident *Library::libFindResident(const std::string &name) noexcept
+    struct Resident *Library::libFindResident(const std::string &name) noexcept
     {
         return FindResident(name.c_str());
+    }
+
+    struct MsgPort *Library::libFindPort(const std::string &name) noexcept
+    {
+        if (!name.empty())
+            return FindPort(name.c_str());
+        return nullptr;
+    }
+
+    void Library::libPutMsg(struct MsgPort &port, struct Message &message) noexcept
+    {
+        PutMsg(&port, &message);
+    }
+
+    struct Message *Library::libGetMsg(MsgPort &port) noexcept
+    {
+        return GetMsg(&port);
+    }
+
+    struct Message *Library::libWaitPort(MsgPort &port) noexcept
+    {
+        return WaitPort(&port);
     }
 
 #ifdef __MORPHOS__

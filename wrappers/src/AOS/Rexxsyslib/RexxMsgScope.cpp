@@ -13,7 +13,6 @@ namespace AOS::Rexxsyslib
 {
     RexxMsgScope::RexxMsgScope(const std::string &name, bool exceptionOnError)
       : mMsgPortScope(name, exceptionOnError)
-      , mpRexxMsg(nullptr)
     {
         if (!mMsgPortScope.msgPort())
             return;
@@ -23,6 +22,17 @@ namespace AOS::Rexxsyslib
         // host (3rd arg) - the name must be the same as the name of the public message port that is to be the
         // default host. If this field is NULL, the default is REXX.
         mpRexxMsg = CreateRexxMsg(mMsgPortScope.msgPort(), nullptr, name.c_str());
+        if (mpRexxMsg == nullptr && exceptionOnError)
+        {
+            auto error = std::string { __PRETTY_FUNCTION__ } + " CreateRexxMsg(...) failed!";
+            throw std::runtime_error(error);
+        }
+    }
+
+    RexxMsgScope::RexxMsgScope(bool exceptionOnError)
+      : mMsgPortScope(exceptionOnError)
+    {
+        mpRexxMsg = CreateRexxMsg(mMsgPortScope.msgPort(), nullptr, nullptr);
         if (mpRexxMsg == nullptr && exceptionOnError)
         {
             auto error = std::string { __PRETTY_FUNCTION__ } + " CreateRexxMsg(...) failed!";

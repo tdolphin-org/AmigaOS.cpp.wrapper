@@ -13,6 +13,8 @@
 #include <optional>
 #include <variant>
 #endif
+
+#include <exec/ports.h>
 #include <exec/resident.h>
 #include <string>
 #include <vector>
@@ -98,6 +100,16 @@ namespace AOS::Exec
 
         /// @brief exec/FindResident(name) and return ptr to struct Resident
         static struct Resident *libFindResident(const std::string &name) noexcept;
+
+        /// @brief exec/FindPort(name) and return ptr to struct Port
+        static struct MsgPort *libFindPort(const std::string &name) noexcept;
+
+        /// @brief exec/PutMsg(port)
+        static void libPutMsg(struct MsgPort &port, struct Message &message) noexcept;
+        /// @brief exec/GetMsg(port)
+        static struct Message *libGetMsg(struct MsgPort &port) noexcept;
+        /// @brief exec/WaitPort(port)
+        static struct Message *libWaitPort(struct MsgPort &port) noexcept;
 
 #ifdef __MORPHOS__
         static std::vector<CPUInfo> GetAllCPUs() noexcept;

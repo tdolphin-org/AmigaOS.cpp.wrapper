@@ -7,6 +7,7 @@
 #pragma once
 
 #include "ValueTypes/MEMF.hpp"
+#include "ValueTypes/NT.hpp"
 #include "ValueTypes/SYSTEMINFOTYPE.hpp"
 
 #ifdef __MORPHOS__
@@ -21,10 +22,11 @@
 
 namespace AOS::Exec
 {
-    struct LibInfo
+    struct NodeInfo
     {
-        std::string libName;
+        std::string name;
         std::string version;
+        NT_Type type;
     };
 
 #ifdef __MORPHOS__
@@ -57,8 +59,10 @@ namespace AOS::Exec
         /// @brief calls exec:FindTask(NULL) and return ptr
         static std::string CurrentTaskPid();
 
-        /// @brief return list of all loaded libraries, datatypes, etc
-        static std::vector<LibInfo> GetAllLibraryNames() noexcept;
+        /// @brief return list of all loaded nodes of libraries (also datatypes, etc)
+        static std::vector<NodeInfo> GetAllLibraryNodeNames() noexcept;
+        /// @brief return list of all loaded nodes of devices
+        static std::vector<NodeInfo> GetAllDeviceNodeNames() noexcept;
 
         /// @brief exec/Forbid()
         static void libForbid() noexcept;

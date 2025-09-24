@@ -29,18 +29,39 @@ namespace AOS::Exec
         return ToString::FromDataPointer(task);
     }
 
-    std::vector<LibInfo> Library::GetAllLibraryNames() noexcept
+    std::vector<NodeInfo> Library::GetAllLibraryNodeNames() noexcept
     {
         struct ::Library *lib;
         struct List *list = &SysBase->LibList;
 
-        std::vector<LibInfo> result;
+        std::vector<NodeInfo> result;
 
         Forbid();
         for (struct Node *node = list->lh_Head; node->ln_Succ; node = node->ln_Succ)
         {
             lib = (struct ::Library *)node;
-            result.push_back({ lib->lib_Node.ln_Name, std::to_string(lib->lib_Version) + "." + std::to_string(lib->lib_Revision) });
+            result.push_back({ lib->lib_Node.ln_Name, std::to_string(lib->lib_Version) + "." + std::to_string(lib->lib_Revision),
+                               (NT_Type)lib->lib_Node.ln_Type });
+        }
+        Permit();
+
+        return result;
+    }
+
+    std::vector<NodeInfo> Library::GetAllDeviceNodeNames() noexcept
+    {
+        struct ::Device *device;
+        struct List *list = &SysBase->DeviceList;
+
+        std::vector<NodeInfo> result;
+
+        Forbid();
+        for (struct Node *node = list->lh_Head; node->ln_Succ; node = node->ln_Succ)
+        {
+            device = (struct ::Device *)node;
+            result.push_back({ device->dd_Library.lib_Node.ln_Name,
+                               std::to_string(device->dd_Library.lib_Version) + "." + std::to_string(device->dd_Library.lib_Revision),
+                               (NT_Type)device->dd_Library.lib_Node.ln_Type });
         }
         Permit();
 

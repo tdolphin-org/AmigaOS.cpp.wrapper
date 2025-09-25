@@ -6,10 +6,18 @@
 
 #include "Library.hpp"
 
+#include "RexxMsgScope.hpp"
+
+#include <proto/exec.h>
 #include <proto/rexxsyslib.h>
 
 namespace AOS::Rexxsyslib
 {
+    RexxMsg *Library::GetRexxMsg(const RexxMsgScope &scope) noexcept
+    {
+        return (struct RexxMsg *)GetMsg(scope.msgPort());
+    }
+
     unsigned char *Library::libCreateArgstring(const std::string &string) noexcept
     {
         return CreateArgstring(string.c_str(), string.length());

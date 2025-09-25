@@ -6,8 +6,8 @@
 
 #include "ClipboardDevice.hpp"
 
-#include <clib/exec_protos.h>
 #include <exec/io.h>
+#include <proto/exec.h>
 
 namespace AOS::Devices
 {

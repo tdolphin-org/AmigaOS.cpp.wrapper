@@ -1,14 +1,14 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "IdentifyBaseScope.hpp"
 
-#include <clib/identify_protos.h>
 #include <libraries/identify.h>
 #include <proto/exec.h>
+#include <proto/identify.h>
 #include <stdexcept>
 
 struct Library *IdentifyBase = nullptr;

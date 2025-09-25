@@ -6,7 +6,7 @@
 
 #include "TimerDevice.hpp"
 
-#include <clib/timer_protos.h>
+#include <proto/timer.h>
 
 namespace AOS::Devices
 {

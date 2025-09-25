@@ -8,7 +8,7 @@
 
 #include "TimerGlobals.hpp"
 
-#include <clib/exec_protos.h>
+#include <proto/exec.h>
 #include <stdexcept>
 
 namespace AOS

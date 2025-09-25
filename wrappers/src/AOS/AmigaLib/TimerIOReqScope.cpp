@@ -6,8 +6,8 @@
 
 #include "TimerIOReqScope.hpp"
 
-#include <clib/alib_protos.h>
 #include <devices/timer.h>
+#include <proto/alib.h>
 #include <stdexcept>
 
 namespace AOS::AmigaLib

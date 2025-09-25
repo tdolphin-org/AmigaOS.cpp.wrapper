@@ -1,13 +1,13 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "IOClipReqScope.hpp"
 
-#include <clib/alib_protos.h>
 #include <devices/clipboard.h>
+#include <proto/alib.h>
 #include <stdexcept>
 
 namespace AOS::AmigaLib

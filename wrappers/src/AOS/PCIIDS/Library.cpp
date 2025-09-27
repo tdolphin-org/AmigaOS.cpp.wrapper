@@ -19,4 +19,9 @@ namespace AOS::PCIIDS
     {
         return PCIIDS_GetDeviceName(vendorId, deviceId);
     }
+
+    std::string Library::libGetClassName(const unsigned long classId) noexcept
+    {
+        return PCIIDS_GetClassName(classId);
+    }
 }

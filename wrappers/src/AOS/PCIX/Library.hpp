@@ -15,14 +15,16 @@ namespace AOS::PCIX
     {
         unsigned long vendorId;
         unsigned long deviceId;
+        unsigned long classId;
         std::optional<unsigned long> subvendorId { std::nullopt };
         std::optional<unsigned long> subdeviceId { std::nullopt };
+        std::optional<unsigned long> subclassId { std::nullopt };
     };
     
     
     struct Library
     {
-        /// @brief get alll pci boards
+        /// @brief get all pci boards
 		static std::vector<Board> GetBoards() noexcept;
     };
 }

@@ -22,7 +22,11 @@ namespace AOS::PCIX
         
         while (board = PCIXFindBoardTagList(board, tagsScope.tagItems()))
         {
-            result.push_back({PCIXReadConfigWord(board, PCIXCONFIG_VENDOR), PCIXReadConfigWord(board, PCIXCONFIG_DEVICE)});
+            result.push_back({
+                PCIXReadConfigWord(board, PCIXCONFIG_VENDOR),
+                PCIXReadConfigWord(board, PCIXCONFIG_DEVICE),
+                PCIXReadConfigByte(board, PCIXCONFIG_CLASS),        
+            });
         }
 		
         return result;

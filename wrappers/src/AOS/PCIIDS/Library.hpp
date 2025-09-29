@@ -12,7 +12,7 @@ namespace AOS::PCIIDS
 {
     struct Library
     {
-        /// @brief pciids.libraray/PCIIDS_GetVendorName        
+        /// @brief pciids.libraray/PCIIDS_GetVendorName
         static std::string libGetVendorName(const unsigned long vendorId) noexcept;
         /// @brief pciids.libraray/PCIIDS_GetDeviceName
         static std::string libGetDeviceName(const unsigned long vendorId, const unsigned long deviceId) noexcept;

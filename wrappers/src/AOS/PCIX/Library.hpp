@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <vector>
 #include <optional>
+#include <vector>
 
 namespace AOS::PCIX
 {
@@ -20,11 +20,10 @@ namespace AOS::PCIX
         std::optional<unsigned long> subdeviceId { std::nullopt };
         std::optional<unsigned long> subclassId { std::nullopt };
     };
-    
-    
+
     struct Library
     {
         /// @brief get all pci boards
-		static std::vector<Board> GetBoards() noexcept;
+        static std::vector<Board> GetBoards() noexcept;
     };
 }

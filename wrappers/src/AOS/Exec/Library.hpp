@@ -11,13 +11,12 @@
 #include "ValueTypes/SYSTEMINFOTYPE.hpp"
 
 #ifdef __MORPHOS__
-#include <optional>
 #include <variant>
 #endif
 
+#include "std/optional.hpp"
 #include <exec/ports.h>
 #include <exec/resident.h>
-#include <optional>
 #include <string>
 #include <vector>
 

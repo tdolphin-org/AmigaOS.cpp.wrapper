@@ -31,7 +31,6 @@ namespace AOS::Exec
 
     std::vector<NodeInfo> Library::GetAllResourceNodeNames() noexcept
     {
-        struct ::Library *lib;
         struct List *list = &SysBase->ResourceList;
 
         std::vector<NodeInfo> result;

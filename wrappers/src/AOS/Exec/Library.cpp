@@ -29,6 +29,21 @@ namespace AOS::Exec
         return ToString::FromDataPointer(task);
     }
 
+    std::vector<NodeInfo> Library::GetAllResourceNodeNames() noexcept
+    {
+        struct ::Library *lib;
+        struct List *list = &SysBase->ResourceList;
+
+        std::vector<NodeInfo> result;
+
+        Forbid();
+        for (struct Node *node = list->lh_Head; node->ln_Succ; node = node->ln_Succ)
+            result.push_back({ node->ln_Name, std::nullopt, (NT_Type)node->ln_Type });
+        Permit();
+
+        return result;
+    }
+
     std::vector<NodeInfo> Library::GetAllLibraryNodeNames() noexcept
     {
         struct ::Library *lib;

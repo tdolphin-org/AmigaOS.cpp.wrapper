@@ -17,6 +17,7 @@
 
 #include <exec/ports.h>
 #include <exec/resident.h>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -25,7 +26,7 @@ namespace AOS::Exec
     struct NodeInfo
     {
         std::string name;
-        std::string version;
+        std::optional<std::string> version;
         NT_Type type;
     };
 
@@ -59,9 +60,11 @@ namespace AOS::Exec
         /// @brief calls exec:FindTask(NULL) and return ptr
         static std::string CurrentTaskPid();
 
-        /// @brief return list of all loaded nodes of libraries (also datatypes, etc)
+        /// @brief return list of all nodes of resources
+        static std::vector<NodeInfo> GetAllResourceNodeNames() noexcept;
+        /// @brief return list of all nodes of (loaded) libraries (also datatypes, etc)
         static std::vector<NodeInfo> GetAllLibraryNodeNames() noexcept;
-        /// @brief return list of all loaded nodes of devices
+        /// @brief return list of all nodes of devices
         static std::vector<NodeInfo> GetAllDeviceNodeNames() noexcept;
 
         /// @brief exec/Forbid()

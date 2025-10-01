@@ -21,10 +21,12 @@ namespace AOS
         std::set<unsigned long> mTagKeys;
         std::vector<AOS::TagItemObject> mTags;
 
-        void CheckUniqueObject(const unsigned long tagName, const void *pObject);
-        void CheckUniqueTag(const unsigned long tagName);
+        void CheckUniqueObjectAndAdd(const unsigned long tagName, const void *pObject);
+        void CheckUniqueTagAndAdd(const unsigned long tagName);
 
       public:
+        bool ContainsTag(const unsigned long tagName) const;
+        bool ContainsOneOfTags(const std::vector<unsigned long> &tagNames) const;
         void PushTag(const unsigned long tagName, const void *pointer, const bool uniqueTag = true, const bool uniqueObject = false);
         void PushTag(const unsigned long tagName, const char *pString, const bool uniqueTag = true);
         void PushTag(const unsigned long tagName, const std::string &string, const bool uniqueTag = true);

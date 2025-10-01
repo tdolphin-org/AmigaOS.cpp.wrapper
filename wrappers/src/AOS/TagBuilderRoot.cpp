@@ -16,7 +16,7 @@ namespace AOS
 {
     std::set<void *> TagBuilderRoot::mObjects;
 
-    void TagBuilderRoot::CheckUniqueObject(const unsigned long tagName, const void *pObject)
+    void TagBuilderRoot::CheckUniqueObjectAndAdd(const unsigned long tagName, const void *pObject)
     {
         if (mObjects.find(const_cast<void *>(pObject)) != mObjects.end())
         {
@@ -29,7 +29,7 @@ namespace AOS
         mObjects.insert(const_cast<void *>(pObject));
     }
 
-    void TagBuilderRoot::CheckUniqueTag(const unsigned long tagName)
+    void TagBuilderRoot::CheckUniqueTagAndAdd(const unsigned long tagName)
     {
         if (mTagKeys.find(tagName) != mTagKeys.end())
         {
@@ -40,70 +40,86 @@ namespace AOS
         mTagKeys.insert(tagName);
     }
 
+    bool TagBuilderRoot::ContainsTag(const unsigned long tagName) const
+    {
+        return (mTagKeys.find(tagName) != mTagKeys.end());
+    }
+
+    bool TagBuilderRoot::ContainsOneOfTags(const std::vector<unsigned long> &tagNames) const
+    {
+        for (const auto &tagName : tagNames)
+        {
+            if (mTagKeys.find(tagName) != mTagKeys.end())
+                return true;
+        }
+
+        return false;
+    }
+
     void TagBuilderRoot::PushTag(const unsigned long tagName, const void *pointer, const bool uniqueTag, const bool uniqueObject)
     {
         if (uniqueObject)
-            CheckUniqueObject(tagName, pointer);
+            CheckUniqueObjectAndAdd(tagName, pointer);
         if (uniqueTag)
-            CheckUniqueTag(tagName);
+            CheckUniqueTagAndAdd(tagName);
         mTags.push_back(TagItemObject(tagName, pointer));
     }
 
     void TagBuilderRoot::PushTag(const unsigned long tagName, const char *pString, const bool uniqueTag)
     {
         if (uniqueTag)
-            CheckUniqueTag(tagName);
+            CheckUniqueTagAndAdd(tagName);
         mTags.push_back(TagItemObject(tagName, (void *)pString));
     }
 
     void TagBuilderRoot::PushTag(const unsigned long tagName, const std::string &string, const bool uniqueTag)
     {
         if (uniqueTag)
-            CheckUniqueTag(tagName);
+            CheckUniqueTagAndAdd(tagName);
         mTags.push_back(TagItemObject(tagName, (void *)string.c_str()));
     }
 
     void TagBuilderRoot::PushTag(const unsigned long tagName, const unsigned long ulong, const bool uniqueTag)
     {
         if (uniqueTag)
-            CheckUniqueTag(tagName);
+            CheckUniqueTagAndAdd(tagName);
         mTags.push_back(TagItemObject(tagName, ulong));
     }
 
     void TagBuilderRoot::PushTag(const unsigned long tagName, const long slong, const bool uniqueTag)
     {
         if (uniqueTag)
-            CheckUniqueTag(tagName);
+            CheckUniqueTagAndAdd(tagName);
         mTags.push_back(TagItemObject(tagName, slong));
     }
 
     void TagBuilderRoot::PushTag(const unsigned long tagName, const bool boolean, const bool uniqueTag)
     {
         if (uniqueTag)
-            CheckUniqueTag(tagName);
+            CheckUniqueTagAndAdd(tagName);
         mTags.push_back(TagItemObject(tagName, (unsigned long)boolean));
     }
 
     void TagBuilderRoot::PushTag(const unsigned long tagName, const Object *pObject, const bool uniqueTag, const bool uniqueObject)
     {
         if (uniqueObject)
-            CheckUniqueObject(tagName, pObject);
+            CheckUniqueObjectAndAdd(tagName, pObject);
         if (uniqueTag)
-            CheckUniqueTag(tagName);
+            CheckUniqueTagAndAdd(tagName);
         mTags.push_back(TagItemObject(tagName, (void *)pObject));
     }
 
     void TagBuilderRoot::PushTag(const unsigned long tagName, const void *pArray[], const bool uniqueTag)
     {
         if (uniqueTag)
-            CheckUniqueTag(tagName);
+            CheckUniqueTagAndAdd(tagName);
         mTags.push_back(TagItemObject(tagName, pArray));
     }
 
     void TagBuilderRoot::PushTag(const unsigned long tagName, const char *pStringArray[], const bool uniqueTag)
     {
         if (uniqueTag)
-            CheckUniqueTag(tagName);
+            CheckUniqueTagAndAdd(tagName);
         mTags.push_back(TagItemObject(tagName, (void **)pStringArray));
     }
 }

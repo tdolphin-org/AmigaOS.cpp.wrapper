@@ -6,7 +6,7 @@
 
 #include "Identifier.hpp"
 
-#include <libraries/iffparse.h>
+#include <libraries/iffparse.h> // for MAKE_ID
 
 namespace AOS
 {

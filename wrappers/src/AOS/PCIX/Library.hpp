@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "ValueTypes/BaseClass.hpp"
+
 #include <optional>
 #include <vector>
 
@@ -24,6 +26,8 @@ namespace AOS::PCIX
     struct Library
     {
         /// @brief get all pci boards
-        static std::vector<Board> GetBoards() noexcept;
+        /// @param classes filter by base classes
+        /// @return vector of boards
+        static std::vector<Board> GetBoards(const std::vector<BaseClass> &classes = {}) noexcept;
     };
 }

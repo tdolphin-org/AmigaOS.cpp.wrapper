@@ -6,6 +6,7 @@
 
 #include "Library.hpp"
 
+#include <algorithm>
 #include <libraries/pcix.h>
 #include <proto/pcix.h>
 
@@ -13,12 +14,17 @@
 
 namespace AOS::PCIX
 {
-    std::vector<Board> Library::GetBoards() noexcept
+    std::vector<Board> Library::GetBoards(const std::vector<BaseClass> &classes) noexcept
     {
         std::vector<Board> result;
 
         void *board = nullptr;
-        TagsScope tagsScope({});
+        TagsScope tagsScope(classes.empty() ? std::vector<TagItemObject> {} : [&]() -> std::vector<TagItemObject> {
+            std::vector<TagItemObject> result;
+            for_each(classes.begin(), classes.end(),
+                     [&result](BaseClass cls) { result.push_back({ PCIXFINDTAG_CLASS, (unsigned long)cls }); });
+            return result;
+        }());
 
         while ((board = PCIXFindBoardTagList(board, tagsScope.tagItems())))
         {

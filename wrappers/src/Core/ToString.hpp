@@ -32,6 +32,12 @@ class ToString
     /// @return The string representation of the clock frequency value.
     static std::string FromClockHertzValue(const unsigned long long value, const bool useSI = false, const bool asInteger = false);
 
+    /// @brief Converts a value to a string representation using SI prefixes (e.g., k, M, G).
+    /// @param value The value to convert.
+    /// @param asInteger Whether to format the value as an integer (no decimal places).
+    /// @return The string representation of the value with SI prefixes.
+    static std::string FromSIValue(const unsigned long long value, const std::string &unit, const bool asInteger = false);
+
     static std::string Replace(std::string input, const std::string &source, const std::string &replacement);
 
     // below methods could be removed if C++20 would be used with std::format

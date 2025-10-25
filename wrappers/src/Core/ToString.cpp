@@ -78,6 +78,22 @@ std::string ToString::FromClockHertzValue(const unsigned long long value, const 
     return stream.str();
 }
 
+std::string ToString::FromSIValue(const unsigned long long value, const std::string &unit, const bool asInteger)
+{
+    std::stringstream stream;
+    if (value >= 1'000'000'000)
+        stream << std::to_string(value / 1'000'000'000) << (asInteger ? "" : FormatFraction((value % 1'000'000'000) / 1'000'000, 3))
+               << " G";
+    else if (value >= 1'000'000)
+        stream << std::to_string(value / 1'000'000) << (asInteger ? "" : FormatFraction((value % 1'000'000) / 1'000, 3)) << " M";
+    else if (value >= 1'000)
+        stream << std::to_string(value / 1'000) << (asInteger ? "" : FormatFraction((value % 1'000) / 1, 3)) << " k";
+    else
+        stream << std::to_string(value);
+
+    return stream.str() + unit;
+}
+
 std::string ToString::Replace(std::string input, const std::string &source, const std::string &replacement)
 {
     std::size_t pos = 0;

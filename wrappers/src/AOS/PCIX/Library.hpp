@@ -18,8 +18,8 @@ namespace AOS::PCIX
         unsigned long vendorId;
         unsigned long deviceId;
         unsigned long classId;
-        std::optional<unsigned long> subvendorId { std::nullopt };
-        std::optional<unsigned long> subdeviceId { std::nullopt };
+        std::optional<unsigned long> subsystemVendorId { std::nullopt };
+        std::optional<unsigned long> subsystemId { std::nullopt };
         std::optional<unsigned long> subclassId { std::nullopt };
     };
 

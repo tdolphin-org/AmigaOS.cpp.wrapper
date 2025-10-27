@@ -32,6 +32,9 @@ namespace AOS::PCIX
                 PCIXReadConfigWord(board, PCIXCONFIG_VENDOR),
                 PCIXReadConfigWord(board, PCIXCONFIG_DEVICE),
                 PCIXReadConfigByte(board, PCIXCONFIG_CLASS),
+                PCIXReadConfigWord(board, PCIXCONFIG_SUBSYSTEMVENDORID),
+                PCIXReadConfigWord(board, PCIXCONFIG_SUBSYSTEMID),
+                PCIXReadConfigByte(board, PCIXCONFIG_SUBCLASS),
             });
         }
 

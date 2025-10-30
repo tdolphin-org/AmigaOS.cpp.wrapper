@@ -12,16 +12,19 @@ namespace AOS::PCIIDS
 {
     std::string Library::libGetVendorName(const unsigned long vendorId) noexcept
     {
-        return PCIIDS_GetVendorName(vendorId);
+        auto name = PCIIDS_GetVendorName(vendorId);
+        return name ? name : "Unknown";
     }
 
     std::string Library::libGetDeviceName(const unsigned long vendorId, const unsigned long deviceId) noexcept
     {
-        return PCIIDS_GetDeviceName(vendorId, deviceId);
+        auto name = PCIIDS_GetDeviceName(vendorId, deviceId);
+        return name ? name : "Unknown";
     }
 
     std::string Library::libGetClassName(const unsigned long classId) noexcept
     {
-        return PCIIDS_GetClassName(classId);
+        auto name = PCIIDS_GetClassName(classId);
+        return name ? name : "Unknown";
     }
 }

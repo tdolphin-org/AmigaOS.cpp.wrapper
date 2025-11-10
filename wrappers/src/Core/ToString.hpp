@@ -11,7 +11,7 @@
 
 enum class MemorySizeUnit
 {
-    AutoRound, // only when value can be rounded, e.g. 1536 Bytes, 1048576 Bytes, 100 KB, 2 MB, etc
+    AutoRound, // auto units, only when value can be rounded, e.g. 1536 Bytes, 1048576 Bytes, 100 KB, 2 MB, etc
     Bytes,
     KiloBytes, // value is cut to KB without decimal places
     MegaBytes, // value is cut to MB without decimal places
@@ -24,7 +24,7 @@ class ToString
     static std::string FromDataPointer(const void *value);
     static std::string FromHexValue(const unsigned long value);
     static std::string Concatenate(const std::vector<std::string> &array, const std::string &separator);
-    static std::string FromBytesValue(const unsigned long value, const MemorySizeUnit unit = MemorySizeUnit::AutoRound);
+    static std::string FromBytesValue(const unsigned long value, const MemorySizeUnit unit = MemorySizeUnit::AutoRound, const bool ceiling = false);
 
     /// @brief Converts a clock frequency value to a string representation.
     /// @param value The clock frequency value in Hertz.

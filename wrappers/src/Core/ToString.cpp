@@ -40,7 +40,7 @@ std::string ToString::Concatenate(const std::vector<std::string> &array, const s
                           [&separator](const std::string &a, const std::string &b) { return a.empty() ? b : a + separator + b; });
 }
 
-std::string ToString::FromBytesValue(const unsigned long value, const MemorySizeUnit unit)
+std::string ToString::FromBytesValue(const unsigned long value, const MemorySizeUnit unit, const bool ceiling)
 {
     if (unit == MemorySizeUnit::AutoRound)
     {
@@ -50,11 +50,23 @@ std::string ToString::FromBytesValue(const unsigned long value, const MemorySize
             return std::to_string(value / 1024) + " KB";
     }
     else if (unit == MemorySizeUnit::GigaBytes)
+    {
+        if (ceiling)
+            return std::to_string((value + (1024 * 1024 * 1024) - 1) / (1024 * 1024 * 1024)) + " GB";
         return (value % (1024 * 1024 * 1024) == 0 ? "" : "~") + std::to_string(value / (1024 * 1024 * 1024)) + " GB";
+    }
     else if (unit == MemorySizeUnit::MegaBytes)
+    {
+        if (ceiling)
+            return std::to_string((value + (1024 * 1024) - 1) / (1024 * 1024)) + " MB";
         return (value % (1024 * 1024) == 0 ? "" : "~") + std::to_string(value / (1024 * 1024)) + " MB";
+    }
     else if (unit == MemorySizeUnit::KiloBytes)
+    {
+        if (ceiling)
+            return std::to_string((value + 1024 - 1) / 1024) + " KB";
         return (value % 1024 == 0 ? "" : "~") + std::to_string(value / 1024) + " KB";
+    }
 
     return std::to_string(value) + " Bytes";
 }

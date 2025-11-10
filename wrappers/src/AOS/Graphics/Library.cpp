@@ -6,7 +6,6 @@
 
 #include "Library.hpp"
 
-#include <proto/cybergraphics.h>
 #include <proto/graphics.h>
 
 namespace AOS::Graphics

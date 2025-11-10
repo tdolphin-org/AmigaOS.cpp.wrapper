@@ -20,7 +20,7 @@ GraphicsBaseScope::GraphicsBaseScope(const bool optional)
         throw std::runtime_error(error);
     }
 
-    if (!(GfxBase = (struct GfxBase *)OpenLibrary(GRAPHICSNAME, 37)))
+    if (!(GfxBase = (struct GfxBase *)OpenLibrary(GRAPHICSNAME, 39))) // 39 = AmigaOS 3.0
     {
         if (optional)
             return;

@@ -66,14 +66,26 @@ namespace AOS::Cybergraphics
         return boards;
     }
 
+    unsigned long Library::libFillPixelArray(const RastPort &rastPort, const unsigned short destX, const unsigned short destY,
+                                             const unsigned short sizeX, const unsigned short sizeY, const unsigned long ARGB) noexcept
+    {
+        return FillPixelArray(const_cast<RastPort *>(&rastPort), destX, destY, sizeX, sizeY, ARGB);
+    }
+
     unsigned long Library::libBestCModeID(const unsigned long monitorID) noexcept
     {
+#ifdef TRACE_AMIGAOS
+        std::cout << __PRETTY_FUNCTION__ << "()" << std::endl;
+#endif
         TagsScope tagsScope({ { CYBRBIDTG_MonitorID, monitorID } });
         return BestCModeIDTagList(tagsScope.tagItems());
     }
 
     unsigned long Library::libBestCModeID(const std::string &boardName) noexcept
     {
+#ifdef TRACE_AMIGAOS
+        std::cout << __PRETTY_FUNCTION__ << "()" << std::endl;
+#endif
         TagsScope tagsScope({ { CYBRBIDTG_BoardName, boardName.c_str() } });
         return BestCModeIDTagList(tagsScope.tagItems());
     }

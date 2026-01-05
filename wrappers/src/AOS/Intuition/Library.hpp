@@ -26,7 +26,11 @@ namespace AOS::Intuition
 
     struct Library
     {
-        // @brief intuition:GetMonitorList()
-        static std::vector<Monitor> libGetMonitorList();
+        /// @brief intuition:GetMonitorList()
+        /// @param removeMultiMonitor If true, only the first monitor of multi-monitor setups is returned.
+        /// like RadeonX1650.monitor and RadeonX1650.monitor.1, only RadeonX1650.monitor is returned.
+        /// this is done by checking for .x suffixes. At least related to MorphOS behavior.
+        /// @return A vector of Monitor structures.
+        static std::vector<Monitor> libGetMonitorList(const bool removeMultiMonitor = false);
     };
 }

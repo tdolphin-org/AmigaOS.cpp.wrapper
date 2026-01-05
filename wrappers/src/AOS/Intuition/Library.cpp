@@ -11,7 +11,7 @@
 
 namespace AOS::Intuition
 {
-    std::vector<Monitor> Library::libGetMonitorList()
+    std::vector<Monitor> Library::libGetMonitorList(const bool removeMultiMonitor)
     {
         Object **pMonitorsArray = GetMonitorList(nullptr);
         if (!pMonitorsArray)
@@ -31,6 +31,20 @@ namespace AOS::Intuition
             unsigned long engineClock = 0; // gpu clock
 
             GetAttr(MA_MonitorName, pMonitorsArray[i], (ULONG *)&pMonitorName);
+
+            if (removeMultiMonitor) // check for multi-monitor setups, so .1, .2 suffixes
+            {
+                std::string monitorNameStr(pMonitorName);
+                auto dotPos = monitorNameStr.rfind('.');
+                auto suffixLength = monitorNameStr.length() - dotPos - 1;
+                if (suffixLength > 0 && suffixLength <= 2)
+                {
+                    // suffix looks like .1 or .x, consider this a multi-monitor entry
+                    i++;
+                    continue;
+                }
+            }
+
             GetAttr(MA_Manufacturer, pMonitorsArray[i], (ULONG *)&pManufacturerName);
             GetAttr(MA_DriverName, pMonitorsArray[i], (ULONG *)&pDriverName);
             GetAttr(MA_ManufacturerID, pMonitorsArray[i], &manufacturerId);
@@ -42,6 +56,7 @@ namespace AOS::Intuition
             result.push_back({ pMonitorName, pDriverName, pManufacturerName, manufacturerId, productId, memorySize,
                                memoryClock ? std::optional<unsigned long>(memoryClock) : std::nullopt,
                                engineClock ? std::optional<unsigned long>(engineClock) : std::nullopt });
+
             i++;
         }
 

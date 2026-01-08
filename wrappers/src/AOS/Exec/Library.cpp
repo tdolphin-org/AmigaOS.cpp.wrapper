@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "Library.hpp"
@@ -187,6 +187,8 @@ namespace AOS::Exec
             case SYSTEMINFOTYPE::CPUNAME:
             case SYSTEMINFOTYPE::PPC_CPUTEMP:
                 return libNewGetSystemAttrsAsString(type, cpuIdx);
+            case SYSTEMINFOTYPE::REGUSER:
+                return libNewGetSystemAttrsAsString(type, std::nullopt);
             case SYSTEMINFOTYPE::REVISION:
             case SYSTEMINFOTYPE::MACHINE:
             case SYSTEMINFOTYPE::CPUCOUNT:
@@ -214,17 +216,22 @@ namespace AOS::Exec
     std::string Library::libNewGetSystemAttrsAsString(const enum SYSTEMINFOTYPE type, std::optional<unsigned long> cpuIdx)
     {
         char buffer[256];
+        long len = 0;
 
         if (cpuIdx.has_value())
         {
             struct TagItem MyTags[] = { { SYSTEMINFOTAG_CPUINDEX, cpuIdx.value() }, { TAG_END, 0 } };
-            NewGetSystemAttrsA(buffer, sizeof(buffer), (unsigned long)type, MyTags);
+            len = NewGetSystemAttrsA(buffer, sizeof(buffer) - 1, (unsigned long)type, MyTags);
         }
         else
         {
             struct TagItem MyTags[] = { { TAG_END, 0 } };
-            NewGetSystemAttrsA(buffer, sizeof(buffer), (unsigned long)type, MyTags);
+            len = NewGetSystemAttrsA(buffer, sizeof(buffer) - 1, (unsigned long)type, MyTags);
         }
+
+        if (len <= 0)
+            return {};
+        buffer[len] = '\0';
 
         return std::string(buffer);
     }

@@ -10,7 +10,7 @@
 
 namespace AOS::IFFParse
 {
-    enum class IFFError : long
+    enum class IFFError : int32_t
     {
         Ok = 0,
         EndOfFile = IFFERR_EOF,

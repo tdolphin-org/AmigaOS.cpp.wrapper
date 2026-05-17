@@ -29,6 +29,8 @@ namespace amiga_std_light
         NumberBase number_base_ = NumberBase::Dec;
         char fill_char_ = ' ';
         size_t field_width_ = 0;
+        int float_precision_ = 6;
+        bool float_fixed_ = false;
 
         void skip_whitespace();
         bool read_token(std::string &token);
@@ -99,6 +101,7 @@ namespace amiga_std_light
         basic_stringstream &operator<<(std::ios_base &(*manipulator)(std::ios_base &));
         basic_stringstream &operator<<(const std::_Setfill<char> &manipulator);
         basic_stringstream &operator<<(const std::_Setw &manipulator);
+        basic_stringstream &operator<<(const std::_Setprecision &manipulator);
 
         basic_stringstream &operator<<(basic_stringstream &(*manipulator)(basic_stringstream &));
 

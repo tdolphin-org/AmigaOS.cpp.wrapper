@@ -7,6 +7,7 @@
 #include "sstream.hpp"
 
 #include <cerrno>
+#include <cstdio>
 #include <cstdlib>
 #include <limits>
 
@@ -59,37 +60,24 @@ namespace amiga_std_light
         append_unsigned_base(out, static_cast<uint64_t>(value), base);
     }
 
-    static void append_float(std::string &out, float value)
+    static void append_float(std::string &out, double value, int precision, bool fixed_mode)
     {
-        if (value == 0.0f)
+        char temp[128];
+        int safe_precision = (precision >= 0) ? precision : 0;
+        const char *format = fixed_mode ? "%.*f" : "%.*g";
+        int written = std::snprintf(temp, sizeof(temp), format, safe_precision, value);
+        if (written <= 0)
         {
             out.push_back('0');
             return;
         }
 
-        if (value < 0.0f)
+        if (static_cast<size_t>(written) >= sizeof(temp))
         {
-            out.push_back('-');
-            value = -value;
+            temp[sizeof(temp) - 1] = '\0';
         }
 
-        int int_part = static_cast<int>(value);
-        float frac_part = value - static_cast<float>(int_part);
-
-        append_unsigned_base(out, static_cast<uint64_t>(int_part), 10);
-
-        if (frac_part > 0.0001f)
-        {
-            out.push_back('.');
-
-            for (int i = 0; i < 6 && frac_part > 0.0001f; ++i)
-            {
-                frac_part *= 10.0f;
-                int digit = static_cast<int>(frac_part);
-                out.push_back(static_cast<char>('0' + digit));
-                frac_part -= static_cast<float>(digit);
-            }
-        }
+        out.append(temp);
     }
 
     static bool parse_signed(const std::string &token, int base, int64_t &value)
@@ -149,6 +137,10 @@ namespace amiga_std_light
         buffer_.clear();
         read_pos_ = 0;
         number_base_ = NumberBase::Dec;
+        fill_char_ = ' ';
+        field_width_ = 0;
+        float_precision_ = 6;
+        float_fixed_ = false;
     }
 
     void basic_stringstream::skip_whitespace()
@@ -311,7 +303,7 @@ namespace amiga_std_light
     basic_stringstream &basic_stringstream::operator<<(float value)
     {
         std::string text;
-        append_float(text, value);
+        append_float(text, static_cast<double>(value), float_precision_, float_fixed_);
         append_with_field_width(buffer_, text);
         return *this;
     }
@@ -319,7 +311,7 @@ namespace amiga_std_light
     basic_stringstream &basic_stringstream::operator<<(double value)
     {
         std::string text;
-        append_float(text, static_cast<float>(value));
+        append_float(text, value, float_precision_, float_fixed_);
         append_with_field_width(buffer_, text);
         return *this;
     }
@@ -353,6 +345,15 @@ namespace amiga_std_light
         {
             number_base_ = NumberBase::Oct;
         }
+        else if (manipulator == static_cast<std::ios_base &(*)(std::ios_base &)>(std::fixed))
+        {
+            float_fixed_ = true;
+        }
+        else if (manipulator == static_cast<std::ios_base &(*)(std::ios_base &)>(std::scientific)
+                 || manipulator == static_cast<std::ios_base &(*)(std::ios_base &)>(std::defaultfloat))
+        {
+            float_fixed_ = false;
+        }
 
         return *this;
     }
@@ -366,6 +367,12 @@ namespace amiga_std_light
     basic_stringstream &basic_stringstream::operator<<(const std::_Setw &manipulator)
     {
         field_width_ = static_cast<size_t>(manipulator._M_n > 0 ? manipulator._M_n : 0);
+        return *this;
+    }
+
+    basic_stringstream &basic_stringstream::operator<<(const std::_Setprecision &manipulator)
+    {
+        float_precision_ = manipulator._M_n;
         return *this;
     }
 

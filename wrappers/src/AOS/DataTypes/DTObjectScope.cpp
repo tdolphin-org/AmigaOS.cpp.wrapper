@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "DTObjectScope.hpp"
@@ -10,7 +10,7 @@
 #include <stdexcept>
 
 #ifdef TRACE_AMIGAOS
-#include "amiga_std_light/iostream.hpp"
+#include <cstdio>
 #endif
 
 namespace AOS::DataTypes
@@ -19,7 +19,7 @@ namespace AOS::DataTypes
       : mName(name)
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << " (" << name << "," << exceptionOnError << ")" << std::endl;
+        std::fprintf(stdout, "%s (%s,%d)\n", __PRETTY_FUNCTION__, name.c_str(), (int)exceptionOnError);
 #endif
 
 #ifdef __MORPHOS__

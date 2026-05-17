@@ -1,14 +1,14 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "CurrentDirNameScope.hpp"
 
 #include "Library.hpp"
 
-#include "amiga_std_light/iostream.hpp"
+#include <cstdio>
 #include <proto/dos.h>
 #include <stdexcept>
 
@@ -18,7 +18,7 @@ namespace AOS::Dos
       : mPath(path)
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << " " << path << std::endl;
+        std::fprintf(stdout, "%s %s\n", __PRETTY_FUNCTION__, path.c_str());
 #endif
 
         mOldCurrentDirName = Library::libGetCurrentDirName();
@@ -29,13 +29,13 @@ namespace AOS::Dos
             if (exceptionOnError)
                 throw std::runtime_error(error);
             else
-                std::cerr << error << std::endl;
+                std::fprintf(stderr, "%s\n", error.c_str());
             return;
         }
 
 #ifdef TRACE_AMIGAOS
-        std::cout << "oldDirName: " << mOldCurrentDirName << std::endl;
-        std::cout << "currentDirName: " << Library::libGetCurrentDirName() << std::endl;
+        std::fprintf(stdout, "oldDirName: %s\n", mOldCurrentDirName.c_str());
+        std::fprintf(stdout, "currentDirName: %s\n", Library::libGetCurrentDirName().c_str());
 #endif
     }
 

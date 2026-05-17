@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "Library.hpp"
@@ -13,6 +13,10 @@
 #include <proto/graphics.h>
 
 #include <map>
+
+#ifdef TRACE_AMIGAOS
+#include <cstdio>
+#endif
 
 extern struct Library *CyberGfxBase;
 
@@ -75,7 +79,7 @@ namespace AOS::Cybergraphics
     unsigned long Library::libBestCModeID(const unsigned long monitorID) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << "()" << std::endl;
+        std::fprintf(stdout, "%s()\n", __PRETTY_FUNCTION__);
 #endif
         TagsScope tagsScope({ { CYBRBIDTG_MonitorID, monitorID } });
         return BestCModeIDTagList(tagsScope.tagItems());
@@ -84,7 +88,7 @@ namespace AOS::Cybergraphics
     unsigned long Library::libBestCModeID(const std::string &boardName) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << "()" << std::endl;
+        std::fprintf(stdout, "%s()\n", __PRETTY_FUNCTION__);
 #endif
         TagsScope tagsScope({ { CYBRBIDTG_BoardName, boardName.c_str() } });
         return BestCModeIDTagList(tagsScope.tagItems());

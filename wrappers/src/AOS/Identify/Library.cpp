@@ -1,12 +1,12 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "Library.hpp"
 
-#include "amiga_std_light/iostream.hpp"
+#include <cstdio>
 #include <libraries/identify.h>
 #include <libraries/openpci.h>
 #include <proto/identify.h>
@@ -45,7 +45,7 @@ namespace AOS::Identify
                      IdHardware(IDHW_POWERPC, nullptr),
                      "",
                      IdHardware(IDHW_PPCCLOCK, nullptr),
-                     {},
+                     { },
                  } };
     }
 
@@ -83,7 +83,7 @@ namespace AOS::Identify
 
         ConfigDev *pConfigDev = nullptr;
 
-        char manufacturerName[IDENTIFYBUFLEN] = {}, productName[IDENTIFYBUFLEN] = {}, productClass[IDENTIFYBUFLEN] = {};
+        char manufacturerName[IDENTIFYBUFLEN] = { }, productName[IDENTIFYBUFLEN] = { }, productClass[IDENTIFYBUFLEN] = { };
         uint16_t manufacturerId = 0;
         uint8_t productId = 0;
         uint32_t classId = 0;
@@ -142,13 +142,13 @@ namespace AOS::Identify
     std::pair<PCIExpansionsResultCode, std::vector<PCIExpansion>> Library::GetPCIExpansions() noexcept
     {
         if (IdentifyBase->lib_Version < 45U) // Check if identify.library version is at least 45
-            return { PCIExpansionsResultCode::Missing45, {} };
+            return { PCIExpansionsResultCode::Missing45, { } };
 
         std::vector<PCIExpansion> pciExpansions;
         PCIExpansionsResultCode resultCode = PCIExpansionsResultCode::Success;
 
         struct pci_dev *pPCIDev = nullptr;
-        char manufacturerName[IDENTIFYBUFLEN] = {}, productName[IDENTIFYBUFLEN] = {}, productClass[IDENTIFYBUFLEN] = {};
+        char manufacturerName[IDENTIFYBUFLEN] = { }, productName[IDENTIFYBUFLEN] = { }, productClass[IDENTIFYBUFLEN] = { };
 
         while (true)
         {
@@ -171,7 +171,7 @@ namespace AOS::Identify
                     case IDERR_DONE:
                         break;
                     default:
-                        std::cerr << "GetPciExpansions: Error retrieving PCI expansion: " << result << std::endl;
+                        std::fprintf(stderr, "GetPciExpansions: Error retrieving PCI expansion: %d\n", (int)result);
                         resultCode = PCIExpansionsResultCode::UnknownError;
                 }
                 break;

@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "Library.hpp"
@@ -14,7 +14,7 @@
 #include "LockDosListScope.hpp"
 #include "LockScope.hpp"
 
-#include "amiga_std_light/iostream.hpp"
+#include <cstdio>
 #include <dos/dostags.h>
 #include <proto/dos.h>
 #include <sstream>
@@ -40,7 +40,7 @@ namespace AOS::Dos
     CommandLineInterface *Library::libCli() noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << "()" << std::endl;
+        std::fprintf(stdout, "%s()\n", __PRETTY_FUNCTION__);
 #endif
 
         // check if it is process
@@ -53,20 +53,20 @@ namespace AOS::Dos
     std::string Library::libNameFromLock(BPTR lock) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << "()" << std::endl;
+        std::fprintf(stdout, "%s()\n", __PRETTY_FUNCTION__);
 #endif
 
         char buffer[512];
         if (NameFromLock(lock, buffer, sizeof(buffer)))
             return buffer;
 
-        return {};
+        return { };
     }
 
     BPTR Library::libCreateDir(const std::string &name) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << "(" << name << ")" << std::endl;
+        std::fprintf(stdout, "%s(%s)\n", __PRETTY_FUNCTION__, name.c_str());
 #endif
 
         return CreateDir(name.c_str());
@@ -75,7 +75,7 @@ namespace AOS::Dos
     bool Library::libDeleteFile(const std::string &fileName) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << "(" << fileName << ")" << std::endl;
+        std::fprintf(stdout, "%s(%s)\n", __PRETTY_FUNCTION__, fileName.c_str());
 #endif
 
         return DeleteFile(fileName.c_str()) == TRUE;
@@ -84,7 +84,7 @@ namespace AOS::Dos
     bool Library::libRename(const std::string &oldName, std::string &newName) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << "(" << oldName << "," << newName << ")" << std::endl;
+        std::fprintf(stdout, "%s(%s,%s)\n", __PRETTY_FUNCTION__, oldName.c_str(), newName.c_str());
 #endif
 
         return Rename(oldName.c_str(), newName.c_str()) == TRUE;
@@ -93,13 +93,13 @@ namespace AOS::Dos
     std::string Library::libGetCurrentDirName() noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        std::fprintf(stdout, "%s\n", __PRETTY_FUNCTION__);
 #endif
         const unsigned int len = 256;
         char buffer[len];
 
         if (!GetCurrentDirName(buffer, len))
-            return {};
+            return { };
         buffer[len - 1] = '\0';
 
         return buffer;
@@ -109,7 +109,7 @@ namespace AOS::Dos
                                                const bool files /*= true*/) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << "(" << path << "," << pattern << ")" << std::endl;
+        std::fprintf(stdout, "%s(%s,%s)\n", __PRETTY_FUNCTION__, path.c_str(), pattern.c_str());
 #endif
 
         std::vector<std::string> result;
@@ -142,7 +142,7 @@ namespace AOS::Dos
             }
             catch (const std::exception &e)
             {
-                std::cerr << e.what() << '\n';
+                std::fprintf(stderr, "%s\n", e.what());
             }
         }
 

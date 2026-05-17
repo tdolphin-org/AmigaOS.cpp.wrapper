@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "Library.hpp"
@@ -11,7 +11,7 @@
 #include <proto/datatypes.h>
 
 #ifdef TRACE_AMIGAOS
-#include "amiga_std_light/iostream.hpp"
+#include <cstdio>
 #endif
 
 namespace AOS::DataTypes
@@ -25,7 +25,7 @@ namespace AOS::DataTypes
     ObtainDataTypeResult Library::libObtainDataType(const AOS::Dos::LockScope &lockScope) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
+        std::fprintf(stdout, "%s\n", __PRETTY_FUNCTION__);
 #endif
 
         if (lockScope.isValid())
@@ -47,7 +47,7 @@ namespace AOS::DataTypes
     ObtainDataTypeResult Library::libObtainDataType(const std::string &fileName) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::cout << __PRETTY_FUNCTION__ << " (" << fileName << ")" << std::endl;
+        std::fprintf(stdout, "%s (%s)\n", __PRETTY_FUNCTION__, fileName.c_str());
 #endif
 
         AOS::Dos::LockScope fileLockScope(fileName, false);

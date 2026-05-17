@@ -95,22 +95,6 @@ namespace amiga_std_light
         *buf_ptr = '\0';
     }
 
-    static void format_int32(char *buffer, int32_t value)
-    {
-        int32_t args[1] = { (int32_t)value };
-        char *buf_ptr = buffer;
-        RawDoFmt("%ld", args, (void (*)())PutChar, &buf_ptr);
-        *buf_ptr = '\0';
-    }
-
-    static void format_uint32(char *buffer, uint32_t value)
-    {
-        int32_t args[1] = { (int32_t)value };
-        char *buf_ptr = buffer;
-        RawDoFmt("%lu", args, (void (*)())PutChar, &buf_ptr);
-        *buf_ptr = '\0';
-    }
-
     static void format_int64(char *buffer, int64_t value)
     {
         // For 64-bit values, we need to split into high and low parts on AmigaOS

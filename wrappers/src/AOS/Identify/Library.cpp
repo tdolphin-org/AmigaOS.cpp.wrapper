@@ -11,7 +11,6 @@
 #include <libraries/openpci.h>
 #include <proto/identify.h>
 #include <set>
-#include <sstream>
 
 extern struct Library *IdentifyBase;
 
@@ -19,9 +18,7 @@ namespace AOS::Identify
 {
     std::string Library::GetVersion() noexcept
     {
-        std::stringstream versionStream;
-        versionStream << IdentifyBase->lib_Version << "." << IdentifyBase->lib_Revision;
-        return versionStream.str();
+        return std::to_string(IdentifyBase->lib_Version) + "." + std::to_string(IdentifyBase->lib_Revision);
     }
 
     std::vector<CPUInfo> Library::GetAllCPUs()

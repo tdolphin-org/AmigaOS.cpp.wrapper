@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "TagsScope.hpp"
@@ -12,7 +12,6 @@
 #include <libraries/asl.h>
 #include <libraries/mui.h>
 #include <mui/TextEditor_mcc.h>
-#include <sstream>
 
 namespace AOS
 {
@@ -32,9 +31,7 @@ namespace AOS
 
     std::string TagsScope::toString() const
     {
-        std::stringstream result;
-
-        result << "(";
+        std::string result = "(";
         for (size_t i = 0; mpTagItems[i].ti_Tag != TAG_END; i++)
         {
             auto tagName = mpTagItems[i].ti_Tag;
@@ -43,33 +40,33 @@ namespace AOS
             switch (tagName)
             {
                 case MUIA_Image_Spec:
-                    result << TagUtil::toString(tagName);
+                    result += TagUtil::toString(tagName);
                     if (tagValue <= MUII_Count)
-                        result << "=" + std::to_string(tagValue);
+                        result += "=" + std::to_string(tagValue);
                     else if (((char *)tagValue)[0] == '5' && ((char *)tagValue)[1] == ':')
-                        result << "=" + TagUtil::TagDataSTRPTR(tagValue);
+                        result += "=" + TagUtil::TagDataSTRPTR(tagValue);
                     else
-                        result << "=" + ToString::FromHexValue(tagValue);
+                        result += "=" + ToString::FromHexValue(tagValue);
                     break;
 
                 // TextEditor
                 case MUIA_TextEditor_Rows:
-                    result << TagUtil::toString(tagName) << "=" + tagValue;
+                    result += TagUtil::toString(tagName) + "=" + std::to_string(tagValue);
                     break;
 
                 case MUIA_TextEditor_Slider:
-                    result << TagUtil::toString(tagName) << "=" + ToString::FromHexValue(tagValue);
+                    result += TagUtil::toString(tagName) + "=" + ToString::FromHexValue(tagValue);
                     break;
 
                 default:
-                    result << TagUtil::toString(mpTagItems[i]);
+                    result += TagUtil::toString(mpTagItems[i]);
             }
-            result << ", ";
+            result += ", ";
         }
 
-        result << "TAG_END)";
+        result += "TAG_END)";
 
-        return result.str();
+        return result;
     }
 
 }

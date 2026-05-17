@@ -1,12 +1,10 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #pragma once
-
-#ifdef STD_LIGHT
 
 #include <cstddef>
 #include <cstdint>
@@ -96,6 +94,3 @@ namespace std
     using amiga_std_light::hex;
     using amiga_std_light::oct;
 }
-#else
-#include <iostream>
-#endif

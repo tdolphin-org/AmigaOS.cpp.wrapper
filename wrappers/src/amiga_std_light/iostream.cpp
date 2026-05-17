@@ -1,12 +1,10 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "iostream.hpp"
-
-#ifdef STD_LIGHT
 
 #include <cstring>
 
@@ -471,5 +469,3 @@ namespace amiga_std_light
     basic_ostream cerr;
     basic_ostream clog;
 }
-
-#endif

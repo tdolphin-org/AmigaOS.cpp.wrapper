@@ -1,13 +1,12 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "StringUtils.hpp"
 
 #include <algorithm>
-#include <sstream>
 
 void StringUtils::LTrim(std::string &str)
 {
@@ -121,13 +120,15 @@ bool StringUtils::hasSuffixTrimmed(std::string str, const std::initializer_list<
 
 std::vector<std::string> StringUtils::Split(const std::string &str)
 {
-    std::istringstream stream(str);
-    std::string line;
     std::vector<std::string> result;
-
-    while (std::getline(stream, line))
-        result.push_back(line);
-
+    std::size_t start = 0, pos;
+    while ((pos = str.find('\n', start)) != std::string::npos)
+    {
+        result.push_back(str.substr(start, pos - start));
+        start = pos + 1;
+    }
+    if (start < str.size())
+        result.push_back(str.substr(start));
     return result;
 }
 
@@ -166,21 +167,13 @@ std::string StringUtils::HumanReadableTimeDifference(const std::chrono::system_c
     auto minutes = std::chrono::duration_cast<std::chrono::minutes>(diff).count();
     auto hours = std::chrono::duration_cast<std::chrono::hours>(diff).count();
 
-    std::ostringstream oss;
+    std::string result;
     if (hours > 0)
-    {
-        oss << hours << " hour" << (hours > 1 ? "s" : "");
-    }
+        result = std::to_string(hours) + " hour" + (hours > 1 ? "s" : "");
     else if (minutes > 0)
-    {
-        oss << minutes << " minute" << (minutes > 1 ? "s" : "");
-    }
+        result = std::to_string(minutes) + " minute" + (minutes > 1 ? "s" : "");
     else
-    {
-        oss << seconds << " second" << (seconds > 1 ? "s" : "");
-    }
+        result = std::to_string(seconds) + " second" + (seconds > 1 ? "s" : "");
 
-    oss << " ago";
-
-    return oss.str();
+    return result + " ago";
 }

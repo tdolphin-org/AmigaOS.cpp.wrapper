@@ -17,7 +17,6 @@
 #include <cstdio>
 #include <dos/dostags.h>
 #include <proto/dos.h>
-#include <sstream>
 
 namespace AOS::Dos
 {

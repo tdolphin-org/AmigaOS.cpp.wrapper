@@ -9,27 +9,25 @@
 #include <cstdio>
 #include <iomanip>
 #include <numeric>
-#include <sstream>
 #include <type_traits>
 
-#ifdef STD_LIGHT
 #ifdef Format
 #undef Format
 #endif
-#endif // STD_LIGHT
 
 std::string ToString::FromDataPointer(const void *value)
 {
-    std::stringstream stream;
-    stream << std::hex << value;
-    return stream.str();
+    char buffer[16];
+    std::snprintf(buffer, sizeof(buffer), "0x%08lx", reinterpret_cast<unsigned long>(value));
+
+    return std::string(buffer);
 }
 
 std::string ToString::FromHexValue(const unsigned long value)
 {
-    std::stringstream stream;
-    stream << "0x" << std::hex << value;
-    return stream.str();
+    char buffer[32];
+    std::snprintf(buffer, sizeof(buffer), "0x%lx", value);
+    return std::string(buffer);
 }
 
 std::string ToString::Concatenate(const std::vector<std::string> &array, const std::string &separator)
@@ -74,36 +72,44 @@ std::string ToString::FromBytesValue(const unsigned long value, const MemorySize
 std::string ToString::FromClockHertzValue(const unsigned long long value, const bool useSI, const bool asInteger)
 {
     if (!useSI)
-        return std::to_string(value) + " Hz";
+    {
+        char buffer[32];
+        std::snprintf(buffer, sizeof(buffer), "%llu Hz", (unsigned long long)value);
+        return std::string(buffer);
+    }
 
-    std::stringstream stream;
+    char buffer[64];
     if (value >= 1'000'000'000)
-        stream << std::to_string(value / 1'000'000'000) << (asInteger ? "" : FormatFraction((value % 1'000'000'000) / 1'000'000, 3))
-               << " GHz";
+        std::snprintf(buffer, sizeof(buffer), "%llu%s GHz", (unsigned long long)(value / 1'000'000'000),
+                      asInteger ? "" : FormatFraction((value % 1'000'000'000) / 1'000'000, 3).c_str());
     else if (value >= 1'000'000)
-        stream << std::to_string(value / 1'000'000) << (asInteger ? "" : FormatFraction((value % 1'000'000) / 1'000, 3)) << " MHz";
+        std::snprintf(buffer, sizeof(buffer), "%llu%s MHz", (unsigned long long)(value / 1'000'000),
+                      asInteger ? "" : FormatFraction((value % 1'000'000) / 1'000, 3).c_str());
     else if (value >= 1'000)
-        stream << std::to_string(value / 1'000) << (asInteger ? "" : FormatFraction((value % 1'000) / 1, 3)) << " kHz";
+        std::snprintf(buffer, sizeof(buffer), "%llu%s kHz", (unsigned long long)(value / 1'000),
+                      asInteger ? "" : FormatFraction((value % 1'000) / 1, 3).c_str());
     else
-        stream << std::to_string(value) << " Hz";
+        std::snprintf(buffer, sizeof(buffer), "%llu Hz", (unsigned long long)value);
 
-    return stream.str();
+    return std::string(buffer);
 }
 
 std::string ToString::FromSIValue(const unsigned long long value, const std::string &unit, const bool asInteger)
 {
-    std::stringstream stream;
+    char buffer[64];
     if (value >= 1'000'000'000)
-        stream << std::to_string(value / 1'000'000'000) << (asInteger ? "" : FormatFraction((value % 1'000'000'000) / 1'000'000, 3))
-               << " G";
+        std::snprintf(buffer, sizeof(buffer), "%llu%s G%s", (unsigned long long)(value / 1'000'000'000),
+                      asInteger ? "" : FormatFraction((value % 1'000'000'000) / 1'000'000, 3).c_str(), unit.c_str());
     else if (value >= 1'000'000)
-        stream << std::to_string(value / 1'000'000) << (asInteger ? "" : FormatFraction((value % 1'000'000) / 1'000, 3)) << " M";
+        std::snprintf(buffer, sizeof(buffer), "%llu%s M%s", (unsigned long long)(value / 1'000'000),
+                      asInteger ? "" : FormatFraction((value % 1'000'000) / 1'000, 3).c_str(), unit.c_str());
     else if (value >= 1'000)
-        stream << std::to_string(value / 1'000) << (asInteger ? "" : FormatFraction((value % 1'000) / 1, 3)) << " k";
+        std::snprintf(buffer, sizeof(buffer), "%llu%s k%s", (unsigned long long)(value / 1'000),
+                      asInteger ? "" : FormatFraction((value % 1'000) / 1, 3).c_str(), unit.c_str());
     else
-        stream << std::to_string(value);
+        std::snprintf(buffer, sizeof(buffer), "%llu%s", (unsigned long long)value, unit.c_str());
 
-    return stream.str() + unit;
+    return std::string(buffer);
 }
 
 std::string ToString::Replace(std::string input, const std::string &source, const std::string &replacement)

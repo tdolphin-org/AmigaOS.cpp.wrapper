@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #pragma once
@@ -15,7 +15,7 @@ enum class MemorySizeUnit
     Bytes,
     KiloBytes, // value is cut to KB without decimal places
     MegaBytes, // value is cut to MB without decimal places
-    GigaBytes  // value is cut to GB without decimal places
+    GigaBytes // value is cut to GB without decimal places
 };
 
 class ToString
@@ -23,8 +23,10 @@ class ToString
   public:
     static std::string FromDataPointer(const void *value);
     static std::string FromHexValue(const unsigned long value);
+    static std::string FromHexValue(const unsigned long value, const int width);
     static std::string Concatenate(const std::vector<std::string> &array, const std::string &separator);
-    static std::string FromBytesValue(const unsigned long value, const MemorySizeUnit unit = MemorySizeUnit::AutoRound, const bool ceiling = false);
+    static std::string FromBytesValue(const unsigned long value, const MemorySizeUnit unit = MemorySizeUnit::AutoRound,
+                                      const bool ceiling = false);
 
     /// @brief Converts a clock frequency value to a string representation.
     /// @param value The clock frequency value in Hertz.

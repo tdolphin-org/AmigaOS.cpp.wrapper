@@ -30,6 +30,13 @@ std::string ToString::FromHexValue(const unsigned long value)
     return std::string(buffer);
 }
 
+std::string ToString::FromHexValue(const unsigned long value, const int width)
+{
+    char buffer[32];
+    std::snprintf(buffer, sizeof(buffer), "0x%0*lx", width, value);
+    return std::string(buffer);
+}
+
 std::string ToString::Concatenate(const std::vector<std::string> &array, const std::string &separator)
 {
     return array.size() == 1

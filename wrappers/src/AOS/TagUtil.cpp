@@ -1,15 +1,15 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "TagUtil.hpp"
 
 #include "Core/ToString.hpp"
 
+#include "mui.hpp"
 #include <libraries/asl.h>
-#include <libraries/mui.h>
 #include <mui/TextEditor_mcc.h>
 
 #define MAP_PAIR(A, B) { A, { #A, B } }

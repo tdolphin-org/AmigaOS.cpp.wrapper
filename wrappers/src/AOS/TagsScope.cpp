@@ -9,8 +9,8 @@
 #include "Identifier.hpp"
 #include "TagUtil.hpp"
 
+#include "mui.hpp"
 #include <libraries/asl.h>
-#include <libraries/mui.h>
 #include <mui/TextEditor_mcc.h>
 
 namespace AOS

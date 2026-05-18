@@ -13,6 +13,8 @@
 
 namespace AOS
 {
+    /// @brief RAII class for TagItem array
+    /// immutable, no copy/move
     class TagsScope
     {
         TagItem *mpTagItems;

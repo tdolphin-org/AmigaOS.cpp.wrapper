@@ -14,7 +14,7 @@
 #include "LockDosListScope.hpp"
 #include "LockScope.hpp"
 
-#include <cstdio>
+#include "amiga_std_light/iostream.hpp"
 #include <dos/dostags.h>
 #include <proto/dos.h>
 
@@ -39,7 +39,7 @@ namespace AOS::Dos
     CommandLineInterface *Library::libCli() noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "%s()\n", __PRETTY_FUNCTION__);
+        std::cout << __PRETTY_FUNCTION__ << "()" << std::endl;
 #endif
 
         // check if it is process
@@ -52,7 +52,7 @@ namespace AOS::Dos
     std::string Library::libNameFromLock(BPTR lock) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "%s()\n", __PRETTY_FUNCTION__);
+        std::cout << __PRETTY_FUNCTION__ << "()" << std::endl;
 #endif
 
         char buffer[512];
@@ -65,7 +65,7 @@ namespace AOS::Dos
     BPTR Library::libCreateDir(const std::string &name) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "%s(%s)\n", __PRETTY_FUNCTION__, name.c_str());
+        std::cout << __PRETTY_FUNCTION__ << "(" << name << ")" << std::endl;
 #endif
 
         return CreateDir(name.c_str());
@@ -74,7 +74,7 @@ namespace AOS::Dos
     bool Library::libDeleteFile(const std::string &fileName) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "%s(%s)\n", __PRETTY_FUNCTION__, fileName.c_str());
+        std::cout << __PRETTY_FUNCTION__ << "(" << fileName << ")" << std::endl;
 #endif
 
         return DeleteFile(fileName.c_str()) == TRUE;
@@ -83,7 +83,7 @@ namespace AOS::Dos
     bool Library::libRename(const std::string &oldName, std::string &newName) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "%s(%s,%s)\n", __PRETTY_FUNCTION__, oldName.c_str(), newName.c_str());
+        std::cout << __PRETTY_FUNCTION__ << "(" << oldName << "," << newName << ")" << std::endl;
 #endif
 
         return Rename(oldName.c_str(), newName.c_str()) == TRUE;
@@ -92,7 +92,7 @@ namespace AOS::Dos
     std::string Library::libGetCurrentDirName() noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "%s\n", __PRETTY_FUNCTION__);
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
 #endif
         const unsigned int len = 256;
         char buffer[len];
@@ -108,7 +108,7 @@ namespace AOS::Dos
                                                const bool files /*= true*/) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "%s(%s,%s)\n", __PRETTY_FUNCTION__, path.c_str(), pattern.c_str());
+        std::cout << __PRETTY_FUNCTION__ << "(" << path << "," << pattern << ")" << std::endl;
 #endif
 
         std::vector<std::string> result;
@@ -141,7 +141,7 @@ namespace AOS::Dos
             }
             catch (const std::exception &e)
             {
-                std::fprintf(stderr, "%s\n", e.what());
+                std::cerr << e.what() << '\n';
             }
         }
 

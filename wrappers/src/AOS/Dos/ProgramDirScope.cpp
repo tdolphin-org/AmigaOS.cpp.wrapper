@@ -6,7 +6,7 @@
 
 #include "ProgramDirScope.hpp"
 
-#include <cstdio>
+#include "amiga_std_light/iostream.hpp"
 #include <proto/dos.h>
 #include <stdexcept>
 
@@ -23,7 +23,7 @@ namespace AOS::Dos
       , mProgramDirLock(0)
     {
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "%s %s\n", __PRETTY_FUNCTION__, path.c_str());
+        std::cout << __PRETTY_FUNCTION__ << " " << path << std::endl;
 #endif
 
         mLock = Lock(mPath.c_str(), ACCESS_READ);
@@ -33,16 +33,16 @@ namespace AOS::Dos
             if (exceptionOnError)
                 throw std::runtime_error(error);
             else
-                std::fprintf(stderr, "%s\n", error.c_str());
+                std::cerr << error << std::endl;
             return;
         }
 
         mProgramDirLock = SetProgramDir(mLock);
 
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "currentDirName: %s\n", Library::libGetCurrentDirName().c_str());
-        std::fprintf(stdout, "lock: %s\n", ToString::FromLock(mLock).c_str());
-        std::fprintf(stdout, "programLock: %s\n", ToString::FromLock(mProgramDirLock).c_str());
+        std::cout << "currentDirName: " << Library::libGetCurrentDirName() << std::endl;
+        std::cout << "lock: " << ToString::FromLock(mLock) << std::endl;
+        std::cout << "programLock: " << ToString::FromLock(mProgramDirLock) << std::endl;
 #endif
     }
 

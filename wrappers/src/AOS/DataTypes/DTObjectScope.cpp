@@ -10,7 +10,7 @@
 #include <stdexcept>
 
 #ifdef TRACE_AMIGAOS
-#include <cstdio>
+#include "amiga_std_light/iostream.hpp"
 #endif
 
 namespace AOS::DataTypes
@@ -19,7 +19,7 @@ namespace AOS::DataTypes
       : mName(name)
     {
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "%s (%s,%d)\n", __PRETTY_FUNCTION__, name.c_str(), (int)exceptionOnError);
+        std::cout << __PRETTY_FUNCTION__ << " (" << name << "," << exceptionOnError << ")" << std::endl;
 #endif
 
 #ifdef __MORPHOS__

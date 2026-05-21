@@ -9,7 +9,7 @@
 #include "Core/ToString.hpp"
 #include "TagUtil.hpp"
 
-#include <cstdio>
+#include "amiga_std_light/iostream.hpp"
 #include <string>
 
 namespace AOS
@@ -22,7 +22,7 @@ namespace AOS
         {
             auto error = std::string { __PRETTY_FUNCTION__ } + " tag " + AOS::TagUtil::toString(tagName) + ", object pointer "
                 + ToString::FromDataPointer(pObject) + " already added by some other object!";
-            std::fprintf(stderr, "%s\n", error.c_str()); // FIXME remove it, after catching exceptions will start to work
+            std::cerr << error << std::endl; // FIXME remove it, after catching exceptions will start to work
             return;
         }
 
@@ -34,7 +34,7 @@ namespace AOS
         if (mTagKeys.find(tagName) != mTagKeys.end())
         {
             auto error = std::string { __PRETTY_FUNCTION__ } + " tag " + AOS::TagUtil::toString(tagName) + " already added by TagBuilder!";
-            std::fprintf(stderr, "%s\n", error.c_str()); // FIXME remove it, after catching exceptions will start to work
+            std::cerr << error << std::endl; // FIXME remove it, after catching exceptions will start to work
             return;
         }
         mTagKeys.insert(tagName);

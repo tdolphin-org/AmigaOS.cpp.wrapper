@@ -15,7 +15,7 @@
 #include <map>
 
 #ifdef TRACE_AMIGAOS
-#include <cstdio>
+#include "amiga_std_light/iostream.hpp"
 #endif
 
 extern struct Library *CyberGfxBase;
@@ -79,7 +79,7 @@ namespace AOS::Cybergraphics
     unsigned long Library::libBestCModeID(const unsigned long monitorID) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "%s()\n", __PRETTY_FUNCTION__);
+        std::cout << __PRETTY_FUNCTION__ << "()" << std::endl;
 #endif
         TagsScope tagsScope({ { CYBRBIDTG_MonitorID, monitorID } });
         return BestCModeIDTagList(tagsScope.tagItems());
@@ -88,7 +88,7 @@ namespace AOS::Cybergraphics
     unsigned long Library::libBestCModeID(const std::string &boardName) noexcept
     {
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "%s()\n", __PRETTY_FUNCTION__);
+        std::cout << __PRETTY_FUNCTION__ << "()" << std::endl;
 #endif
         TagsScope tagsScope({ { CYBRBIDTG_BoardName, boardName.c_str() } });
         return BestCModeIDTagList(tagsScope.tagItems());

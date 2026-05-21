@@ -8,7 +8,7 @@
 
 #include "Library.hpp"
 
-#include <cstdio>
+#include "amiga_std_light/iostream.hpp"
 #include <proto/dos.h>
 #include <stdexcept>
 
@@ -18,7 +18,7 @@ namespace AOS::Dos
       : mPath(path)
     {
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "%s %s\n", __PRETTY_FUNCTION__, path.c_str());
+        std::cout << __PRETTY_FUNCTION__ << " " << path << std::endl;
 #endif
 
         mOldCurrentDirName = Library::libGetCurrentDirName();
@@ -29,13 +29,13 @@ namespace AOS::Dos
             if (exceptionOnError)
                 throw std::runtime_error(error);
             else
-                std::fprintf(stderr, "%s\n", error.c_str());
+                std::cerr << error << std::endl;
             return;
         }
 
 #ifdef TRACE_AMIGAOS
-        std::fprintf(stdout, "oldDirName: %s\n", mOldCurrentDirName.c_str());
-        std::fprintf(stdout, "currentDirName: %s\n", Library::libGetCurrentDirName().c_str());
+        std::cout << "oldDirName: " << mOldCurrentDirName << std::endl;
+        std::cout << "currentDirName: " << Library::libGetCurrentDirName() << std::endl;
 #endif
     }
 

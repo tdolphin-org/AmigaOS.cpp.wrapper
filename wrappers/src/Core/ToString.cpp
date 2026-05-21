@@ -6,7 +6,7 @@
 
 #include "ToString.hpp"
 
-#include <cstdio>
+#include "amiga_std_light/iostream.hpp"
 #include <iomanip>
 #include <numeric>
 #include <type_traits>
@@ -139,7 +139,7 @@ std::string ToString::Format(std::string format, const std::string &arg0)
     }
     catch (...)
     {
-        std::fprintf(stderr, "exception on std::format(arg0)=%s\n", format.c_str());
+        std::cerr << "exception on std::format(arg0)=" << format << std::endl;
         return format;
     }
 }
@@ -155,7 +155,7 @@ std::string ToString::Format(std::string format, const std::vector<std::string> 
     }
     catch (...)
     {
-        std::fprintf(stderr, "exception on std::format(arg0)=%s\n", format.c_str());
+        std::cerr << "exception on std::format(arg0)=" << format << std::endl;
         return format;
     }
 }
@@ -170,7 +170,7 @@ std::string ToString::Format(std::string format, const std::string &arg0, const 
     }
     catch (...)
     {
-        std::fprintf(stderr, "exception on std::format(arg0,arg1)=%s\n", format.c_str());
+        std::cerr << "exception on std::format(arg0,arg1)=" << format << std::endl;
         return format;
     }
 }
@@ -185,7 +185,7 @@ std::string ToString::Format(std::string format, const std::string &arg0, const 
     }
     catch (...)
     {
-        std::fprintf(stderr, "exception on std::format(arg0,arg1)=%s\n", format.c_str());
+        std::cerr << "exception on std::format(arg0,arg1)=" << format << std::endl;
         return format;
     }
 }
@@ -200,7 +200,7 @@ std::string ToString::Format(std::string format, const std::vector<std::string> 
     }
     catch (...)
     {
-        std::fprintf(stderr, "exception on std::format(arg0,arg1)=%s\n", format.c_str());
+        std::cerr << "exception on std::format(arg0,arg1)=" << format << std::endl;
         return format;
     }
 }
@@ -216,7 +216,7 @@ std::string ToString::Format(std::string format, const std::string &arg0, const 
     }
     catch (...)
     {
-        std::fprintf(stderr, "exception on std::format(arg0,arg1,arg2)=%s\n", format.c_str());
+        std::cerr << "exception on std::format(arg0,arg1,arg2)=" << format << std::endl;
         return format;
     }
 }
@@ -234,7 +234,7 @@ std::string ToString::Format(std::string format, const std::string &arg0, const 
     }
     catch (...)
     {
-        std::fprintf(stderr, "exception on std::format(arg0,arg1,arg2,arg3)=%s\n", format.c_str());
+        std::cerr << "exception on std::format(arg0,arg1,arg2,arg3)=" << format << std::endl;
         return format;
     }
 }
@@ -253,7 +253,7 @@ std::string ToString::Format(std::string format, const std::string &arg0, const 
     }
     catch (...)
     {
-        std::fprintf(stderr, "exception on std::format(arg0,arg1,arg2,arg3,arg4)=%s\n", format.c_str());
+        std::cerr << "exception on std::format(arg0,arg1,arg2,arg3,arg4)=" << format << std::endl;
         return format;
     }
 }

@@ -1,12 +1,12 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2026 TDolphin
+//  (c) 2024-2025 TDolphin
 //
 
 #include "Library.hpp"
 
-#include <cstdio>
+#include "amiga_std_light/iostream.hpp"
 #include <libraries/identify.h>
 #include <libraries/openpci.h>
 #include <proto/identify.h>
@@ -168,7 +168,7 @@ namespace AOS::Identify
                     case IDERR_DONE:
                         break;
                     default:
-                        std::fprintf(stderr, "GetPciExpansions: Error retrieving PCI expansion: %d\n", (int)result);
+                        std::cerr << "GetPciExpansions: Error retrieving PCI expansion: " << result << std::endl;
                         resultCode = PCIExpansionsResultCode::UnknownError;
                 }
                 break;

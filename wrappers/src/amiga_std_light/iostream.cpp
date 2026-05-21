@@ -106,19 +106,25 @@ namespace amiga_std_light
         }
 
         int is_negative = 0;
+        uint64_t magnitude;
         if (value < 0)
         {
             is_negative = 1;
-            value = -value;
+            // Avoid UB for INT64_MIN by converting through -(value + 1).
+            magnitude = static_cast<uint64_t>(-(value + 1)) + 1;
+        }
+        else
+        {
+            magnitude = static_cast<uint64_t>(value);
         }
 
         // Simple conversion for 64-bit
         char digits[21];
         int digit_count = 0;
-        while (value > 0)
+        while (magnitude > 0)
         {
-            digits[digit_count++] = '0' + (value % 10);
-            value /= 10;
+            digits[digit_count++] = '0' + (magnitude % 10);
+            magnitude /= 10;
         }
 
         int pos = 0;
@@ -253,7 +259,8 @@ namespace amiga_std_light
         if (buffer_pos > 0)
         {
             buffer[buffer_pos] = '\0';
-            VPrintf("%s", (int32_t *)&buffer);
+            int32_t args[1] = { (int32_t)buffer };
+            VPrintf("%s", args);
             buffer_pos = 0;
         }
     }

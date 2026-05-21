@@ -10,9 +10,6 @@
 #include <cstdint>
 #include <string>
 
-#include <proto/dos.h>
-#include <proto/exec.h>
-
 namespace amiga_std_light
 {
     class basic_ostream

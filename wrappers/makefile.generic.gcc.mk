@@ -23,6 +23,7 @@ AFLAGS = rcs
 
 dir_guard = mkdir -p $(@D)
 
+LIB_NAME = libamiga_std_light.a
 LIBPATH = lib/$(SUB_BUILD_PATH)
 OBJ_BASE = obj/$(SUB_BUILD_PATH)
 

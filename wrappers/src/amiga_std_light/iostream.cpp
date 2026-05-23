@@ -11,6 +11,15 @@
 #include <proto/dos.h>
 #include <proto/exec.h>
 
+#ifdef __MORPHOS__
+#include <exec/rawfmt.h>
+#endif
+
+static void putCharToBuffer(char c, char **buf)
+{
+    *(*buf)++ = c;
+}
+
 namespace amiga_std_light
 {
     // RawDoFmt character copy callback in machine code
@@ -167,10 +176,13 @@ namespace amiga_std_light
 
     static void format_ptr(char *buffer, const void *ptr)
     {
-        int32_t args[1] = { (int32_t)ptr };
-        char *buf_ptr = buffer;
-        RawDoFmt("0x%lx", args, (void (*)())PutChar, &buf_ptr);
-        *buf_ptr = '\0';
+#ifdef __MORPHOS__
+        ULONG args[] = { (ULONG)ptr };
+        NewRawDoFmt("0x%08lx", RAWFMTFUNC_STRING, buffer, args);
+#else
+        ULONG args[] = { (ULONG)ptr };
+        RawDoFmt((STRPTR) "0x%08lx", args, (void (*)())putCharToBuffer, buffer);
+#endif
     }
 
     // For floating point, we'll use a simple approach since AmigaOS RawDoFmt doesn't support %g

@@ -185,8 +185,7 @@ namespace amiga_std_light
     static void format_ptr(char *buffer, const void *ptr)
     {
 #ifdef __MORPHOS__
-        ULONG args[] = { (ULONG)ptr };
-        NewRawDoFmt("0x%08lx", RAWFMTFUNC_STRING, buffer, args);
+        NewRawDoFmt("0x%08lx", RAWFMTFUNC_STRING, buffer, ptr);
 #else
         ULONG args[] = { (ULONG)ptr };
         RawDoFmt((STRPTR) "0x%08lx", args, (void (*)())putCharToBuffer, buffer);

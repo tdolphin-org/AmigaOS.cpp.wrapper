@@ -298,19 +298,33 @@ namespace amiga_std_light
             size_t len = strlen(str);
             while (len > 0)
             {
-                size_t available = BUFFER_SIZE - buffer_pos - 1;
-                size_t to_copy = (len < available) ? len : available;
+                const void *newline_ptr = std::memchr(str, '\n', len);
+                size_t logical_chunk = newline_ptr ? (static_cast<const char *>(newline_ptr) - str) + 1 : len;
 
-                if (to_copy == 0)
+                size_t copied = 0;
+                while (copied < logical_chunk)
                 {
-                    flush_buffer();
-                    continue;
+                    size_t available = BUFFER_SIZE - buffer_pos - 1;
+                    size_t to_copy = ((logical_chunk - copied) < available) ? (logical_chunk - copied) : available;
+
+                    if (to_copy == 0)
+                    {
+                        flush_buffer();
+                        continue;
+                    }
+
+                    std::memcpy(buffer + buffer_pos, str + copied, to_copy);
+                    buffer_pos += to_copy;
+                    copied += to_copy;
                 }
 
-                std::memcpy(buffer + buffer_pos, str, to_copy);
-                buffer_pos += to_copy;
-                str += to_copy;
-                len -= to_copy;
+                if (newline_ptr)
+                {
+                    flush_buffer();
+                }
+
+                str += logical_chunk;
+                len -= logical_chunk;
             }
         }
         return *this;
@@ -325,6 +339,10 @@ namespace amiga_std_light
     {
         ensure_capacity(1);
         buffer[buffer_pos++] = c;
+        if (c == '\n')
+        {
+            flush_buffer();
+        }
         return *this;
     }
 
@@ -445,19 +463,33 @@ namespace amiga_std_light
         {
             while (count > 0)
             {
-                size_t available = BUFFER_SIZE - buffer_pos - 1;
-                size_t to_copy = (count < available) ? count : available;
+                const void *newline_ptr = std::memchr(str, '\n', count);
+                size_t logical_chunk = newline_ptr ? (static_cast<const char *>(newline_ptr) - str) + 1 : count;
 
-                if (to_copy == 0)
+                size_t copied = 0;
+                while (copied < logical_chunk)
                 {
-                    flush_buffer();
-                    continue;
+                    size_t available = BUFFER_SIZE - buffer_pos - 1;
+                    size_t to_copy = ((logical_chunk - copied) < available) ? (logical_chunk - copied) : available;
+
+                    if (to_copy == 0)
+                    {
+                        flush_buffer();
+                        continue;
+                    }
+
+                    memcpy(buffer + buffer_pos, str + copied, to_copy);
+                    buffer_pos += to_copy;
+                    copied += to_copy;
                 }
 
-                memcpy(buffer + buffer_pos, str, to_copy);
-                buffer_pos += to_copy;
-                str += to_copy;
-                count -= to_copy;
+                if (newline_ptr)
+                {
+                    flush_buffer();
+                }
+
+                str += logical_chunk;
+                count -= logical_chunk;
             }
         }
         return *this;

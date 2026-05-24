@@ -4,7 +4,7 @@
 # (c) 2024-2026 TDolphin
 #
 
-SUB_PROJECTS = wrappers
+SUB_PROJECTS = wrappers tests
 
 all:
 	@echo "# Available actions:"

@@ -14,6 +14,21 @@
 #  2. MorphOS cross compilation setup from -> https://morph.zone/modules/newbb_plus/viewtopic.php?topic_id=13308&forum=12
 #
 
+# Why these flags for static library (.a) build:
+# -ffunction-sections / -fdata-sections:
+#   put each function/object into a separate ELF section so the final executable
+#   can discard unused code/data from this library (with linker --gc-sections).
+#   This reduces binary size when app uses only a subset of wrappers.
+# -fvisibility=hidden / -fvisibility-inlines-hidden:
+#   hide symbols by default to limit exported API surface and avoid accidental
+#   symbol collisions when many static libs are linked together.
+# -fno-rtti and (on MorphOS) -fno-threadsafe-statics:
+#   cut C++ runtime overhead and dependencies, which is desirable in this low-
+#   level cross-target environment.
+#   (-fno-rtti -> code doesn't contains dynamic_cast/typeid)
+# -noixemul (MorphOS):
+#   build against native ABI/runtime (without ixemul emulation layer).
+
 # compiler/linker flags
 # WARNING: use the same -Ox option for this lib and Your application, different values can cause linking errors
 # -fno-rtti disables RTTI (Run-Time Type Information) support

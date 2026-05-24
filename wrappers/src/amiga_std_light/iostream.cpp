@@ -22,86 +22,94 @@ static void putCharToBuffer(char c, char **buf)
 
 namespace amiga_std_light
 {
-    // RawDoFmt character copy callback in machine code
-    // 0x16c0 = move.b d0,(a3)+  ; copy byte from d0 to (a3), increment a3
-    // 0x4e75 = rts             ; return from subroutine
-    static const uint32_t PutChar = 0x16c04e75;
+    static void format_uint32_base(char *buffer, uint32_t value, int base)
+    {
+        int normalized_base = 10;
+        if (base == 16)
+        {
+            normalized_base = 16;
+        }
+        else if (base == 8)
+        {
+            normalized_base = 8;
+        }
 
-    // Helper functions using RawDoFmt() instead of sprintf
+        if (value == 0)
+        {
+            buffer[0] = '0';
+            buffer[1] = '\0';
+            return;
+        }
+
+        static const char digits[] = "0123456789abcdef";
+        char reversed[33];
+        int digit_count = 0;
+
+        while (value > 0)
+        {
+            const uint32_t rem = value % static_cast<uint32_t>(normalized_base);
+            reversed[digit_count++] = digits[rem];
+            value /= static_cast<uint32_t>(normalized_base);
+        }
+
+        int pos = 0;
+        for (int i = digit_count - 1; i >= 0; i--)
+        {
+            buffer[pos++] = reversed[i];
+        }
+        buffer[pos] = '\0';
+    }
+
+    // Helper functions without RawDoFmt/sprintf.
     static void format_int8(char *buffer, int8_t value)
     {
-        int32_t args[1] = { (int32_t)value };
-        char *buf_ptr = buffer;
-        RawDoFmt("%ld", args, (void (*)())PutChar, &buf_ptr);
-        *buf_ptr = '\0';
+        if (value < 0)
+        {
+            buffer[0] = '-';
+            const uint32_t magnitude = static_cast<uint32_t>(-(static_cast<int32_t>(value) + 1)) + 1;
+            format_uint32_base(buffer + 1, magnitude, 10);
+            return;
+        }
+
+        format_uint32_base(buffer, static_cast<uint32_t>(value), 10);
     }
 
     static void format_int32_base(char *buffer, int32_t value, int base)
     {
-        const char *format_str;
         switch (base)
         {
             case 16:
-                format_str = "%lx";
-                break;
             case 8:
-                format_str = "%lo";
+                format_uint32_base(buffer, static_cast<uint32_t>(value), base);
                 break;
             default:
-                format_str = "%ld";
+                if (value < 0)
+                {
+                    buffer[0] = '-';
+                    const uint32_t magnitude = static_cast<uint32_t>(-(value + 1)) + 1;
+                    format_uint32_base(buffer + 1, magnitude, 10);
+                }
+                else
+                {
+                    format_uint32_base(buffer, static_cast<uint32_t>(value), 10);
+                }
                 break;
         }
-
-        int32_t args[1] = { value };
-        char *buf_ptr = buffer;
-        RawDoFmt(format_str, args, (void (*)())PutChar, &buf_ptr);
-        *buf_ptr = '\0';
-    }
-
-    static void format_uint32_base(char *buffer, uint32_t value, int base)
-    {
-        const char *format_str;
-        switch (base)
-        {
-            case 16:
-                format_str = "%lx";
-                break;
-            case 8:
-                format_str = "%lo";
-                break;
-            default:
-                format_str = "%lu";
-                break;
-        }
-
-        int32_t args[1] = { (int32_t)value };
-        char *buf_ptr = buffer;
-        RawDoFmt(format_str, args, (void (*)())PutChar, &buf_ptr);
-        *buf_ptr = '\0';
     }
 
     static void format_uint8(char *buffer, uint8_t value)
     {
-        int32_t args[1] = { (int32_t)value };
-        char *buf_ptr = buffer;
-        RawDoFmt("%lu", args, (void (*)())PutChar, &buf_ptr);
-        *buf_ptr = '\0';
+        format_uint32_base(buffer, static_cast<uint32_t>(value), 10);
     }
 
     static void format_int16(char *buffer, int16_t value)
     {
-        int32_t args[1] = { (int32_t)value };
-        char *buf_ptr = buffer;
-        RawDoFmt("%ld", args, (void (*)())PutChar, &buf_ptr);
-        *buf_ptr = '\0';
+        format_int32_base(buffer, static_cast<int32_t>(value), 10);
     }
 
     static void format_uint16(char *buffer, uint16_t value)
     {
-        int32_t args[1] = { (int32_t)value };
-        char *buf_ptr = buffer;
-        RawDoFmt("%lu", args, (void (*)())PutChar, &buf_ptr);
-        *buf_ptr = '\0';
+        format_uint32_base(buffer, static_cast<uint32_t>(value), 10);
     }
 
     static void format_int64(char *buffer, int64_t value)
@@ -271,8 +279,7 @@ namespace amiga_std_light
         if (buffer_pos > 0)
         {
             buffer[buffer_pos] = '\0';
-            int32_t args[1] = { (int32_t)buffer };
-            VPrintf("%s", args);
+            PutStr(buffer);
             buffer_pos = 0;
         }
     }
@@ -362,6 +369,24 @@ namespace amiga_std_light
         char temp[11]; // "4294967295\0" or hex equivalent
         format_uint32_base(temp, value, static_cast<int>(number_base_));
         return *this << temp;
+    }
+
+    basic_ostream &basic_ostream::operator<<(long value)
+    {
+        if (sizeof(long) <= sizeof(int32_t))
+        {
+            return *this << static_cast<int32_t>(value);
+        }
+        return *this << static_cast<int64_t>(value);
+    }
+
+    basic_ostream &basic_ostream::operator<<(unsigned long value)
+    {
+        if (sizeof(unsigned long) <= sizeof(uint32_t))
+        {
+            return *this << static_cast<uint32_t>(value);
+        }
+        return *this << static_cast<uint64_t>(value);
     }
 
     basic_ostream &basic_ostream::operator<<(int64_t value)

@@ -51,6 +51,8 @@ namespace amiga_std_light
         basic_ostream &operator<<(uint16_t value);
         basic_ostream &operator<<(int32_t value);
         basic_ostream &operator<<(uint32_t value);
+        basic_ostream &operator<<(long value);
+        basic_ostream &operator<<(unsigned long value);
         basic_ostream &operator<<(int64_t value);
         basic_ostream &operator<<(uint64_t value);
         basic_ostream &operator<<(float value);

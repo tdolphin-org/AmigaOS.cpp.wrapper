@@ -23,14 +23,14 @@ morphos_ppc: TARGET="MorphOS PPC"
 morphos_ppc: SUB_BUILD_PATH=morphos/ppc
 morphos_ppc: CPPC=g++
 morphos_ppc: AR=ar
-morphos_ppc: MORE_CPP_FLAGS="-noixemul"
+morphos_ppc: MORE_CPP_FLAGS="-noixemul -flto"
 morphos_ppc: build
 
 cross_morphos_ppc: TARGET="Cross MorphOS PPC"
 cross_morphos_ppc: SUB_BUILD_PATH=morphos/ppc
 cross_morphos_ppc: CPPC=ppc-morphos-g++
 cross_morphos_ppc: AR=ppc-morphos-ar
-cross_morphos_ppc: MORE_CPP_FLAGS="-noixemul"
+cross_morphos_ppc: MORE_CPP_FLAGS="-noixemul -flto"
 cross_morphos_ppc: build
 
 build:

@@ -10,7 +10,7 @@
 
 namespace AOS::PCIX
 {
-    enum class BusAttr : uint32_t
+    enum class BusAttribute : uint32_t
     {
         Slots = PCIXTAG_SLOTS,
         IOBase = PCIXTAG_IOBASE

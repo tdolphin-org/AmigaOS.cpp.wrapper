@@ -10,7 +10,7 @@
 
 namespace AOS::PCIX
 {
-    enum class BoardAttr : uint32_t
+    enum class BoardAttribute : unsigned long
     {
         Bus = PCIXTAG_BUS,
         BridgeName = PCIXTAG_BRIDGENAME,

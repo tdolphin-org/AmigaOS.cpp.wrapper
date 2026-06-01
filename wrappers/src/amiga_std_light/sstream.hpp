@@ -144,11 +144,8 @@ namespace std
 namespace std
 {
     using amiga_std_light::basic_stringstream;
-    using amiga_std_light::dec;
     using amiga_std_light::endl;
     using amiga_std_light::flush;
-    using amiga_std_light::hex;
-    using amiga_std_light::oct;
     using amiga_std_light::stringstream;
 }
 #endif

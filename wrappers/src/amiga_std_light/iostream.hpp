@@ -8,6 +8,8 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <iomanip>
+#include <ios>
 #include <string>
 
 namespace amiga_std_light
@@ -28,9 +30,13 @@ namespace amiga_std_light
         char buffer[BUFFER_SIZE];
         size_t buffer_pos;
         NumberBase number_base_ = NumberBase::Dec;
+        char fill_char_ = ' ';
+        size_t field_width_ = 0;
 
         void flush_buffer();
         void ensure_capacity(size_t needed);
+        basic_ostream &write_raw(const char *str, size_t count);
+        basic_ostream &append_with_field_width(const char *str, size_t len);
 
       public:
         basic_ostream();
@@ -59,6 +65,9 @@ namespace amiga_std_light
         basic_ostream &operator<<(double value);
         basic_ostream &operator<<(bool value);
         basic_ostream &operator<<(const void *ptr);
+        basic_ostream &operator<<(std::ios_base &(*manipulator)(std::ios_base &));
+        basic_ostream &operator<<(const std::_Setfill<char> &manipulator);
+        basic_ostream &operator<<(const std::_Setw &manipulator);
 
         basic_ostream &operator<<(basic_ostream &(*manipulator)(basic_ostream &));
 
@@ -87,9 +96,6 @@ namespace std
     using amiga_std_light::cerr;
     using amiga_std_light::clog;
     using amiga_std_light::cout;
-    using amiga_std_light::dec;
     using amiga_std_light::endl;
     using amiga_std_light::flush;
-    using amiga_std_light::hex;
-    using amiga_std_light::oct;
 }

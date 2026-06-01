@@ -291,41 +291,75 @@ namespace amiga_std_light
         }
     }
 
+    basic_ostream &basic_ostream::write_raw(const char *str, size_t count)
+    {
+        if (!str || count == 0)
+        {
+            return *this;
+        }
+
+        while (count > 0)
+        {
+            const void *newline_ptr = std::memchr(str, '\n', count);
+            size_t logical_chunk = newline_ptr ? (static_cast<const char *>(newline_ptr) - str) + 1 : count;
+
+            size_t copied = 0;
+            while (copied < logical_chunk)
+            {
+                size_t available = BUFFER_SIZE - buffer_pos - 1;
+                size_t to_copy = ((logical_chunk - copied) < available) ? (logical_chunk - copied) : available;
+
+                if (to_copy == 0)
+                {
+                    flush_buffer();
+                    continue;
+                }
+
+                std::memcpy(buffer + buffer_pos, str + copied, to_copy);
+                buffer_pos += to_copy;
+                copied += to_copy;
+            }
+
+            if (newline_ptr)
+            {
+                flush_buffer();
+            }
+
+            str += logical_chunk;
+            count -= logical_chunk;
+        }
+
+        return *this;
+    }
+
+    basic_ostream &basic_ostream::append_with_field_width(const char *str, size_t len)
+    {
+        if (field_width_ > len)
+        {
+            size_t pad = field_width_ - len;
+            while (pad > 0)
+            {
+                const size_t chunk = (pad > BUFFER_SIZE) ? BUFFER_SIZE : pad;
+                char pad_buffer[BUFFER_SIZE];
+                for (size_t i = 0; i < chunk; ++i)
+                {
+                    pad_buffer[i] = fill_char_;
+                }
+                write_raw(pad_buffer, chunk);
+                pad -= chunk;
+            }
+        }
+
+        write_raw(str, len);
+        field_width_ = 0;
+        return *this;
+    }
+
     basic_ostream &basic_ostream::operator<<(const char *str)
     {
         if (str)
         {
-            size_t len = strlen(str);
-            while (len > 0)
-            {
-                const void *newline_ptr = std::memchr(str, '\n', len);
-                size_t logical_chunk = newline_ptr ? (static_cast<const char *>(newline_ptr) - str) + 1 : len;
-
-                size_t copied = 0;
-                while (copied < logical_chunk)
-                {
-                    size_t available = BUFFER_SIZE - buffer_pos - 1;
-                    size_t to_copy = ((logical_chunk - copied) < available) ? (logical_chunk - copied) : available;
-
-                    if (to_copy == 0)
-                    {
-                        flush_buffer();
-                        continue;
-                    }
-
-                    std::memcpy(buffer + buffer_pos, str + copied, to_copy);
-                    buffer_pos += to_copy;
-                    copied += to_copy;
-                }
-
-                if (newline_ptr)
-                {
-                    flush_buffer();
-                }
-
-                str += logical_chunk;
-                len -= logical_chunk;
-            }
+            return append_with_field_width(str, strlen(str));
         }
         return *this;
     }
@@ -337,12 +371,17 @@ namespace amiga_std_light
 
     basic_ostream &basic_ostream::operator<<(char c)
     {
-        ensure_capacity(1);
-        buffer[buffer_pos++] = c;
-        if (c == '\n')
+        if (field_width_ > 1)
         {
-            flush_buffer();
+            const size_t pad_count = field_width_ - 1;
+            for (size_t i = 0; i < pad_count; ++i)
+            {
+                write_raw(&fill_char_, 1);
+            }
         }
+
+        write_raw(&c, 1);
+        field_width_ = 0;
         return *this;
     }
 
@@ -446,6 +485,36 @@ namespace amiga_std_light
         return *this << temp;
     }
 
+    basic_ostream &basic_ostream::operator<<(std::ios_base &(*manipulator)(std::ios_base &))
+    {
+        if (manipulator == static_cast<std::ios_base &(*)(std::ios_base &)>(std::hex))
+        {
+            number_base_ = NumberBase::Hex;
+        }
+        else if (manipulator == static_cast<std::ios_base &(*)(std::ios_base &)>(std::dec))
+        {
+            number_base_ = NumberBase::Dec;
+        }
+        else if (manipulator == static_cast<std::ios_base &(*)(std::ios_base &)>(std::oct))
+        {
+            number_base_ = NumberBase::Oct;
+        }
+
+        return *this;
+    }
+
+    basic_ostream &basic_ostream::operator<<(const std::_Setfill<char> &manipulator)
+    {
+        fill_char_ = manipulator._M_c;
+        return *this;
+    }
+
+    basic_ostream &basic_ostream::operator<<(const std::_Setw &manipulator)
+    {
+        field_width_ = static_cast<size_t>(manipulator._M_n > 0 ? manipulator._M_n : 0);
+        return *this;
+    }
+
     basic_ostream &basic_ostream::operator<<(basic_ostream &(*manipulator)(basic_ostream &))
     {
         return manipulator(*this);
@@ -461,36 +530,7 @@ namespace amiga_std_light
     {
         if (str && count > 0)
         {
-            while (count > 0)
-            {
-                const void *newline_ptr = std::memchr(str, '\n', count);
-                size_t logical_chunk = newline_ptr ? (static_cast<const char *>(newline_ptr) - str) + 1 : count;
-
-                size_t copied = 0;
-                while (copied < logical_chunk)
-                {
-                    size_t available = BUFFER_SIZE - buffer_pos - 1;
-                    size_t to_copy = ((logical_chunk - copied) < available) ? (logical_chunk - copied) : available;
-
-                    if (to_copy == 0)
-                    {
-                        flush_buffer();
-                        continue;
-                    }
-
-                    memcpy(buffer + buffer_pos, str + copied, to_copy);
-                    buffer_pos += to_copy;
-                    copied += to_copy;
-                }
-
-                if (newline_ptr)
-                {
-                    flush_buffer();
-                }
-
-                str += logical_chunk;
-                count -= logical_chunk;
-            }
+            write_raw(str, count);
         }
         return *this;
     }

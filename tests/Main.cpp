@@ -8,6 +8,7 @@
 
 #include "Main.hpp"
 
+#include <iomanip>
 #include <type_traits>
 #include <utility>
 
@@ -38,6 +39,8 @@ static_assert(is_stream_insertable<unsigned long long>::value, "unsigned long lo
 static_assert(is_stream_insertable<float>::value, "float should be stream insertable");
 static_assert(is_stream_insertable<double>::value, "double should be stream insertable");
 static_assert(is_stream_insertable<bool>::value, "bool should be stream insertable");
+static_assert(is_stream_insertable<decltype(std::setfill('0'))>::value, "std::setfill should be stream insertable");
+static_assert(is_stream_insertable<decltype(std::setw(4))>::value, "std::setw should be stream insertable");
 
 static_assert(std::is_same<decltype(std::declval<amiga_std_light::basic_ostream &>() << std::declval<long>()),
                            amiga_std_light::basic_ostream &>::value,

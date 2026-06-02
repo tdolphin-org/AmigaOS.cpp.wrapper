@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #pragma once
@@ -9,9 +9,8 @@
 #include "ValueTypes/BaseClass.hpp"
 #include "ValueTypes/BoardAttribute.hpp"
 
-#include <optional>
-#include <vector>
 #include <variant>
+#include <vector>
 
 namespace AOS::PCIX
 {
@@ -24,14 +23,14 @@ namespace AOS::PCIX
         unsigned long vendorId;
         unsigned long deviceId;
         unsigned long classId;
-        std::optional<unsigned long> subsystemVendorId { std::nullopt };
-        std::optional<unsigned long> subsystemId { std::nullopt };
-        std::optional<unsigned long> subclassId { std::nullopt };
+        unsigned long subsystemVendorId;
+        unsigned long subsystemId;
+        unsigned long subclassId;
 
         struct
         {
-            std::optional<unsigned char *> romAddress { std::nullopt };
-            std::optional<unsigned long> romSize { std::nullopt };
+            unsigned char *romAddress { nullptr };
+            unsigned long romSize { 0 };
         } attributes;
     };
 

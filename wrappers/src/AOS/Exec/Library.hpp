@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #pragma once
@@ -56,7 +56,7 @@ namespace AOS::Exec
     {
         static std::string GetVersion() noexcept;
 
-        /// @brief calls exec:FindTask(NULL) and return ptr
+        /// @brief calls exec/FindTask(NULL) and return ptr
         static std::string CurrentTaskPid();
 
         /// @brief return list of all nodes of resources
@@ -66,20 +66,20 @@ namespace AOS::Exec
         /// @brief return list of all nodes of devices
         static std::vector<NodeInfo> GetAllDeviceNodeNames() noexcept;
 
-        /// @brief exec/Forbid()
+        /// @brief calls exec/Forbid()
         static void libForbid() noexcept;
-        /// @brief exec/Permit()
+        /// @brief calls exec/Permit()
         static void libPermit() noexcept;
 
-        /// @brief exec/FindTask(NULL) and return ptr to struct Task
+        /// @brief calls exec/FindTask(NULL) and return ptr to struct Task
         static struct Task *libFindTask() noexcept;
-        /// @brief exec/FindTask(name) and return ptr to struct Task
+        /// @brief calls exec/FindTask(name) and return ptr to struct Task
         static struct Task *libFindTask(const std::string &name) noexcept;
 
-        /// @brief exec/AvailMem(name) and returns the amount of free memory given certain attributes
+        /// @brief calls exec/AvailMem(name) and returns the amount of free memory given certain attributes
         static unsigned long libAvailMem(const enum MEMF_Type type, const enum MEMF_Avail avail) noexcept;
 
-        /// @brief exec/CopyMem(source, dest, size) --
+        /// @brief calls exec/CopyMem(source, dest, size) --
         ///        CopyMem is a general purpose, fast memory copy function. It can
         ///        deal with arbitrary lengths, with its pointers on arbitrary
         ///        alignments. It attempts to optimize larger copies with more
@@ -92,7 +92,7 @@ namespace AOS::Exec
         /// @param size the size (in bytes) of the memory area. Zero copies zero bytes
         static void libCopyMem(void *const source, void *dest, uint32_t size) noexcept;
 
-        /// @brief exec/CopyMemQuick - optimized memory copy function --
+        /// @brief calls exec/CopyMemQuick - optimized memory copy function --
         ///        CopyMemQuick is a highly optimized memory copy function, with
         ///        restrictions on the size and alignment of its arguments. Both the
         ///        source and destination pointers must be longword aligned.  In
@@ -104,17 +104,17 @@ namespace AOS::Exec
         /// @param size the size (in bytes) of the memory area. Zero copies zero bytes
         static void libCopyMemQuick(uint32_t *source, uint32_t *dest, uint32_t size) noexcept;
 
-        /// @brief exec/FindResident(name) and return ptr to struct Resident
+        /// @brief calls exec/FindResident(name) and return ptr to struct Resident
         static struct Resident *libFindResident(const std::string &name) noexcept;
 
-        /// @brief exec/FindPort(name) and return ptr to struct Port
+        /// @brief calls exec/FindPort(name) and return ptr to struct Port
         static struct MsgPort *libFindPort(const std::string &name) noexcept;
 
-        /// @brief exec/PutMsg(port)
+        /// @brief calls exec/PutMsg(port)
         static void libPutMsg(struct MsgPort &port, struct Message &message) noexcept;
-        /// @brief exec/GetMsg(port)
+        /// @brief calls exec/GetMsg(port)
         static struct Message *libGetMsg(struct MsgPort &port) noexcept;
-        /// @brief exec/WaitPort(port)
+        /// @brief calls exec/WaitPort(port)
         static struct Message *libWaitPort(struct MsgPort &port) noexcept;
 
 #ifdef __MORPHOS__

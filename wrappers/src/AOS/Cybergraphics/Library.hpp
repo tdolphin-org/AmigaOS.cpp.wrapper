@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #pragma once
@@ -21,7 +21,7 @@ namespace AOS::Cybergraphics
     {
         static std::vector<Common::BoardID> GetBoards() noexcept;
 
-        /// @brief cgx:FillPixelArray(rastPort, destX, destY, sizeX, sizeY, ARGB)
+        /// @brief calls cgx/FillPixelArray(rastPort, destX, destY, sizeX, sizeY, ARGB)
         /// fill a rectangular area with the supplied ARGB value starting at a specified x, y location and continuing through to another x,
         /// y location within a certain RastPort
         /// @param ARGB The desired color in AARRGGBB format for true color rastports or in indexed mode for CLUT rastports.
@@ -30,9 +30,9 @@ namespace AOS::Cybergraphics
         static unsigned long libFillPixelArray(const RastPort &rastPort, const unsigned short destX, const unsigned short destY,
                                                const unsigned short sizeX, const unsigned short sizeY, const unsigned long ARGB) noexcept;
 
-        /// @brief cgx:BestCModeIDTagList(monitorID) and return mode id or 0 if not exists
+        /// @brief calls cgx/BestCModeIDTagList(monitorID) and return mode id or 0 if not exists
         static unsigned long libBestCModeID(const unsigned long monitorID) noexcept;
-        /// @brief cgx:BestCModeIDTagList(boardName) and return mode id or 0 if not exists
+        /// @brief calls cgx/BestCModeIDTagList(boardName) and return mode id or 0 if not exists
         static unsigned long libBestCModeID(const std::string &boardName) noexcept;
     };
 }

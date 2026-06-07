@@ -64,7 +64,7 @@ namespace AOS::PCIX
         /// @return board attributes, or std::nullopt if the board is invalid
         static std::optional<BoardAttributes> GetBoardAttributes(const Board &board) noexcept;
 
-        /// @brief pcix.library/PCIXGetBoardAttr
+        /// @brief calls pcix.library/PCIXGetBoardAttr
         static std::variant<unsigned long, unsigned char *, std::string> libGetBoardAttr(const Board &board,
                                                                                          const BoardAttribute attr) noexcept;
     };

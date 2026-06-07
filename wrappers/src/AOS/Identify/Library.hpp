@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #pragma once
@@ -87,10 +87,10 @@ namespace AOS::Identify
         static std::vector<Expansion> GetExpansions(const enum ClassID filterByClassId = ClassID::NONE) noexcept;
         static std::pair<PCIExpansionsResultCode, std::vector<PCIExpansion>> GetPCIExpansions() noexcept;
 
-        /// @brief identify:IdHardware()
+        /// @brief calls identify.library/IdHardware()
         static std::string libIdHardware(const enum IDHW idhw) noexcept;
 
-        /// @brief identify:IdHardwareNum()
+        /// @brief calls identify.library/IdHardwareNum()
         static uint32_t libIdHardwareNum(const enum IDHW idhw) noexcept;
     };
 }

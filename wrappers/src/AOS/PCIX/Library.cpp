@@ -6,6 +6,8 @@
 
 #include "Library.hpp"
 
+#undef _NO_PPCINLINE
+
 #include <algorithm>
 #include <libraries/pcix.h>
 #include <proto/pcix.h>

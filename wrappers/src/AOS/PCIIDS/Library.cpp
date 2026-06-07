@@ -1,10 +1,12 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "Library.hpp"
+
+#undef _NO_PPCINLINE
 
 #include <proto/pciids.h>
 

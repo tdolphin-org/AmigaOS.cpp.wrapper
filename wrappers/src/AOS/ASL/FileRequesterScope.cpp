@@ -12,14 +12,14 @@ namespace AOS::ASL
 {
     FileRequesterScope::FileRequesterScope()
     {
-        mFileRequester = AllocFileRequest();
+        mFileRequester = ::AllocFileRequest();
         if (mFileRequester == nullptr)
             throw std::bad_alloc();
     }
 
     FileRequesterScope::~FileRequesterScope()
     {
-        FreeFileRequest(mFileRequester);
+        ::FreeFileRequest(mFileRequester);
     }
 
     bool FileRequesterScope::FileRequest()

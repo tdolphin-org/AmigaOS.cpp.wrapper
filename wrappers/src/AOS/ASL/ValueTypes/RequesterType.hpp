@@ -10,7 +10,7 @@
 
 namespace AOS::ASL
 {
-    enum class RequesterType
+    enum class RequesterType : uint32_t
     {
         File = ASL_FileRequest,
         Font = ASL_FontRequest,

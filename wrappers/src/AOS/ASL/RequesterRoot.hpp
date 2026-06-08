@@ -16,6 +16,7 @@
 struct Screen;
 struct Window;
 struct TextAttr;
+struct Locale;
 
 namespace AOS::ASL
 {
@@ -37,6 +38,8 @@ namespace AOS::ASL
     class RequesterTagsBuilderRoot : public TagBuilderRoot
     {
       public:
+        using IntuiMsgFunc = void (*)();
+
         RequesterTagsBuilderRoot() = default;
 
         /// @brief [ @b ASLFR_TitleText, @b ASLFO_TitleText, @b ASLSM_TitleText ]
@@ -68,13 +71,13 @@ namespace AOS::ASL
         RequesterTagsBuilderRoot &tagSleepWindow(const bool enabled);
 
         /// @brief [ @b ASLFR_Locale, @b ASLFO_Locale, @b ASLSM_Locale ]
-        RequesterTagsBuilderRoot &tagLocale(const void *pLocale);
+        RequesterTagsBuilderRoot &tagLocale(const struct Locale *pLocale);
         /// @brief [ @b ASLFR_TextAttr, @b ASLFO_TextAttr, @b ASLSM_TextAttr ]
         RequesterTagsBuilderRoot &tagTextAttr(const struct TextAttr *pTextAttr);
         /// @brief [ @b ASLFR_UserData, @b ASLFO_UserData, @b ASLSM_UserData ]
         RequesterTagsBuilderRoot &tagUserData(const void *pUserData);
         /// @brief [ @b ASLFR_IntuiMsgFunc, @b ASLFO_IntuiMsgFunc, @b ASLSM_IntuiMsgFunc ]
-        RequesterTagsBuilderRoot &tagIntuiMsgFunc(const void *pIntuiMsgFunc);
+        RequesterTagsBuilderRoot &tagIntuiMsgFunc(const IntuiMsgFunc pIntuiMsgFunc);
 
         /// @brief [ @b ASLFR_PopToFront, @b ASLFO_PopToFront, @b ASLSM_PopToFront ] (V44+)
         RequesterTagsBuilderRoot &tagPopToFront(const bool enabled);

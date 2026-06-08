@@ -95,7 +95,7 @@ namespace AOS::ASL
         return *this;
     }
 
-    RequesterTagsBuilderRoot &RequesterTagsBuilderRoot::tagLocale(const void *pLocale)
+    RequesterTagsBuilderRoot &RequesterTagsBuilderRoot::tagLocale(const Locale *pLocale)
     {
         PushTag(ASLFO_Locale, pLocale);
         return *this;
@@ -113,9 +113,9 @@ namespace AOS::ASL
         return *this;
     }
 
-    RequesterTagsBuilderRoot &RequesterTagsBuilderRoot::tagIntuiMsgFunc(const void *pIntuiMsgFunc)
+    RequesterTagsBuilderRoot &RequesterTagsBuilderRoot::tagIntuiMsgFunc(const IntuiMsgFunc pIntuiMsgFunc)
     {
-        PushTag(ASLFO_IntuiMsgFunc, pIntuiMsgFunc);
+        PushTag(ASLFO_IntuiMsgFunc, reinterpret_cast<const void *>(pIntuiMsgFunc));
         return *this;
     }
 

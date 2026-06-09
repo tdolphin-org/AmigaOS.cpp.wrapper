@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "TagBuilderRoot.hpp"
-#include "TagsScope.hpp"
+#include "AOS/TagBuilderRoot.hpp"
+#include "AOS/TagsScope.hpp"
 #include "ValueTypes/RequesterType.hpp"
 
 #include <optional>

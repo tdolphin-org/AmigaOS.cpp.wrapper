@@ -6,13 +6,13 @@
 
 #include "DosBaseScope.hpp"
 
-#include <dos/dos.h>
+#include <proto/dos.h>
 #include <proto/exec.h>
 #include <stdexcept>
 
 #define DOSNAME "dos.library"
 
-struct Library *DosBase = nullptr;
+struct DosLibrary *DosBase = nullptr;
 
 DosBaseScope::DosBaseScope(const bool optional)
 {
@@ -22,7 +22,7 @@ DosBaseScope::DosBaseScope(const bool optional)
         throw std::runtime_error(error);
     }
 
-    if (!(DosBase = OpenLibrary(DOSNAME, 39))) // 39 = AmigaOS 3.0
+    if (!(DosBase = (struct DosLibrary *)OpenLibrary(DOSNAME, 39))) // 39 = AmigaOS 3.0
     {
         if (optional)
             return;
@@ -36,7 +36,7 @@ DosBaseScope::~DosBaseScope()
 {
     if (DosBase != nullptr)
     {
-        CloseLibrary(DosBase);
+        CloseLibrary((struct Library *)DosBase);
         DosBase = nullptr;
     }
 }
@@ -46,7 +46,7 @@ bool DosBaseScope::isOpen() const
     return DosBase != nullptr;
 }
 
-struct Library *DosBaseScope::library() const
+struct DosLibrary *DosBaseScope::library() const
 {
     return DosBase;
 }

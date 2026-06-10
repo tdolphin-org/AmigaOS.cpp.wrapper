@@ -8,6 +8,8 @@
 
 #include <exec/libraries.h>
 
+struct DosLibrary;
+
 class DosBaseScope
 {
   public:
@@ -17,5 +19,5 @@ class DosBaseScope
     ~DosBaseScope();
 
     bool isOpen() const;
-    struct Library *library() const;
+    struct DosLibrary *library() const;
 };

@@ -31,4 +31,12 @@ namespace AOS::ASL
 #endif
         FreeFileRequest(fileReq);
     }
+
+    bool Library::libRequestFile(FileRequester *fileReq)
+    {
+#ifdef TRACE_AMIGAOS
+        std::cout << __PRETTY_FUNCTION__ << "()" << std::endl;
+#endif
+        return RequestFile(fileReq);
+    }
 }

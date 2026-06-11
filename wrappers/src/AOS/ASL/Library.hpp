@@ -12,10 +12,13 @@ namespace AOS::ASL
 {
     struct Library
     {
-        /// @brief calls asl:AllocFileRequest()
+        /// @brief calls asl/AllocFileRequest()
         static struct FileRequester *libAllocFileRequest();
 
-        /// @brief calls asl:FreeFileRequest()
+        /// @brief calls asl/FreeFileRequest()
         static void libFreeFileRequest(struct FileRequester *fileReq);
+
+        /// @brief calls asl/RequestFile()  
+        static bool libRequestFile(struct FileRequester *fileReq);
     };
 }

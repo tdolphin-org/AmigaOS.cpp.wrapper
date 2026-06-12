@@ -117,6 +117,11 @@ namespace AOS::Exec
         CopyMemQuick(source, dest, size);
     }
 
+    MEMF_Type Library::libTypeOfMem(void *const address) noexcept
+    {
+        return static_cast<MEMF_Type>(TypeOfMem(address));
+    }
+
     struct Resident *Library::libFindResident(const std::string &name) noexcept
     {
         return FindResident(name.c_str());

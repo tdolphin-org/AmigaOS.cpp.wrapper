@@ -104,6 +104,11 @@ namespace AOS::Exec
         /// @param size the size (in bytes) of the memory area. Zero copies zero bytes
         static void libCopyMemQuick(uint32_t *source, uint32_t *dest, uint32_t size) noexcept;
 
+        /// @brief calls exec/AvailMem(name) and returns the type of memory at the given address
+        /// @param address pointer to the memory address to query
+        /// @return the type of memory at the given address, as a MEMF_Type enum value
+        static MEMF_Type libTypeOfMem(void *const address) noexcept;
+
         /// @brief calls exec/FindResident(name) and return ptr to struct Resident
         static struct Resident *libFindResident(const std::string &name) noexcept;
 

@@ -20,7 +20,7 @@ namespace AOS::Exec
         if (SysBase)
             return std::to_string(SysBase->LibNode.lib_Version) + "." + std::to_string(SysBase->LibNode.lib_Revision);
         else
-            return {};
+            return { };
     }
 
     std::string Library::CurrentTaskPid()
@@ -117,11 +117,6 @@ namespace AOS::Exec
         CopyMemQuick(source, dest, size);
     }
 
-    MEMF_Type Library::libTypeOfMem(void *const address) noexcept
-    {
-        return static_cast<MEMF_Type>(TypeOfMem(address));
-    }
-
     struct Resident *Library::libFindResident(const std::string &name) noexcept
     {
         return FindResident(name.c_str());
@@ -139,14 +134,29 @@ namespace AOS::Exec
         PutMsg(&port, &message);
     }
 
-    struct Message *Library::libGetMsg(MsgPort &port) noexcept
+    struct Message *Library::libGetMsg(struct MsgPort &port) noexcept
     {
         return GetMsg(&port);
     }
 
-    struct Message *Library::libWaitPort(MsgPort &port) noexcept
+    struct Message *Library::libWaitPort(struct MsgPort &port) noexcept
     {
         return WaitPort(&port);
+    }
+
+    void Library::libAddLibrary(struct ::Library *const library)
+    {
+        AddLibrary(const_cast<struct ::Library *>(library));
+    }
+
+    void Library::libRemLibrary(struct ::Library *const library)
+    {
+        RemLibrary(const_cast<struct ::Library *>(library));
+    }
+
+    MEMF_Type Library::libTypeOfMem(void *const address) noexcept
+    {
+        return static_cast<MEMF_Type>(TypeOfMem(address));
     }
 
 #ifdef __MORPHOS__
@@ -235,7 +245,7 @@ namespace AOS::Exec
         }
 
         if (len <= 0)
-            return {};
+            return { };
         buffer[len] = '\0';
 
         return std::string(buffer);

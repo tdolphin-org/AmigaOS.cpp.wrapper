@@ -104,11 +104,6 @@ namespace AOS::Exec
         /// @param size the size (in bytes) of the memory area. Zero copies zero bytes
         static void libCopyMemQuick(uint32_t *source, uint32_t *dest, uint32_t size) noexcept;
 
-        /// @brief calls exec/AvailMem(name) and returns the type of memory at the given address
-        /// @param address pointer to the memory address to query
-        /// @return the type of memory at the given address, as a MEMF_Type enum value
-        static MEMF_Type libTypeOfMem(void *const address) noexcept;
-
         /// @brief calls exec/FindResident(name) and return ptr to struct Resident
         static struct Resident *libFindResident(const std::string &name) noexcept;
 
@@ -121,6 +116,18 @@ namespace AOS::Exec
         static struct Message *libGetMsg(struct MsgPort &port) noexcept;
         /// @brief calls exec/WaitPort(port)
         static struct Message *libWaitPort(struct MsgPort &port) noexcept;
+
+        /// @brief calls exec/AddLibrary(library)
+        /// @param library pointer to the library struct to add to the system
+        static void libAddLibrary(struct ::Library *const library);
+        /// @brief calls exec/RemLibrary(library)
+        /// @param library pointer to the library struct to remove from the system
+        static void libRemLibrary(struct ::Library *const library);
+
+        /// @brief calls exec/AvailMem(name) and returns the type of memory at the given address
+        /// @param address pointer to the memory address to query
+        /// @return the type of memory at the given address, as a MEMF_Type enum value
+        static MEMF_Type libTypeOfMem(void *const address) noexcept;
 
 #ifdef __MORPHOS__
         static std::vector<CPUInfo> GetAllCPUs() noexcept;

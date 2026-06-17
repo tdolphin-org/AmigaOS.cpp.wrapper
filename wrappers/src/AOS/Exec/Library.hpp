@@ -124,9 +124,10 @@ namespace AOS::Exec
         /// @param library pointer to the library struct to remove from the system
         static void libRemLibrary(struct ::Library *const library);
 
-        /// @brief calls exec/AvailMem(name) and returns the type of memory at the given address
+        /// @brief calls exec/TypeOfMem(address) and returns the type of memory at the given address
         /// @param address pointer to the memory address to query
         /// @return the type of memory at the given address, as a MEMF_Type enum value
+        /// If the address is not in known RAM, zero (MEMF_ANY) is returned .
         static MEMF_Type libTypeOfMem(void *const address) noexcept;
 
 #ifdef __MORPHOS__

@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #pragma once
@@ -35,6 +35,12 @@ namespace AOS::Dos
         void Invalidate();
         /// @brief close handler and invalidate, no close on destructor
         void Close();
+
+        /// @brief write to file handle
+        /// @param buffer pointer to buffer to write
+        /// @param length number of bytes to write
+        /// @return number of bytes written, or -1 on error
+        long Write(const void *buffer, const long length);
 
         BPTR fileHandle()
         {

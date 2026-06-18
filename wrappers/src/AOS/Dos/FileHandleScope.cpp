@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "FileHandleScope.hpp"
@@ -42,5 +42,13 @@ namespace AOS::Dos
             ::Close(mFileHandle);
             Invalidate();
         }
+    }
+
+    long FileHandleScope::Write(const void *buffer, const long length)
+    {
+        if (!mFileHandle)
+            return -1;
+
+        return ::Write(mFileHandle, const_cast<void *>(buffer), length);
     }
 }

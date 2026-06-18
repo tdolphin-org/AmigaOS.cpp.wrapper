@@ -10,7 +10,6 @@
 #include "AOS/Exec/MemScope.hpp"
 #include "Core/Random.hpp"
 #include "Core/StringUtils.hpp"
-#include "FileHandleScope.hpp"
 #include "LockDosListScope.hpp"
 #include "LockScope.hpp"
 

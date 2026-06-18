@@ -20,6 +20,8 @@
 #include <string>
 #include <vector>
 
+struct Library;
+
 namespace AOS::Exec
 {
     struct NodeInfo

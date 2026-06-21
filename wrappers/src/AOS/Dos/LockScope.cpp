@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "LockScope.hpp"
@@ -20,6 +20,17 @@ namespace AOS::Dos
       , mIsEmpty(false)
       , mName(name)
     {
+        if (mName.empty())
+        {
+            if (exceptionOnError)
+            {
+                auto error = std::string { __PRETTY_FUNCTION__ } + " name is empty!";
+                throw std::runtime_error(error);
+            }
+
+            return;
+        }
+
         mpLock = Lock(mName.c_str(), SHARED_LOCK);
         if (mpLock == 0)
         {
@@ -102,5 +113,17 @@ namespace AOS::Dos
     void LockScope::Invalidate()
     {
         mpLock = (BPTR) nullptr;
+    }
+
+    std::optional<std::string> LockScope::NameFromLock() const
+    {
+        if (mpLock == 0)
+            return std::nullopt;
+
+        char buffer[512];
+        if (::NameFromLock(mpLock, buffer, sizeof(buffer)) == 0) // 0 means error
+            return std::nullopt;
+
+        return std::string(buffer);
     }
 }

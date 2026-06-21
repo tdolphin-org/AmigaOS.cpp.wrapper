@@ -49,6 +49,12 @@ namespace AOS::Dos
         /// @brief calls dos.library/AssignAdd(name, lock) .. lock from path
         static bool libAssignAdd(const std::string &name, const std::string &path) noexcept;
 
+        /// @brief calls dos.library/AddPart (Add a part to a path)
+        /// @param path base path
+        /// @param part part to add to the path
+        /// @return The resulting path after adding the part or an empty optional if the operation failed
+        static std::optional<std::string> libAddPart(const std::string &path, const std::string &part) noexcept;
+
         /// @brief calls dos.library/GetVar (Get a system or local variable)
         /// The default is to try to get a local variable first, then
         /// to try to get a global environment variable.

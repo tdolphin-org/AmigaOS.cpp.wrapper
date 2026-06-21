@@ -171,6 +171,19 @@ namespace AOS::Dos
         return true;
     }
 
+    std::optional<std::string> Library::libAddPart(const std::string &path, const std::string &part) noexcept
+    {
+        char buffer[512];
+        if (path.length() + 1 > sizeof(buffer))
+            return std::nullopt;
+
+        AOS::Exec::Library::libCopyMem(const_cast<char *>(path.c_str()), buffer, path.length() + 1);
+        if (AddPart(buffer, part.c_str(), sizeof(buffer)))
+            return std::optional<std::string>(buffer);
+
+        return std::nullopt;
+    }
+
     std::optional<std::string> Library::libGetVar(const std::string &name, const enum AOS::Dos::GVF type) noexcept
     {
         char buffer[256];

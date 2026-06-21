@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #pragma once
@@ -9,6 +9,7 @@
 #include "DosObjectScope.hpp"
 
 #include <string>
+#include <optional>
 
 namespace AOS::Dos
 {
@@ -31,6 +32,9 @@ namespace AOS::Dos
 
         /// @brief invalidate handler, no UnLock on destructor
         void Invalidate();
+
+        /// @brief get name from lock, if lock is invalid or any error occurs return empty optional
+        std::optional<std::string> NameFromLock() const;
 
         BPTR lock() const
         {

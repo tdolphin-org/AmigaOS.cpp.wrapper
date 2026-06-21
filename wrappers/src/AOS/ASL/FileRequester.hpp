@@ -33,6 +33,10 @@ namespace AOS::ASL
 
         std::optional<std::string> file() const;
         std::optional<std::string> drawer() const;
+        
+        /// @brief returns full path to file (with seleted drawer)
+        /// @return empty optional if no file selected
+        std::optional<std::string> FullPath() const;
     };
 
     class FileRequesterTagsBuilder : public RequesterTagsBuilderRoot

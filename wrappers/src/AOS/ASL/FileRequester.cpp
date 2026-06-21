@@ -6,6 +6,9 @@
 
 #include "FileRequester.hpp"
 
+#include "AOS/Dos/Library.hpp"
+#include "AOS/Dos/LockScope.hpp"
+
 #include <proto/asl.h>
 
 namespace AOS::ASL
@@ -39,6 +42,34 @@ namespace AOS::ASL
         if (req != nullptr && req->fr_Drawer != nullptr)
             return std::string(req->fr_Drawer);
         return std::nullopt;
+    }
+
+    std::optional<std::string> FileRequesterScope::FullPath() const
+    {
+        const auto *req = fileRequester();
+        if (req == nullptr || req->fr_File == nullptr || req->fr_File[0] == '\0')
+            return std::nullopt;
+
+        // check drawer name validity
+        if (req->fr_Drawer != nullptr && req->fr_Drawer[0] != '\0')
+        {
+            AOS::Dos::LockScope drawerLockScope(req->fr_Drawer, false);
+            if (drawerLockScope.isValid())
+            {
+                const auto drawerName = drawerLockScope.NameFromLock();
+                if (drawerName.has_value())
+                {
+                    auto fullPath = AOS::Dos::Library::libAddPart(*drawerName, req->fr_File);
+                    if (fullPath.has_value())
+                        return *fullPath;
+                }
+            }
+
+            // in case of any error return empty optional
+            return std::nullopt;
+        }
+
+        return std::string(req->fr_File);
     }
 
     FileRequesterTagsBuilder &FileRequesterTagsBuilder::tagHookFunc(const HookFunc pHookFunc)

@@ -6,6 +6,10 @@
 
 #pragma once
 
+#ifdef __AROS__
+#error "AOS::PCIIDS wrapper is not available on AROS - pciids.library does not exist on AROS"
+#endif
+
 #include <string>
 
 namespace AOS::PCIIDS

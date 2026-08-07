@@ -6,6 +6,10 @@
 
 #pragma once
 
+#ifdef __AROS__
+#error "AOS::PCIX wrapper is not available on AROS - pcix.library does not exist on AROS"
+#endif
+
 #include <exec/libraries.h>
 
 class PCIXBaseScope

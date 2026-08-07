@@ -6,6 +6,10 @@
 
 #pragma once
 
+#ifdef __AROS__
+#error "AOS::Identify wrapper is not available on AROS - openpci.library does not exist on AROS"
+#endif
+
 #include "ValueTypes/ClassID.hpp"
 #include "ValueTypes/IDCPU.hpp"
 #include "ValueTypes/IDFPU.hpp"

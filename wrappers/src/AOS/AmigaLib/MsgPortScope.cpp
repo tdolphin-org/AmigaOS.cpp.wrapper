@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "MsgPortScope.hpp"
@@ -34,8 +34,8 @@ namespace AOS::AmigaLib
         }
 
         Forbid();
-        if (FindPort(name.c_str()) == nullptr)
-            mpMsgPort = CreatePort(name.c_str(), 0);
+        if (FindPort((STRPTR)name.c_str()) == nullptr)
+            mpMsgPort = CreatePort((STRPTR)name.c_str(), 0);
         Permit();
 
         if (mpMsgPort == nullptr && exceptionOnError)

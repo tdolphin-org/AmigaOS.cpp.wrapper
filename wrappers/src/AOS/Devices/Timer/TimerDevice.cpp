@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "TimerDevice.hpp"
@@ -33,7 +33,7 @@ namespace AOS::Devices
 
     long TimerDeviceCore::devCmpTime(const timeval &tv1, const timeval &tv2) const
     {
-        return CmpTime(&tv1, &tv2);
+        return CmpTime((timeval *)&tv1, (timeval *)&tv2);
     }
 
     void TimerDeviceCore::devGetSysTime(timeval &tv) const

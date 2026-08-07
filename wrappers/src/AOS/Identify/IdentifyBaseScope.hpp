@@ -1,10 +1,14 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #pragma once
+
+#ifdef __AROS__
+#error "AOS::Identify wrapper is not available on AROS - openpci.library does not exist on AROS"
+#endif
 
 #include <exec/libraries.h>
 

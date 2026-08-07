@@ -22,7 +22,7 @@ namespace AOS::DataTypes
         std::cout << __PRETTY_FUNCTION__ << " (" << name << "," << exceptionOnError << ")" << std::endl;
 #endif
 
-#ifdef __MORPHOS__
+#if defined(__MORPHOS__) || defined(__AROS__)
         mDataTypeObject = NewDTObject((APTR)name.c_str(), TAG_END);
 #else
         mDataTypeObject = NewDTObject(name.c_str(), TAG_END);

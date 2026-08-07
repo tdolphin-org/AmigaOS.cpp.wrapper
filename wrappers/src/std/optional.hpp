@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef __MORPHOS__
+#if defined(__MORPHOS__) || (defined(__cplusplus) && __cplusplus >= 201703L)
 #include <optional>
 #else
 

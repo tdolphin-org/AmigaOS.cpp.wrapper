@@ -32,7 +32,31 @@
             "recursiveIncludes": {},
             "browse": {
                 "limitSymbolsToIncludedHeaders": true
-            }
+            },
+            "compilerArgs": [
+                "-std=c++17",
+                "-D_NO_PPCINLINE"
+            ]
+        },
+        {
+            "name": "cross_aros",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/aros/Development/include/"
+            ],
+            "defines": [
+                "__AROS__",
+                "__AROS_X86_64"
+            ],
+            "compilerPath": "/opt/aros/bin/x86_64-aros-g++",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64",
+            "compilerArgs": [
+                "--sysroot=/opt/aros/Development",
+                "-std=gnu++17"
+            ],
+            "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],
     "version": 4

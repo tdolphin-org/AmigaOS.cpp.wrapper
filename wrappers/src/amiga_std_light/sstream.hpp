@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <climits>
 #include <cstddef>
 #include <cstdint>
 #include <iomanip>
@@ -90,8 +91,12 @@ namespace amiga_std_light
         basic_stringstream &operator<<(uint16_t value);
         basic_stringstream &operator<<(int32_t value);
         basic_stringstream &operator<<(uint32_t value);
+#if ULONG_MAX != UINT64_MAX
+        // long 64-bit aliases int64_t/uint64_t; provide these only on 32-bit
+        // platforms (see iostream.hpp for details).
         basic_stringstream &operator<<(long value);
         basic_stringstream &operator<<(unsigned long value);
+#endif
         basic_stringstream &operator<<(int64_t value);
         basic_stringstream &operator<<(uint64_t value);
         basic_stringstream &operator<<(float value);

@@ -11,7 +11,7 @@
 #include <proto/dos.h>
 #include <proto/exec.h>
 
-#ifdef __MORPHOS__
+#if defined(__MORPHOS__) || defined(__AROS__)
 #include <exec/rawfmt.h>
 #endif
 
@@ -184,7 +184,7 @@ namespace amiga_std_light
 
     static void format_ptr(char *buffer, const void *ptr)
     {
-#ifdef __MORPHOS__
+#if defined(__MORPHOS__) || defined(__AROS__)
         NewRawDoFmt("0x%08lx", RAWFMTFUNC_STRING, buffer, ptr);
 #else
         ULONG args[] = { (ULONG)ptr };
@@ -427,23 +427,19 @@ namespace amiga_std_light
         return *this << temp;
     }
 
+#if ULONG_MAX != UINT64_MAX
+    // long is 32-bit here (AmigaOS m68k / MorphOS ppc32) - verified via
+    // __SIZEOF_LONG__; on 64-bit the int64_t/uint64_t overloads cover it.
     basic_ostream &basic_ostream::operator<<(long value)
     {
-        if (sizeof(long) <= sizeof(int32_t))
-        {
-            return *this << static_cast<int32_t>(value);
-        }
-        return *this << static_cast<int64_t>(value);
+        return *this << static_cast<int32_t>(value);
     }
 
     basic_ostream &basic_ostream::operator<<(unsigned long value)
     {
-        if (sizeof(unsigned long) <= sizeof(uint32_t))
-        {
-            return *this << static_cast<uint32_t>(value);
-        }
-        return *this << static_cast<uint64_t>(value);
+        return *this << static_cast<uint32_t>(value);
     }
+#endif
 
     basic_ostream &basic_ostream::operator<<(int64_t value)
     {

@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <climits>
 #include <cstddef>
 #include <cstdint>
 #include <iomanip>
@@ -57,8 +58,13 @@ namespace amiga_std_light
         basic_ostream &operator<<(uint16_t value);
         basic_ostream &operator<<(int32_t value);
         basic_ostream &operator<<(uint32_t value);
+#if ULONG_MAX != UINT64_MAX
+        // long/unsigned long are distinct from int64_t/uint64_t only on 32-bit
+        // platforms (AmigaOS m68k, MorphOS ppc32). On 64-bit (AROS x86_64) they
+        // alias the same type, so the int64_t/uint64_t overloads cover them.
         basic_ostream &operator<<(long value);
         basic_ostream &operator<<(unsigned long value);
+#endif
         basic_ostream &operator<<(int64_t value);
         basic_ostream &operator<<(uint64_t value);
         basic_ostream &operator<<(float value);

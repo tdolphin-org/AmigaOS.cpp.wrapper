@@ -268,6 +268,7 @@ namespace amiga_std_light
         return *this;
     }
 
+#if ULONG_MAX != UINT64_MAX
     basic_stringstream &basic_stringstream::operator<<(long value)
     {
         std::string text;
@@ -283,6 +284,7 @@ namespace amiga_std_light
         append_with_field_width(buffer_, text);
         return *this;
     }
+#endif
 
     basic_stringstream &basic_stringstream::operator<<(int64_t value)
     {

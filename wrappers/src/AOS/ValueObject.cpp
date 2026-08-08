@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "ValueObject.hpp"
@@ -41,18 +41,18 @@ namespace AOS
     {
     }
 
-    ULONG ValueObject::value() const
+    TagData ValueObject::value() const
     {
         switch (mType)
         {
             case ValueType::ValuePointer:
-                return (ULONG)mValue.pointer;
+                return (TagData)mValue.pointer;
             case ValueType::ValueULong:
                 return mValue.ulong;
             case ValueType::ValueLong:
                 return mValue.slong;
             case ValueType::ValuePtrArray:
-                return (ULONG)mValue.pArray;
+                return (TagData)mValue.pArray;
             default:
                 auto error = std::string { __PRETTY_FUNCTION__ } + " undefined type: " + std::to_string(static_cast<int>(mType));
                 throw std::runtime_error(error);

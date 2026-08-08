@@ -10,6 +10,7 @@
 #include <stdexcept>
 
 #undef Close
+#undef Write
 
 namespace AOS::Dos
 {

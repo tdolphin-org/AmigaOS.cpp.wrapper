@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #pragma once
@@ -10,6 +10,14 @@
 
 namespace AOS
 {
+// Type of a tag value (tag.ti_Data). It is IPTR (64-bit) on AROS x86_64, while on
+// classic AmigaOS/MorphOS IPTR is either not available in the SDK or equals ULONG.
+#ifdef __AROS__
+    using TagData = IPTR;
+#else
+    using TagData = ULONG;
+#endif
+
     class ValueObject
     {
         enum class ValueType
@@ -53,6 +61,6 @@ namespace AOS
         ValueObject(const void **pArray);
         ValueObject(const bool boolval);
 
-        ULONG value() const;
+        TagData value() const;
     };
 }

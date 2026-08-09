@@ -8,8 +8,8 @@
 
 #include "DosObjectScope.hpp"
 
+#include "std/optional.hpp"
 #include <string>
-#include <optional>
 
 namespace AOS::Dos
 {

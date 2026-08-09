@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "ArgstringScope.hpp"
@@ -24,7 +24,11 @@ namespace AOS::Rexxsyslib
             throw std::runtime_error(error);
         }
 
+#ifdef __AROS__
+        mpArgstring = (char *)CreateArgstring((const UBYTE *)string.c_str(), string.length());
+#else
         mpArgstring = (char *)CreateArgstring(string.c_str(), string.length());
+#endif
         if (!mpArgstring && exceptionOnError)
         {
             auto error = std::string { __PRETTY_FUNCTION__ } + " CreateArgstring(...) failed!";
@@ -35,6 +39,12 @@ namespace AOS::Rexxsyslib
     ArgstringScope::~ArgstringScope()
     {
         if (mpArgstring)
+        {
+#ifdef __MORPHOS__
             DeleteArgstring((char *)mpArgstring);
+#else
+            DeleteArgstring((UBYTE *)mpArgstring);
+#endif
+        }
     }
 }

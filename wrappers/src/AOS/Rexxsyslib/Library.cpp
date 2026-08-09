@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "Library.hpp"
@@ -20,17 +20,29 @@ namespace AOS::Rexxsyslib
 
     unsigned char *Library::libCreateArgstring(const std::string &string) noexcept
     {
+#ifdef __AROS__
+        return CreateArgstring((const UBYTE *)string.c_str(), string.length());
+#else
         return CreateArgstring(string.c_str(), string.length());
+#endif
     }
 
     void Library::libDeleteArgstring(unsigned char *argstring) noexcept
     {
+#ifdef __MORPHOS__
         DeleteArgstring((char *)argstring);
+#else
+        DeleteArgstring((UBYTE *)argstring);
+#endif
     }
 
     RexxMsg *Library::libCreateRexxMsg(const MsgPort &port, const std::string &extension, const std::string &host) noexcept
     {
-        return CreateRexxMsg(&port, extension.c_str(), host.c_str());
+#ifdef __AROS__
+        return CreateRexxMsg((MsgPort *)&port, (UBYTE *)extension.c_str(), (UBYTE *)host.c_str());
+#else
+        return CreateRexxMsg((MsgPort *)&port, extension.c_str(), host.c_str());
+#endif
     }
 
     void Library::libDeleteRexxMsg(RexxMsg &msg) noexcept
@@ -50,6 +62,6 @@ namespace AOS::Rexxsyslib
 
     bool Library::libIsRexxMsg(const RexxMsg &rexxMsg) noexcept
     {
-        return (bool)IsRexxMsg(&rexxMsg);
+        return (bool)IsRexxMsg((RexxMsg *)&rexxMsg);
     }
 }

@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "DiskObjectScope.hpp"
@@ -30,7 +30,7 @@ namespace AOS::Icon
 
     std::string DiskObjectScope::FindToolTypeAsString(const std::string &toolTypeName)
     {
-#ifdef __MORPHOS__
+#if defined(__MORPHOS__) || defined(__AROS__)
         auto value = FindToolType((char *const *)mpDiskObject->do_ToolTypes, (STRPTR)toolTypeName.c_str());
 #else
         auto value = FindToolType((CONST_STRPTR *)mpDiskObject->do_ToolTypes, (STRPTR)toolTypeName.c_str());
@@ -38,12 +38,12 @@ namespace AOS::Icon
         if (value)
             return std::string { (char *)value };
 
-        return {};
+        return { };
     }
 
     bool DiskObjectScope::FindToolTypeAsBool(const std::string &toolTypeName)
     {
-#ifdef __MORPHOS__
+#if defined(__MORPHOS__) || defined(__AROS__)
         auto value = FindToolType((char *const *)mpDiskObject->do_ToolTypes, (STRPTR)toolTypeName.c_str());
 #else
         auto value = FindToolType((CONST_STRPTR *)mpDiskObject->do_ToolTypes, (STRPTR)toolTypeName.c_str());

@@ -126,7 +126,11 @@ namespace AOS::Dos
                 AOS::Exec::MemScope matchBuffer(pattern.empty() ? 0 : pattern.length() * 2 + 2);
                 if (!pattern.empty())
                 {
+#ifdef __AROS__
+                    ParsePatternNoCase(pattern.c_str(), (char *)matchBuffer.mem(), matchBuffer.size());
+#else
                     ParsePatternNoCase((char *)pattern.c_str(), (UBYTE *)matchBuffer.mem(), matchBuffer.size());
+#endif
                     dosObjectScope.exAllControl()->eac_MatchString = (decltype(ExAllControl::eac_MatchString))matchBuffer.mem();
                 }
 

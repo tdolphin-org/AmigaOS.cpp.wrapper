@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "RexxMsgScope.hpp"
@@ -21,7 +21,12 @@ namespace AOS::Rexxsyslib
         // extension (2nd arg) - default extension for the REXX scripts. If this is NULL, the default is "REXX"
         // host (3rd arg) - the name must be the same as the name of the public message port that is to be the
         // default host. If this field is NULL, the default is REXX.
+        // AmigaOS/MorphOS take CONST_STRPTR (const char* in C++); AROS clib/inline take UBYTE *.
+#ifdef __AROS__
+        mpRexxMsg = CreateRexxMsg(mMsgPortScope.msgPort(), nullptr, (UBYTE *)name.c_str());
+#else
         mpRexxMsg = CreateRexxMsg(mMsgPortScope.msgPort(), nullptr, name.c_str());
+#endif
         if (mpRexxMsg == nullptr && exceptionOnError)
         {
             auto error = std::string { __PRETTY_FUNCTION__ } + " CreateRexxMsg(...) failed!";

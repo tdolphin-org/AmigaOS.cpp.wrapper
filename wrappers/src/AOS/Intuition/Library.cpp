@@ -1,13 +1,22 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "Library.hpp"
 
 #include <intuition/monitorclass.h>
 #include <proto/intuition.h>
+
+// GetAttr stores the value through @storagePtr: AROS declares it as IPTR* (pointer
+// sized), AmigaOS/MorphOS as ULONG*. Cast the address of a const char* to the
+// platform's storage type so the SDK-required pointer type matches exactly.
+#ifdef __AROS__
+#define AOS_GETATTR_STORAGE IPTR
+#else
+#define AOS_GETATTR_STORAGE ULONG
+#endif
 
 namespace AOS::Intuition
 {
@@ -30,7 +39,7 @@ namespace AOS::Intuition
             unsigned long memoryClock = 0;
             unsigned long engineClock = 0; // gpu clock
 
-            GetAttr(MA_MonitorName, pMonitorsArray[i], (ULONG *)&pMonitorName);
+            GetAttr(MA_MonitorName, pMonitorsArray[i], (AOS_GETATTR_STORAGE *)&pMonitorName);
 
             if (removeMultiMonitor) // check for multi-monitor setups, so .1, .2 suffixes
             {
@@ -45,13 +54,15 @@ namespace AOS::Intuition
                 }
             }
 
-            GetAttr(MA_Manufacturer, pMonitorsArray[i], (ULONG *)&pManufacturerName);
-            GetAttr(MA_DriverName, pMonitorsArray[i], (ULONG *)&pDriverName);
+            GetAttr(MA_Manufacturer, pMonitorsArray[i], (AOS_GETATTR_STORAGE *)&pManufacturerName);
+            GetAttr(MA_DriverName, pMonitorsArray[i], (AOS_GETATTR_STORAGE *)&pDriverName);
             GetAttr(MA_ManufacturerID, pMonitorsArray[i], &manufacturerId);
             GetAttr(MA_MemorySize, pMonitorsArray[i], &memorySize);
             GetAttr(MA_ProductID, pMonitorsArray[i], &productId);
             GetAttr(MA_MemoryClock, pMonitorsArray[i], &memoryClock);
+#ifdef MA_EngineClock
             GetAttr(MA_EngineClock, pMonitorsArray[i], &engineClock);
+#endif
 
             result.push_back({ pMonitorName, pDriverName, pManufacturerName, manufacturerId, productId, memorySize,
                                memoryClock ? std::optional<unsigned long>(memoryClock) : std::nullopt,

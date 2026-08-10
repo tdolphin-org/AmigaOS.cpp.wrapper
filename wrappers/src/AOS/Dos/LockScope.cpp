@@ -9,6 +9,8 @@
 #include <proto/dos.h>
 #include <stdexcept>
 
+#undef NameFromLock
+
 namespace AOS::Dos
 {
     LockScope::LockScope(const std::string &name, bool exceptionOnError)

@@ -13,6 +13,17 @@
 #endif
 #include <proto/exec.h>
 
+// The SDK inline headerscripts (SDK inline) declare AddLibrary()/RemLibrary() via the
+// LP1NR macro using an unqualified `struct Library` which, inside namespace AOS::Exec,
+// resolves to the wrapper class AOS::Exec::Library instead of the global Exec struct.
+// Undef so the call binds to the real prototype in star-type (struct ::Library *).
+#ifdef AddLibrary
+#undef AddLibrary
+#endif
+#ifdef RemLibrary
+#undef RemLibrary
+#endif
+
 namespace AOS::Exec
 {
     std::string Library::GetVersion() noexcept
@@ -119,7 +130,11 @@ namespace AOS::Exec
 
     struct Resident *Library::libFindResident(const std::string &name) noexcept
     {
+#ifdef __AROS__
+        return FindResident((const UBYTE *)name.c_str());
+#else
         return FindResident(name.c_str());
+#endif
     }
 
     struct MsgPort *Library::libFindPort(const std::string &name) noexcept

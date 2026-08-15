@@ -106,9 +106,12 @@ mk "$DEST"
 lnk "$TC" "$DEST/toolchain"
 lnk "$DEV" "$DEST/Development"
 
-# ---- 2. wrapper compiler scripts with a baked --sysroot ----------------------
+# ---- 2. wrapper scripts with a baked --sysroot -------------------------------
+# Only gcc/g++ understand --sysroot. The binutils (ar, nm, ranlib, strip,
+# objdump) do NOT -- baking --sysroot into them makes every invocation fail
+# with "unrecognized option", so they get plain wrappers without --sysroot.
 mk "$BIN"
-for t in gcc g++ ar nm ranlib strip objdump; do
+for t in gcc g++; do
     src="$TC/x86_64-aros-$t"
     [ -x "$src" ] || continue
     wr="$BIN/x86_64-aros-$t"
@@ -119,6 +122,21 @@ for t in gcc g++ ar nm ranlib strip objdump; do
     {
         echo "#!/bin/sh"
         echo "exec \"$DEST/toolchain/x86_64-aros-$t\" --sysroot=\"$DEST/Development\" \"\$@\""
+    } > "$wr"
+    chmod +x "$wr"
+    echo "[install] wrote $wr"
+done
+for t in ar nm ranlib strip objdump; do
+    src="$TC/x86_64-aros-$t"
+    [ -x "$src" ] || continue
+    wr="$BIN/x86_64-aros-$t"
+    if [ "$RUN" = "0" ]; then
+        step "write wrapper $wr -> x86_64-aros-$t"
+        continue
+    fi
+    {
+        echo "#!/bin/sh"
+        echo "exec \"$DEST/toolchain/x86_64-aros-$t\" \"\$@\""
     } > "$wr"
     chmod +x "$wr"
     echo "[install] wrote $wr"

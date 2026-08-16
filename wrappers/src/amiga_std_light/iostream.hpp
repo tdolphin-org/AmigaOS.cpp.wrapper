@@ -65,6 +65,12 @@ namespace amiga_std_light
         basic_ostream &operator<<(long value);
         basic_ostream &operator<<(unsigned long value);
 #endif
+#if ULONG_MAX == UINT64_MAX
+        // On 64-bit platforms (AROS x86_64) long aliases int64_t/uint64_t, but
+        // long long is a distinct type that still needs its own overloads.
+        basic_ostream &operator<<(long long value);
+        basic_ostream &operator<<(unsigned long long value);
+#endif
         basic_ostream &operator<<(int64_t value);
         basic_ostream &operator<<(uint64_t value);
         basic_ostream &operator<<(float value);

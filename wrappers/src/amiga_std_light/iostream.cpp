@@ -441,6 +441,20 @@ namespace amiga_std_light
     }
 #endif
 
+#if ULONG_MAX == UINT64_MAX
+    // 64-bit platform (AROS x86_64): long aliases int64_t/uint64_t, but
+    // long long is a distinct type that needs its own overloads.
+    basic_ostream &basic_ostream::operator<<(long long value)
+    {
+        return *this << static_cast<int64_t>(value);
+    }
+
+    basic_ostream &basic_ostream::operator<<(unsigned long long value)
+    {
+        return *this << static_cast<uint64_t>(value);
+    }
+#endif
+
     basic_ostream &basic_ostream::operator<<(int64_t value)
     {
         char temp[21]; // "-9223372036854775808\0"

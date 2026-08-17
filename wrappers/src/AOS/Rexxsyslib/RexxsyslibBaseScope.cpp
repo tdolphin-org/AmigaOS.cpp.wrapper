@@ -1,7 +1,7 @@
 //
 //  AmigaOS C++ wrapper
 //
-//  (c) 2024-2025 TDolphin
+//  (c) 2024-2026 TDolphin
 //
 
 #include "RexxsyslibBaseScope.hpp"
@@ -9,6 +9,10 @@
 #include <proto/rexxsyslib.h>
 #include <proto/exec.h>
 #include <stdexcept>
+
+#ifdef __AROS__
+#include <rexx/rxslib.h>
+#endif
 
 struct Library *RexxSysBase = nullptr;
 

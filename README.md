@@ -43,7 +43,7 @@ ___
   providing `ppc-morphos-g++` / `ppc-morphos-ar`
 - Build: `make cross_morphos_ppc`
 
-### Linux cross compilation for AROS (Zune)
+### Linux cross compilation for AROS
 
 Build the AROS cross-compiler + hosted AROS first (stable **ABIv11** tree, not bleeding edge):
 
